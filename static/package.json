@@ -1,0 +1,15 @@
+{
+  "name": "custom",
+  "version": "1.0.0",
+  "description": " Custom package",
+  "main": "index.js",
+  "scripts": {
+    "compile:sass": "node-sass css/autorization/autorization.scss css/autorization/autorization.css -w"
+  },
+  "author": "tst",
+  "license": "ISC",
+  "devDependencies": {
+    "node-sass": "^4.14.1"
+  },
+  "dependencies": {}
+}

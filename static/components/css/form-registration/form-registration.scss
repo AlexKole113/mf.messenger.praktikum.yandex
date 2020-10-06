@@ -1,0 +1,87 @@
+
+.form-registration {
+  box-sizing: border-box;
+  //height: 480px;
+  width: 380px;
+  margin: auto;
+  padding: 2rem;
+  transform: translateY(20%);
+  box-shadow: 1px 0px 8px 2px #0000002e;
+
+  @include sm {
+    width: 100%;
+    height: 100vh;
+    transform: translateY(0);
+  }
+
+
+  &__title {
+    text-align: center;
+    font-size: 1.5rem;
+  }
+
+  &__input-group {
+    position: relative;
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    margin: 2.5rem 0;
+
+    &-item {
+      border-top-width: 0;
+      border-left-width: 0;
+      border-right-width: 0;
+      border-bottom-width: 1px;
+      border-style: solid;
+      outline: none;
+      font-size: 1rem;
+      z-index: 10;
+      position: relative;
+      width: 100%;
+
+      &-btn {
+        border-width: 1px;
+        border-style: solid;
+        padding: .5rem;
+        width: 100%;
+        cursor: pointer;
+        outline: none;
+      }
+
+      &:placeholder-shown + .form-registration__input-group-item_label{
+        top:1rem;
+        opacity: 0;
+      }
+
+      &:invalid {
+       border-bottom-color: $danger!important;
+      }
+
+    }
+
+    &-item_label {
+      font-size: 1rem;
+      position: absolute;
+      left:0;
+      top:-1.25rem;
+      transition: all $transition-timing+s;
+    }
+
+
+    &-enter {
+      margin: 1rem 0;
+      text-decoration: none;
+      font-size: .8rem;
+    }
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+
+
+  }
+
+
+}
+
