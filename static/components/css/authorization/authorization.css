@@ -134,7 +134,7 @@ html {
 body {
   height: 100%; }
 
-.form-autorization {
+.form-authorization {
   box-sizing: border-box;
   width: 550px;
   margin: auto;
@@ -142,20 +142,20 @@ body {
   transform: translateY(50%);
   box-shadow: 1px 0px 8px 2px #0000002e; }
   @media (max-width: 575.98px) {
-    .form-autorization {
+    .form-authorization {
       width: 100%;
       height: 100vh;
       transform: translateY(0); } }
-  .form-autorization__title {
+  .form-authorization__title {
     text-align: center;
     font-size: 1.5rem; }
-  .form-autorization__input-group {
+  .form-authorization__input-group {
     position: relative;
     display: flex;
     flex-flow: column;
     align-items: center;
     margin: 2.5rem 0; }
-    .form-autorization__input-group-item {
+    .form-authorization__input-group-item {
       border-top-width: 0;
       border-left-width: 0;
       border-right-width: 0;
@@ -166,29 +166,29 @@ body {
       z-index: 10;
       position: relative;
       width: 100%; }
-      .form-autorization__input-group-item-btn {
+      .form-authorization__input-group-item-btn {
         border-width: 1px;
         border-style: solid;
         padding: .5rem;
         width: 100%;
         cursor: pointer;
         outline: none; }
-      .form-autorization__input-group-item:placeholder-shown + .form-autorization__input-group-item_label {
+      .form-authorization__input-group-item:placeholder-shown + .form-authorization__input-group-item_label {
         top: 1rem;
         opacity: 0; }
-      .form-autorization__input-group-item:invalid {
+      .form-authorization__input-group-item:invalid {
         border-bottom-color: #c17582 !important; }
-    .form-autorization__input-group-item_label {
+    .form-authorization__input-group-item_label {
       font-size: 1rem;
       position: absolute;
       left: 0;
       top: -1.25rem;
       transition: all 0.8s; }
-    .form-autorization__input-group-enter {
+    .form-authorization__input-group-enter {
       margin: 1rem 0;
       text-decoration: none;
       font-size: .8rem; }
-    .form-autorization__input-group:last-child {
+    .form-authorization__input-group:last-child {
       margin-bottom: 0; }
 
 .bg_dark-max {
