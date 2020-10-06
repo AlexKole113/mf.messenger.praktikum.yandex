@@ -1,12 +1,12 @@
-const inputs     = document.querySelectorAll('form input' );
+const inputs     =  document.querySelectorAll('form input' );
 const btn_submit =  document.querySelector('button[type="submit"]');
 
 
-btn_submit.addEventListener( 'click', ( e)=>{
+btn_submit.addEventListener( 'click', ( e ) => {
     e.preventDefault();
     let data = {};
 
-    inputs.forEach(( itm)=>{
+    inputs.forEach( ( itm )=>{
         if( itm.value.length > 0){
             data[ itm.getAttribute('name') ] = itm.value;
         }
