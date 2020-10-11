@@ -12,7 +12,7 @@
   publish = "static/"
 
   # Default build command.
-  command = "echo 'default context'"
+  command = "node ./server.js"
 
   # Directory with the serverless Lambda functions to deploy to AWS.
   functions = "functions/"
