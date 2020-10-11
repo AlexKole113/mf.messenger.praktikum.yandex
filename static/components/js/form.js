@@ -1,5 +1,7 @@
+import User from './class-User.js';
 
 (function form_handlers(){
+
     const inputs     =  document.querySelectorAll('form input' );
     const btn_submit =  document.querySelector('button[type="submit"]');
 
