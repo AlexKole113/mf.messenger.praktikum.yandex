@@ -1,0 +1,134 @@
+
+.chat-top {
+  padding: 1rem;
+  padding-top: 0;
+
+  &__items {
+    display: flex;
+    height: 4rem;
+    width: 100%;
+    position: relative;
+
+    &-mobile-list {
+      width: 50px;
+      display: none;
+      @include lg{
+        display: flex;
+        align-items: center;
+      }
+    }
+
+    &-details {
+      flex:1;
+      display: flex;
+      justify-content: flex-start;
+
+      @include lg {
+        justify-content: center;
+      }
+
+      &_group {
+
+        display: flex;
+        align-items: center;
+        height: 100%;
+
+        &-ava {
+          height: 2.5rem;
+          width: 2.5rem;
+          background-size: cover;
+          background-position: 50% 50%;
+          border-width: 1px;
+          border-style: solid;
+          position: relative;
+          @include lg {
+            height: 2.5rem;
+            width: 2.5rem;
+          }
+
+          &-link{
+            position: absolute;
+            top:0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+          }
+
+        }
+
+        &-name {
+
+          display: flex;
+          flex-direction: column;
+          padding-left: 1rem;
+          padding-right: 1rem;
+
+          &_link {
+            text-decoration: none;
+            font-size: 1.2rem;
+          }
+
+          &-visit {
+            padding-top: .3rem;
+            font-style: italic;
+            font-size: .68rem;
+          }
+
+        }
+
+      }
+
+    }
+
+    &-menu-starter {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100%;
+    }
+
+    &-menu {
+      position: absolute;
+      top: 5.15rem;
+      right: 0;
+      width: 180px;
+      box-sizing: border-box;
+      box-shadow: 0px 1px 4px 2px #00000026;
+      display: none;
+
+      &_list {
+       list-style: none;
+       margin: 0;
+       padding: 0;
+
+        &-item {
+          padding: 1rem;
+          display: flex;
+          align-items: center;
+          justify-content: flex-start;
+          overflow: hidden;
+          text-overflow: ellipsis;
+
+          i {
+            margin-right: 15px;
+          }
+
+        }
+
+        &-item:hover {
+          background-color: $dark-max;
+        }
+
+      }
+
+      &.open {
+        display: block;
+        z-index: 25;
+      }
+
+    }
+
+  }
+
+
+}

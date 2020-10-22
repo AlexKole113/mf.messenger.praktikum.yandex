@@ -1,0 +1,20 @@
+//variables
+@import '../../../../style/work-parts/work';
+@import '../../../../style/globals/variables';
+
+// fonts
+@import url('https://fonts.googleapis.com/css2?family=Alegreya+Sans:wght@400;500;700&family=Open+Sans:wght@400;600&display=swap');
+
+//components
+@import '../../../../style/body/body';
+@import '../../../../style/mobile/mobile';
+@import '../../../../style/container/container';
+@import '../../../../components/user/view/style/user-list';
+@import '../../../../components/chat-alert/view/style/chat-alert';
+
+
+//theme options
+@import '../../../../style/dark_theme/dark_theme';
+
+
+

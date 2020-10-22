@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "target": "es2015",
+    "module": "es2015",
+    "noImplicitAny": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "alwaysStrict": true,
+    "sourceMap": true,
+    "strictNullChecks": true
+  }
+
+}

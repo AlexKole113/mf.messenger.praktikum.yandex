@@ -1,0 +1,142 @@
+
+.chat-bottom {
+  padding: 1rem;
+  padding-bottom: 0;
+
+  &__items {
+    display: flex;
+    align-items: center;
+    min-height: 4rem;
+    width: 100%;
+    position: relative;
+
+
+    &-add {
+      display: flex;
+      justify-content: space-around;
+      height: 100%;
+      min-width: 50px;
+      margin-bottom: 1.75rem;
+      margin-top: auto;
+      &-attach {
+
+      }
+
+      &-emodji {
+
+      }
+
+    }
+
+
+    &-msg {
+      flex:1;
+      padding-left: 1rem;
+      padding-right: 1rem;
+
+      &-group{
+        width: 100%;
+        display: flex;
+        position: relative;
+
+      }
+      &-input {
+        width: 100%;
+        border-width: 1px;
+        border-style: solid;
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+        font-size: 1.25rem;
+        padding: .58rem;
+        outline: none;
+        max-height: 245px;
+        overflow-y: scroll;
+        position: relative;
+        z-index: 5;
+        transition: all $transition-timing/2 +s;
+
+        @include lg {
+          border-left: 0;
+          border-top: 0;
+          border-right: 0;
+        }
+
+      }
+
+      &-input:focus {
+        width: calc(100% - 50px);
+        @include lg {
+          width: calc(100% - 20px);
+        }
+      }
+
+      &-send {
+        margin-bottom: 1.7rem;
+        margin-top: auto;
+        width: 50px;
+        display: flex;
+        justify-content: center;
+        font-size: 1.45rem;
+        text-decoration: none;
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        opacity: 0;
+        transition: all $transition-timing/2 +s $transition-timing/2 +s;
+      }
+
+      &-input:focus + .chat-bottom__items-msg-send {
+        opacity: 1;
+        @include lg {
+          right: -30px;
+        }
+      }
+
+
+    }
+
+    &-menu {
+      position: absolute;
+      top: -10.6rem;
+      left: 0;
+      width: 180px;
+      box-sizing: border-box;
+      box-shadow: 0px 1px 4px 2px #00000026;
+      display: none;
+
+      &_list {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+
+        &-item {
+          padding: 1rem;
+          display: flex;
+          align-items: center;
+          justify-content: flex-start;
+          overflow: hidden;
+          text-overflow: ellipsis;
+
+          i {
+            margin-right: 15px;
+          }
+
+        }
+
+        &-item:hover {
+          background-color: $dark-max;
+        }
+
+      }
+
+      &.open {
+        display: block;
+        z-index: 25;
+      }
+
+    }
+
+
+  }
+
+}

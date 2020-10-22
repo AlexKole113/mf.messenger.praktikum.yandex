@@ -1,0 +1,1 @@
+{"version":3,"file":"new-message-ticket.js","sourceRoot":"","sources":["new-message-ticket.ts"],"names":[],"mappings":"AAAA,OAAO,KAAK,MAAM,wCAAwC,CAAC;AAC3D,OAAO,EAAC,SAAS,EAAC,MAAM,0BAA0B,CAAC;AAGnD,MAAM,CAAC,OAAO,OAAO,gBAAiB,SAAQ,KAAK;IAC/C,YAAa,GAAU,EAAE,KAAS;QAC9B,KAAK,CAAC,GAAG,EAAE,KAAK,CAAC,CAAC;QAEtB,iBAAY,GAAG,SAAS,CAAC;IADzB,CAAC;CAEJ"}
