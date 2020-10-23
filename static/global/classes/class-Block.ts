@@ -10,34 +10,35 @@ export default class Block {
         FLOW_RENDER: "render"
     };
 
-    _element = null;
-    _meta = null;
-    _templateDef = null;
-    handlers = null;
+    protected _element                  = null;
+    protected _meta                     = null;
+    protected _templateDef :string;
+    public    handlers                  = null;
 
-    constructor(tagName:string = "div", props:object = {}) {
-        const eventBus = new EventBus();
+    constructor( tagName:string = "div", props:object = {}, templateDef:string ) {
+
+        this.eventBus = new EventBus();
+        this.props = this._makePropsProxy( props );
+        this._templateDef = templateDef;
 
         this._meta = {
             tagName,
             props
         };
 
-        this.props = this._makePropsProxy(props);
-        this.eventBus = () => eventBus;
-        this._registerEvents(eventBus);
-        eventBus.emit(Block.EVENTS.INIT);
+        this._registerEvents();
+        this.eventBus.emit(Block.EVENTS.INIT);
 
     }
 
-    _registerEvents(eventBus:object) {
-        eventBus.on(Block.EVENTS.INIT, this.init.bind(this));
-        eventBus.on(Block.EVENTS.FLOW_CDM, this._componentDidMount.bind(this));
-        eventBus.on(Block.EVENTS.FLOW_RENDER, this._render.bind(this));
-        eventBus.on(Block.EVENTS.FLOW_CDU, this._componentDidUpdate.bind(this) );
+    protected _registerEvents() {
+        this.eventBus.on(Block.EVENTS.INIT, this.init.bind(this));
+        this.eventBus.on(Block.EVENTS.FLOW_CDM, this._componentDidMount.bind(this));
+        this.eventBus.on(Block.EVENTS.FLOW_RENDER, this._render.bind(this));
+        this.eventBus.on(Block.EVENTS.FLOW_CDU, this._componentDidUpdate.bind(this) );
     }
 
-    _createResources() {
+    protected _createResources() {
 
         let rootElement = this._meta.tagName
 
@@ -66,69 +67,28 @@ export default class Block {
             }
         }
 
-
         this.rootElm = document.createElement( root );
         this.rootElm.setAttribute('id', rootId );
         this.rootElm.setAttribute('class', rootClasses );
     }
 
-    init() {
-        this._createResources();
-        this.eventBus().emit(Block.EVENTS.FLOW_CDM);
+    protected _componentDidMount() {
+        this.eventBus.emit(Block.EVENTS.FLOW_RENDER);
     }
 
-    _componentDidMount() {
-        this.eventBus().emit(Block.EVENTS.FLOW_RENDER);
-    }
-
-    _componentDidUpdate(){
+    protected _componentDidUpdate(){
         if(document.querySelector(this._meta.tagName)){
             this.render();
         }
         this._attachHandler();
     }
 
-    setProps( nextProps:object ) :object {
-        if (!nextProps) return;
-
-
-        this.props = nextProps;
-        Object.assign(this.props, nextProps);
-
-        this.eventBus().emit(Block.EVENTS.FLOW_CDU);
-        return this;
-    };
-
-    get element() {
-        return this._element;
-    }
-
-    render( elm:string, temp:any ) {
-
-        if( document.querySelector( this._meta.tagName ) ){
-
-            let html = this._render( temp  )
-            document.querySelector( this._meta.tagName ).innerHTML = html ;
-            if( this.props.handlers ){
-                this._attachHandler(elm);
-            }
-        } else {
-            let html = this._render( temp  )
-            this.rootElm.innerHTML = html;
-            document.querySelector( elm ).append( this.rootElm ) ;
-            if( this.props.handlers ){
-                this._attachHandler(elm);
-            }
-        }
-
-    }
-
-    _render( temp:any = this._templateDef ) :string {
+    protected _render( temp:any = this._templateDef ) :string {
         let templator = new Templator( temp );
         return templator.compile( this.props );
     }
 
-    _attachHandler( elm:string ) {
+    protected _attachHandler( elm:string ) {
         if(!elm){
             elm = this._meta.tagName;
         }
@@ -148,11 +108,7 @@ export default class Block {
         }
     }
 
-    getContent() {
-        return this.element;
-    }
-
-    _makePropsProxy( props:object ) {
+    protected _makePropsProxy( props:object ) {
         // Еще один способ передачи this, но он больше не применяется с приходом ES6+
         const self = this;
 
@@ -182,20 +138,65 @@ export default class Block {
         return proxyProps;
     }
 
-    _createDocumentElement(tagName) {
+    protected _createDocumentElement(tagName) {
         // Можно сделать метод, который через фрагменты в цикле создаёт сразу несколько блоков
         return document.createElement(tagName);
     }
 
-    getElement( temp:any ) :string {
-        return this._getElement( temp  )
-    }
-
-    _getElement( temp:any = this._templateDef ) :string {
+    protected _getElement( temp:any = this._templateDef ) :string {
         let templator = new Templator( temp );
         let html = templator.compile( this.props );
         this.rootElm.innerHTML = html;
         return this.rootElm.outerHTML;
+    }
+
+
+    public init() {
+        this._createResources();
+        this.eventBus.emit(Block.EVENTS.FLOW_CDM);
+    }
+
+    public setProps( nextProps:object ) :object {
+        if (!nextProps) return;
+
+
+        this.props = nextProps;
+        Object.assign(this.props, nextProps);
+
+        this.eventBus.emit(Block.EVENTS.FLOW_CDU);
+        return this;
+    };
+
+    get element() {
+        return this._element;
+    }
+
+    public render( elm:string, temp:any ) {
+
+        if( document.querySelector( this._meta.tagName ) ){
+
+            let html = this._render( temp  )
+            document.querySelector( this._meta.tagName ).innerHTML = html ;
+            if( this.props.handlers ){
+                this._attachHandler(elm);
+            }
+        } else {
+            let html = this._render( temp  )
+            this.rootElm.innerHTML = html;
+            document.querySelector( elm ).append( this.rootElm ) ;
+            if( this.props.handlers ){
+                this._attachHandler(elm);
+            }
+        }
+
+    }
+
+    public getContent() {
+        return this.element;
+    }
+
+    public getElement( temp:any ) :string {
+        return this._getElement( temp  )
     }
 
 }

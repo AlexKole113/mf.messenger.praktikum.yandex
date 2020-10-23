@@ -1,9 +1,8 @@
 import Block from "../../../global/classes/class-Block.js";
-import { attachMenu } from "../view/attach-menu.tmp.js";
+import { componentTemplate } from "../view/attach-menu.tmp.js";
 export default class AttachMenu extends Block {
-    constructor(tag, props) {
-        super(tag, props);
-        this._templateDef = attachMenu;
+    constructor(tag, props, template = componentTemplate) {
+        super(tag, props, template);
     }
 }
 //# sourceMappingURL=attach-menu.js.map

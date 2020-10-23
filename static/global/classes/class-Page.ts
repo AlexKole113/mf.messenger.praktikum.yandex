@@ -8,18 +8,7 @@ export default class Page extends Block {
         this.components = components;
     }
 
-
-    render() {
-        let html = this._render( this._templateDef  );
-        this.rootElm.innerHTML = html;
-
-        document.querySelector('body').append( this.rootElm )
-        for( let prop in this.components ) {
-            this.components[prop].eventBus().emit(Block.EVENTS.FLOW_CDU )
-        }
-    }
-
-    _render( temp:any = this._templateDef ) {
+    protected _render( temp:any = this._templateDef ) {
         let templator = new Templator( temp );
         let renderedComponents = {}
 
@@ -31,5 +20,13 @@ export default class Page extends Block {
 
     }
 
+    public render() {
+        let html = this._render( this._templateDef  );
+        this.rootElm.innerHTML = html;
 
+        document.querySelector('body').append( this.rootElm )
+        for( let prop in this.components ) {
+            this.components[prop].eventBus.emit(Block.EVENTS.FLOW_CDU )
+        }
+    }
 }

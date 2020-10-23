@@ -1,4 +1,4 @@
-export let formTemplate = (function(){
+export let componentTemplate = (function(){
     return `<form action="#" class="form-registration bg_dark-gradient2">
                 <h1 class="form-registration__title text-light-max">
                     {{title}}

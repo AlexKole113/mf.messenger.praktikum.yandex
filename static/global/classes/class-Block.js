@@ -1,26 +1,25 @@
 import EventBus from "./class-EventBus.js";
 import Templator from "./class-Templator.js";
 export default class Block {
-    constructor(tagName = "div", props = {}) {
+    constructor(tagName = "div", props = {}, templateDef) {
         this._element = null;
         this._meta = null;
-        this._templateDef = null;
         this.handlers = null;
-        const eventBus = new EventBus();
+        this.eventBus = new EventBus();
+        this.props = this._makePropsProxy(props);
+        this._templateDef = templateDef;
         this._meta = {
             tagName,
             props
         };
-        this.props = this._makePropsProxy(props);
-        this.eventBus = () => eventBus;
-        this._registerEvents(eventBus);
-        eventBus.emit(Block.EVENTS.INIT);
+        this._registerEvents();
+        this.eventBus.emit(Block.EVENTS.INIT);
     }
-    _registerEvents(eventBus) {
-        eventBus.on(Block.EVENTS.INIT, this.init.bind(this));
-        eventBus.on(Block.EVENTS.FLOW_CDM, this._componentDidMount.bind(this));
-        eventBus.on(Block.EVENTS.FLOW_RENDER, this._render.bind(this));
-        eventBus.on(Block.EVENTS.FLOW_CDU, this._componentDidUpdate.bind(this));
+    _registerEvents() {
+        this.eventBus.on(Block.EVENTS.INIT, this.init.bind(this));
+        this.eventBus.on(Block.EVENTS.FLOW_CDM, this._componentDidMount.bind(this));
+        this.eventBus.on(Block.EVENTS.FLOW_RENDER, this._render.bind(this));
+        this.eventBus.on(Block.EVENTS.FLOW_CDU, this._componentDidUpdate.bind(this));
     }
     _createResources() {
         let rootElement = this._meta.tagName;
@@ -52,47 +51,14 @@ export default class Block {
         this.rootElm.setAttribute('id', rootId);
         this.rootElm.setAttribute('class', rootClasses);
     }
-    init() {
-        this._createResources();
-        this.eventBus().emit(Block.EVENTS.FLOW_CDM);
-    }
     _componentDidMount() {
-        this.eventBus().emit(Block.EVENTS.FLOW_RENDER);
+        this.eventBus.emit(Block.EVENTS.FLOW_RENDER);
     }
     _componentDidUpdate() {
         if (document.querySelector(this._meta.tagName)) {
             this.render();
         }
         this._attachHandler();
-    }
-    setProps(nextProps) {
-        if (!nextProps)
-            return;
-        this.props = nextProps;
-        Object.assign(this.props, nextProps);
-        this.eventBus().emit(Block.EVENTS.FLOW_CDU);
-        return this;
-    }
-    ;
-    get element() {
-        return this._element;
-    }
-    render(elm, temp) {
-        if (document.querySelector(this._meta.tagName)) {
-            let html = this._render(temp);
-            document.querySelector(this._meta.tagName).innerHTML = html;
-            if (this.props.handlers) {
-                this._attachHandler(elm);
-            }
-        }
-        else {
-            let html = this._render(temp);
-            this.rootElm.innerHTML = html;
-            document.querySelector(elm).append(this.rootElm);
-            if (this.props.handlers) {
-                this._attachHandler(elm);
-            }
-        }
     }
     _render(temp = this._templateDef) {
         let templator = new Templator(temp);
@@ -118,9 +84,6 @@ export default class Block {
                 document.querySelector(elm).addEventListener(handler, this.props.handlers[handler]);
             }
         }
-    }
-    getContent() {
-        return this.element;
     }
     _makePropsProxy(props) {
         // Еще один способ передачи this, но он больше не применяется с приходом ES6+
@@ -149,14 +112,50 @@ export default class Block {
         // Можно сделать метод, который через фрагменты в цикле создаёт сразу несколько блоков
         return document.createElement(tagName);
     }
-    getElement(temp) {
-        return this._getElement(temp);
-    }
     _getElement(temp = this._templateDef) {
         let templator = new Templator(temp);
         let html = templator.compile(this.props);
         this.rootElm.innerHTML = html;
         return this.rootElm.outerHTML;
+    }
+    init() {
+        this._createResources();
+        this.eventBus.emit(Block.EVENTS.FLOW_CDM);
+    }
+    setProps(nextProps) {
+        if (!nextProps)
+            return;
+        this.props = nextProps;
+        Object.assign(this.props, nextProps);
+        this.eventBus.emit(Block.EVENTS.FLOW_CDU);
+        return this;
+    }
+    ;
+    get element() {
+        return this._element;
+    }
+    render(elm, temp) {
+        if (document.querySelector(this._meta.tagName)) {
+            let html = this._render(temp);
+            document.querySelector(this._meta.tagName).innerHTML = html;
+            if (this.props.handlers) {
+                this._attachHandler(elm);
+            }
+        }
+        else {
+            let html = this._render(temp);
+            this.rootElm.innerHTML = html;
+            document.querySelector(elm).append(this.rootElm);
+            if (this.props.handlers) {
+                this._attachHandler(elm);
+            }
+        }
+    }
+    getContent() {
+        return this.element;
+    }
+    getElement(temp) {
+        return this._getElement(temp);
     }
 }
 Block.EVENTS = {

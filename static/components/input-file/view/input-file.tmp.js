@@ -1,4 +1,4 @@
-export let inputfile = (function(){
+export let componentTemplate = (function(){
     return `<div class="form-user-settings__ava-group">      
                 <div class="form-user-settings__ava-group-upload upload-img-group">
                     <label style="background-image: url({{photo}})" class="upload-img-group__img border_light-max">

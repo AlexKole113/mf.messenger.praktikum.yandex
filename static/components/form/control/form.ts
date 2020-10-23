@@ -1,14 +1,13 @@
 import Block from "../../../global/classes/class-Block.js";
-import {formTemplate} from "../view/form.tmp.js";
+import {componentTemplate} from "../view/form.tmp.js";
 
 export default class Form extends Block {
-    constructor(tag: string, props: any) {
-        super(tag, props);
+
+    constructor(tag: string, props: any, template = componentTemplate) {
+        super(tag, props, template );
     }
 
-    _templateDef = formTemplate;
-
-    _attachHandler(elm: string) {
+   protected _attachHandler(elm: string) {
         if (!elm) {
             elm = this._meta.tagName;
         }
@@ -29,6 +28,5 @@ export default class Form extends Block {
             }
         }
     }
-
 
 }

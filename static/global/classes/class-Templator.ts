@@ -6,11 +6,7 @@ export default class Templator {
         this._template = template;
     }
 
-    compile( ctx:string ) :string {
-        return this._compileTemplate( ctx );
-    }
-
-    _compileTemplate( ctx:string ) :string {
+    protected _compileTemplate( ctx:string ) :string {
         let tmpl = this._template;
         let key = null;
         const regExp1 = this.TEMPLATE_REGEXP_1;
@@ -61,7 +57,11 @@ export default class Templator {
         return tmpl;
     }
 
-    getData( obj:object, path:any, defaultValue:any ) :any {
+    public compile( ctx:string ) :string {
+        return this._compileTemplate( ctx );
+    }
+
+    public getData( obj:object, path:any, defaultValue:any ) :any {
         const keys = path.split('.');
 
         let result = obj;

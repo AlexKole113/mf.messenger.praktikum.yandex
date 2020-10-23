@@ -4,9 +4,6 @@ export default class Templator {
         this.TEMPLATE_REGEXP_2 = /\{\{\{(.*?)\}\}\}/gi;
         this._template = template;
     }
-    compile(ctx) {
-        return this._compileTemplate(ctx);
-    }
     _compileTemplate(ctx) {
         let tmpl = this._template;
         let key = null;
@@ -40,6 +37,9 @@ export default class Templator {
             }
         }
         return tmpl;
+    }
+    compile(ctx) {
+        return this._compileTemplate(ctx);
     }
     getData(obj, path, defaultValue) {
         const keys = path.split('.');

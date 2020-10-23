@@ -1,4 +1,4 @@
-export let sendMessage = (function(){
+export let componentTemplate = (function(){
     return `<div class="chat-bottom__items-add">
                     <div class="chat-bottom__items--add-attach">
                         <i class="fas fa-paperclip attach-menu-starter text-light-min"></i>

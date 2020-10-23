@@ -1,4 +1,4 @@
-export let searchTemplate = (function(){
+export let componentTemplate = (function(){
     return `<div class="mobile-close separator-dark">
             <div class="mobile-close__txt text-light-min">
                 <span>Закрыть</span>
