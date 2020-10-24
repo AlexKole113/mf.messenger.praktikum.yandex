@@ -1,6 +1,7 @@
 import Templator from "../../../global/classes/class-Templator.js";
 import Block from "../../../global/classes/class-Block.js";
 import {componentTemplate} from "../view/input-file.tmp.js";
+import EventBus from "../../../global/classes/class-EventBus";
 
 
 export default class InputFile <T extends object> extends Block <T> {
@@ -11,7 +12,7 @@ export default class InputFile <T extends object> extends Block <T> {
     protected rootElm      !:HTMLElement;
     protected props        !:props;
     public    handlers     ?:object;
-    public    eventBus     ?:any;
+    public    eventBus     !:EventBus;
 
 
     constructor( tag:string, props:props, template:template = componentTemplate ) {

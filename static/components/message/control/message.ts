@@ -2,6 +2,7 @@ import Templator from "../../../global/classes/class-Templator.js";
 import Block from "../../../global/classes/class-Block.js";
 import Delivered from "../../delivered/control/delivered.js";
 import {componentTemplate} from "../view/message.tmp.js";
+import EventBus from "../../../global/classes/class-EventBus";
 
 
 type props = {
@@ -17,7 +18,7 @@ export default class Message <T extends object> extends Block <T> {
     protected rootElm      !:HTMLElement;
     protected props        !:props;
     public    handlers     ?:object;
-    public    eventBus     ?:any;
+    public    eventBus     !:EventBus;
 
 
 

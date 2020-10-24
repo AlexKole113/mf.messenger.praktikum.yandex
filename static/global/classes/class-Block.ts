@@ -23,7 +23,7 @@ export default class Block <T extends object> {
     protected props        :props;
     protected _element     :any;
     public    handlers     ?:object;
-    public    eventBus     ?:any;
+    public    eventBus     !:EventBus;
 
 
     protected constructor ( tagName:string = "div", props:props, templateDef:template = '' ) {
