@@ -4,15 +4,29 @@ import Delivered from "../../delivered/control/delivered.js";
 import {componentTemplate} from "../view/message.tmp.js";
 
 
+type props = {
+    [index:string]:any
+};
 
-export default class Message extends Block {
 
-    constructor( tag:string, props:any, selfClass:string, template = componentTemplate ) {
+export default class Message <T extends object> extends Block <T> {
+
+    protected _element     :any        = null;
+    protected _meta        !:{tagName:string,props:any};
+    protected _templateDef !:template;
+    protected rootElm      !:HTMLElement;
+    protected props        !:props;
+    public    handlers     ?:object;
+    public    eventBus     ?:any;
+
+
+
+    constructor( tag:string, props:props, template:template = componentTemplate ) {
         super(tag, props, template);
         this.actualize(props)
     }
 
-    protected _getElement( temp:any = this._templateDef ) :string {
+    protected _getElement( temp:template = this._templateDef ) :string {
         let templator = new Templator( temp );
 
         let messageList = '';
@@ -25,9 +39,7 @@ export default class Message extends Block {
     }
 
 
-    public setProps = nextProps => {
-        if (!nextProps) return;
-
+    public setProps (nextProps:props) {
         this.props = nextProps;
 
         for( let i=0; i < this.props.length; i++ ){
@@ -53,14 +65,16 @@ export default class Message extends Block {
         for(let i = 0; i < this.props.length; i++ ){
             messageList += templator.compile( this.props[i] )
         }
-        document.querySelector( elm ).innerHTML = messageList ;
+
+        let elementTargetRender = <HTMLElement> document.querySelector( elm );
+        elementTargetRender.innerHTML = messageList ;
     }
 
-    public getElement( temp:any ) :string {
+    public getElement( temp:template ) :string {
         return this._getElement( temp  )
     }
 
-    public actualize( props ){
+    public actualize( props:props ){
         if ( !props ) return;
 
         this.props = props;

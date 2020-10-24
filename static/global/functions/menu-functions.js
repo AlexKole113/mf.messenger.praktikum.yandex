@@ -1,3 +1,8 @@
+//
+// Функции для работы с некоторыми DOM элементами (меню и тд)
+// пока не используются, но позднее будут подключены
+
+
 function all_menus() {
     const mobile_menu = document.querySelector('.chat-top-mobile-user-list');
     const user_list = document.querySelector('.user-list');

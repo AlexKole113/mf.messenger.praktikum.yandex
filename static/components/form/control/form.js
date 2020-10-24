@@ -18,10 +18,12 @@ export default class Form extends Block {
                     });
                 }
                 else if (evName === 'submit') {
-                    document.querySelector(elm + ' form').addEventListener('submit', listner[evName]);
+                    let elmListnerTarg = document.querySelector(elm + ' form');
+                    elmListnerTarg.addEventListener('submit', listner[evName]);
                 }
                 else {
-                    document.querySelector(elm).addEventListener(evName, listner[evName]);
+                    let elmListnerTarg = document.querySelector(elm);
+                    elmListnerTarg.addEventListener(evName, listner[evName]);
                 }
             }
         }

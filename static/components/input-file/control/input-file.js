@@ -4,29 +4,29 @@ import { componentTemplate } from "../view/input-file.tmp.js";
 export default class InputFile extends Block {
     constructor(tag, props, template = componentTemplate) {
         super(tag, props, template);
-        this.setProps = nextProps => {
-            if (!nextProps)
-                return;
-            this.props = nextProps;
-            this.eventBus.emit(Block.EVENTS.FLOW_CDU);
-            return this;
-        };
+        this._element = null;
     }
-    _getElement(temp = this._templateDef) {
+    _getElement(temp) {
         let templator = new Templator(temp);
         let inputList = templator.compile(this.props);
         this.rootElm.innerHTML = inputList;
         return this.rootElm.outerHTML;
     }
+    setProps(nextProps) {
+        this.props = nextProps;
+        this.eventBus.emit(Block.EVENTS.FLOW_CDU);
+        return this;
+    }
     render(elm) {
         if (!elm) {
             elm = this._meta.tagName;
         }
-        let templator = new Templator(inputfile);
+        let templator = new Templator(this._templateDef);
         let inputList = templator.compile(this.props);
-        document.querySelector(elm).innerHTML = inputList;
+        let elementRenderTarget = document.querySelector(elm);
+        elementRenderTarget.innerHTML = inputList;
     }
-    getElement(temp) {
+    getElement(temp = this._templateDef) {
         return this._getElement(temp);
     }
 }

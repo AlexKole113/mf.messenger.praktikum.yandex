@@ -1,9 +1,12 @@
-export default class EventBus {
+
+export default class EventBus implements EventBus {
+    private listeners: Record<string, CallableFunction[]> = {};
+
     constructor() {
         this.listeners = {};
     }
 
-    public on( event:string, callback:any ) {
+    public on( event:string, callback:CallableFunction ) {
         if (!this.listeners[event]) {
             this.listeners[event] = [];
         }
@@ -11,7 +14,7 @@ export default class EventBus {
         this.listeners[event].push(callback);
     }
 
-    public off(event:string, callback:any) {
+    public off( event:string, callback:CallableFunction ) {
         if (!this.listeners[event]) {
             throw new Error(`Нет события: ${event}`);
         }
@@ -21,7 +24,7 @@ export default class EventBus {
         );
     }
 
-    public emit(event:string, ...args:any) {
+    public emit( event:string, ...args:any ) {
         if (!this.listeners[event]) {
             throw new Error(`Нет события: ${event}`);
         }

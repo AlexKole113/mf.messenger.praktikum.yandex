@@ -5,11 +5,11 @@ export default class Button extends Block {
     constructor(tag, props, template = componentTemplate) {
         super(tag, props, template);
     }
-    _getElement(temp = this._templateDef) {
+    _getElement(temp) {
         let templator = new Templator(temp);
         return templator.compile(this.props);
     }
-    getElement(temp) {
+    getElement(temp = this._templateDef) {
         return this._getElement(temp);
     }
 }

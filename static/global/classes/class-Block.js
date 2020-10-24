@@ -1,10 +1,10 @@
 import EventBus from "./class-EventBus.js";
 import Templator from "./class-Templator.js";
+// Спасибо большое за детальный фидбэк! За ссылки на инфу отдельное большое спасибо!
+// Я успел исправить не все, но все что было помечено как "надо исправить" вроде исправил.
+// Конечно же в ходе дальнейшей работы я буду возвращаться к твоим комментам чтобы внести изменения.
 export default class Block {
-    constructor(tagName = "div", props = {}, templateDef) {
-        this._element = null;
-        this._meta = null;
-        this.handlers = null;
+    constructor(tagName = "div", props, templateDef = '') {
         this.eventBus = new EventBus();
         this.props = this._makePropsProxy(props);
         this._templateDef = templateDef;
@@ -64,16 +64,14 @@ export default class Block {
         let templator = new Templator(temp);
         return templator.compile(this.props);
     }
-    _attachHandler(elm) {
-        if (!elm) {
-            elm = this._meta.tagName;
-        }
+    _attachHandler(elm = this._meta.tagName) {
         if (Array.isArray(this.props.handlers)) {
             for (let listner of this.props.handlers) {
                 for (let evName in listner) {
                     if (typeof listner[evName] !== "function")
                         continue;
-                    document.querySelector(elm).addEventListener(evName, listner[evName]);
+                    let elementHandlerTrget = document.querySelector(elm);
+                    elementHandlerTrget.addEventListener(evName, listner[evName]);
                 }
             }
         }
@@ -81,7 +79,8 @@ export default class Block {
             for (let handler in this.props.handlers) {
                 if (typeof this.props.handlers[handler] !== "function")
                     continue;
-                document.querySelector(elm).addEventListener(handler, this.props.handlers[handler]);
+                let elementHandlerTrget = document.querySelector(elm);
+                elementHandlerTrget.addEventListener(handler, this.props.handlers[handler]);
             }
         }
     }
@@ -93,7 +92,7 @@ export default class Block {
                 if (prop.indexOf('_') === 0) {
                     throw new Error('error');
                 }
-                return self[prop] ? self[prop] : props[prop];
+                return target[prop] ? target[prop] : props[prop];
             },
             set(target, prop, val) {
                 if (prop.indexOf('_') === 0) {
@@ -102,7 +101,7 @@ export default class Block {
                 target[prop] = val;
                 return target[prop];
             },
-            deleteProperty(target, prop) {
+            deleteProperty() {
                 throw new Error('error');
             },
         });
@@ -112,7 +111,7 @@ export default class Block {
         // Можно сделать метод, который через фрагменты в цикле создаёт сразу несколько блоков
         return document.createElement(tagName);
     }
-    _getElement(temp = this._templateDef) {
+    _getElement(temp) {
         let templator = new Templator(temp);
         let html = templator.compile(this.props);
         this.rootElm.innerHTML = html;
@@ -122,9 +121,7 @@ export default class Block {
         this._createResources();
         this.eventBus.emit(Block.EVENTS.FLOW_CDM);
     }
-    setProps(nextProps) {
-        if (!nextProps)
-            return;
+    setProps(nextProps = {}) {
         this.props = nextProps;
         Object.assign(this.props, nextProps);
         this.eventBus.emit(Block.EVENTS.FLOW_CDU);
@@ -135,9 +132,12 @@ export default class Block {
         return this._element;
     }
     render(elm, temp) {
+        if (!elm)
+            return;
         if (document.querySelector(this._meta.tagName)) {
             let html = this._render(temp);
-            document.querySelector(this._meta.tagName).innerHTML = html;
+            let elementRenderTarg = document.querySelector(this._meta.tagName);
+            elementRenderTarg.innerHTML = html;
             if (this.props.handlers) {
                 this._attachHandler(elm);
             }
@@ -145,7 +145,8 @@ export default class Block {
         else {
             let html = this._render(temp);
             this.rootElm.innerHTML = html;
-            document.querySelector(elm).append(this.rootElm);
+            let HtmlElement = document.querySelector(elm);
+            HtmlElement.append(this.rootElm);
             if (this.props.handlers) {
                 this._attachHandler(elm);
             }
@@ -154,7 +155,7 @@ export default class Block {
     getContent() {
         return this.element;
     }
-    getElement(temp) {
+    getElement(temp = this._templateDef) {
         return this._getElement(temp);
     }
 }

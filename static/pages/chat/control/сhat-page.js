@@ -107,10 +107,10 @@ let activeChat = {
 };
 let userList = new UserList('div#userList-component', usersCollection, 'current-user');
 let messageList = new Message('div#messagelist-component', messageFeed);
-let searchBlock = new Search('div#searchBlock-component', '');
+let searchBlock = new Search('div#searchBlock-component', {});
 let sendMessageGroup = new SendMessageGroup('div#sendMessageGroup-component', {
-    send_message: new SendMessage('div#sendMessage-component', '').getElement(),
-    attach_menu: new AttachMenu('div#attachMenu-component', '').getElement(),
+    send_message: new SendMessage('div#sendMessage-component', {}).getElement(),
+    attach_menu: new AttachMenu('div#attachMenu-component', {}).getElement(),
     handlers: [{ 'click': attach_menu_starter }],
 });
 let chatDetails = new ChatDetails('div#chatDetails-component', activeChat);

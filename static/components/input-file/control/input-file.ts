@@ -3,13 +3,22 @@ import Block from "../../../global/classes/class-Block.js";
 import {componentTemplate} from "../view/input-file.tmp.js";
 
 
-export default class InputFile extends Block {
+export default class InputFile <T extends object> extends Block <T> {
 
-    constructor( tag:string, props:any, template = componentTemplate ) {
+    protected _element     :any        = null;
+    protected _meta        :any;
+    protected _templateDef !:template;
+    protected rootElm      !:HTMLElement;
+    protected props        !:props;
+    public    handlers     ?:object;
+    public    eventBus     ?:any;
+
+
+    constructor( tag:string, props:props, template:template = componentTemplate ) {
         super(tag, props,template);
     }
 
-    protected _getElement( temp:any = this._templateDef ) :string {
+    protected _getElement( temp:template ) :string {
         let templator = new Templator( temp );
         let inputList = templator.compile( this.props )
         this.rootElm.innerHTML = inputList;
@@ -17,11 +26,8 @@ export default class InputFile extends Block {
     }
 
 
-    public setProps = nextProps => {
-        if (!nextProps) return;
-
+    public setProps ( nextProps:props) {
         this.props = nextProps;
-
         this.eventBus.emit(Block.EVENTS.FLOW_CDU);
         return this;
     }
@@ -31,12 +37,14 @@ export default class InputFile extends Block {
             elm = this._meta.tagName;
         }
 
-        let templator = new Templator( inputfile );
+        let templator = new Templator( this._templateDef );
         let inputList = templator.compile( this.props )
-        document.querySelector( elm ).innerHTML = inputList ;
+
+        let elementRenderTarget = <HTMLElement> document.querySelector( elm );
+        elementRenderTarget.innerHTML = inputList ;
     }
 
-    public getElement( temp:any ) :string {
+    public getElement( temp:template = this._templateDef ) :string {
         return this._getElement( temp  )
     }
 

@@ -3,14 +3,31 @@ import Block from "../../../global/classes/class-Block.js";
 import {componentTemplate} from "../view/user.tmp.js";
 
 
-export default class UserList extends Block {
+type props = {
+    [index:string]:any
+};
 
-    constructor( tag:string, props:any, activeClass:string, template = componentTemplate ) {
+
+export default class UserList <T extends object> extends Block <T> {
+
+
+    protected _element     :any        = null;
+    protected _meta        !:{tagName:string,props:any};
+    protected _templateDef !:template;
+    protected rootElm      !:HTMLElement;
+    protected props        !:props;
+    public    handlers     ?:object;
+    public    eventBus     ?:any;
+    public    activeClass  :string
+
+
+
+    constructor( tag:string, props:props, activeClass:string, template:template = componentTemplate ) {
         super(tag, props,template);
         this.activeClass = activeClass;
     }
 
-    protected _getElement( temp:any = this._templateDef ) :string {
+    protected _getElement( temp:template = this._templateDef ) :string {
         let templator = new Templator( temp );
 
         let userList = '';
@@ -24,8 +41,8 @@ export default class UserList extends Block {
     }
 
 
-    public setProps( nextProps:object ) :object {
-        if (!nextProps) return;
+    public setProps( nextProps:props ) :object {
+       // if (!nextProps) return;
 
         this.props = nextProps;
 
@@ -47,10 +64,13 @@ export default class UserList extends Block {
         for(let i = 0; i < this.props.length; i++ ){
             userList += templator.compile( this.props[i] )
         }
-        document.querySelector(elm).innerHTML = userList ;
+
+        let elementRenderTarget = <HTMLElement> document.querySelector(elm);
+
+        elementRenderTarget.innerHTML = userList ;
     }
 
-    public getElement( temp:any ) :string {
+    public getElement( temp:template ) :string {
         return this._getElement( temp  )
     }
 

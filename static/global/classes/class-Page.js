@@ -17,7 +17,8 @@ export default class Page extends Block {
     render() {
         let html = this._render(this._templateDef);
         this.rootElm.innerHTML = html;
-        document.querySelector('body').append(this.rootElm);
+        let bodyElm = document.querySelector('body');
+        bodyElm.append(this.rootElm);
         for (let prop in this.components) {
             this.components[prop].eventBus.emit(Block.EVENTS.FLOW_CDU);
         }

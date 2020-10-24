@@ -1,7 +1,13 @@
 import EventBus from "./class-EventBus.js";
 import Templator from "./class-Templator.js";
 
-export default class Block {
+
+// Спасибо большое за детальный фидбэк! За ссылки на инфу отдельное большое спасибо!
+// Я успел исправить не все, но все что было помечено как "надо исправить" вроде исправил.
+// Конечно же в ходе дальнейшей работы я буду возвращаться к твоим комментам чтобы внести изменения.
+
+
+export default class Block <T extends object> {
 
     static EVENTS = {
         INIT: "init",
@@ -10,12 +16,17 @@ export default class Block {
         FLOW_RENDER: "render"
     };
 
-    protected _element                  = null;
-    protected _meta                     = null;
-    protected _templateDef :string;
-    public    handlers                  = null;
 
-    constructor( tagName:string = "div", props:object = {}, templateDef:string ) {
+    protected _meta        :{tagName:string,props:any};
+    protected _templateDef :string;
+    protected rootElm      !:HTMLElement;
+    protected props        :props;
+    protected _element     :any;
+    public    handlers     ?:object;
+    public    eventBus     ?:any;
+
+
+    protected constructor ( tagName:string = "div", props:props, templateDef:template = '' ) {
 
         this.eventBus = new EventBus();
         this.props = this._makePropsProxy( props );
@@ -42,9 +53,9 @@ export default class Block {
 
         let rootElement = this._meta.tagName
 
-        let root:string = rootElement;
-        let rootId:string = ''
-        let rootClasses:string = '';
+        let root:string         = rootElement;
+        let rootId:string       = ''
+        let rootClasses:string  = '';
 
         //пока так(
         if( rootElement.indexOf('#') != -1 ){
@@ -77,7 +88,7 @@ export default class Block {
     }
 
     protected _componentDidUpdate(){
-        if(document.querySelector(this._meta.tagName)){
+        if( document.querySelector( this._meta.tagName ) ){
             this.render();
         }
         this._attachHandler();
@@ -88,39 +99,39 @@ export default class Block {
         return templator.compile( this.props );
     }
 
-    protected _attachHandler( elm:string ) {
-        if(!elm){
-            elm = this._meta.tagName;
-        }
+    protected _attachHandler( elm:string = this._meta.tagName ) {
 
         if( Array.isArray( this.props.handlers ) ){
             for( let listner of this.props.handlers ) {
                 for( let evName in listner ){
                     if( typeof listner[evName] !== "function") continue;
-                    document.querySelector( elm ).addEventListener( evName, listner[evName] )
+                    let elementHandlerTrget = <HTMLElement> document.querySelector( elm );
+                    elementHandlerTrget.addEventListener( evName, listner[evName] )
                 }
             }
         } else {
             for( let handler in this.props.handlers ) {
                 if( typeof this.props.handlers[handler] !== "function") continue;
-                document.querySelector( elm ).addEventListener( handler, this.props.handlers[handler] )
+                let elementHandlerTrget = <HTMLElement> document.querySelector( elm );
+                elementHandlerTrget.addEventListener( handler, this.props.handlers[handler] )
             }
         }
     }
 
-    protected _makePropsProxy( props:object ) {
+    protected _makePropsProxy( props:props ) {
         // Еще один способ передачи this, но он больше не применяется с приходом ES6+
         const self = this;
 
         let proxyProps = new Proxy( self, {
-            get( target, prop ) {
+
+            get( target:any, prop:string ) {
                 if (prop.indexOf('_') === 0) {
                     throw new Error('error');
                 }
-                return self[prop] ? self[prop] : props[prop];
+                return target[prop] ? target[prop] : props[prop];
             },
 
-            set( target, prop, val ) {
+            set( target:any, prop:string, val:any ) {
                 if (prop.indexOf('_') === 0) {
                     throw new Error('error');
                 }
@@ -129,7 +140,7 @@ export default class Block {
                 return target[prop];
             },
 
-            deleteProperty(target, prop) {
+            deleteProperty() {
                 throw new Error('error');
             },
 
@@ -138,12 +149,12 @@ export default class Block {
         return proxyProps;
     }
 
-    protected _createDocumentElement(tagName) {
+    protected _createDocumentElement(tagName:string) {
         // Можно сделать метод, который через фрагменты в цикле создаёт сразу несколько блоков
         return document.createElement(tagName);
     }
 
-    protected _getElement( temp:any = this._templateDef ) :string {
+    protected _getElement( temp:string ) :string {
         let templator = new Templator( temp );
         let html = templator.compile( this.props );
         this.rootElm.innerHTML = html;
@@ -156,9 +167,7 @@ export default class Block {
         this.eventBus.emit(Block.EVENTS.FLOW_CDM);
     }
 
-    public setProps( nextProps:object ) :object {
-        if (!nextProps) return;
-
+    public setProps( nextProps:object|T = {} ) :object {
 
         this.props = nextProps;
         Object.assign(this.props, nextProps);
@@ -171,19 +180,25 @@ export default class Block {
         return this._element;
     }
 
-    public render( elm:string, temp:any ) {
+    public render( elm?:string, temp?:any ) {
+
+        if(!elm) return;
 
         if( document.querySelector( this._meta.tagName ) ){
 
-            let html = this._render( temp  )
-            document.querySelector( this._meta.tagName ).innerHTML = html ;
+            let html = this._render( temp )
+            let elementRenderTarg = <HTMLElement> document.querySelector( this._meta.tagName );
+            elementRenderTarg .innerHTML = html ;
             if( this.props.handlers ){
                 this._attachHandler(elm);
             }
         } else {
             let html = this._render( temp  )
             this.rootElm.innerHTML = html;
-            document.querySelector( elm ).append( this.rootElm ) ;
+
+            let HtmlElement = <HTMLElement> document.querySelector( elm );
+            HtmlElement.append( this.rootElm ) ;
+
             if( this.props.handlers ){
                 this._attachHandler(elm);
             }
@@ -195,7 +210,7 @@ export default class Block {
         return this.element;
     }
 
-    public getElement( temp:any ) :string {
+    public getElement( temp:any = this._templateDef ) :string {
         return this._getElement( temp  )
     }
 

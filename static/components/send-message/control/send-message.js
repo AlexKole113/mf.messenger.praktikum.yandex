@@ -9,7 +9,7 @@ export default class SendMessage extends Block {
         let templator = new Templator(temp);
         return templator.compile(this.props);
     }
-    getElement(temp) {
+    getElement(temp = this._templateDef) {
         return this._getElement(temp);
     }
 }

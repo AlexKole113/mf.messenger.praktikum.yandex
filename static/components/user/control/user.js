@@ -4,6 +4,7 @@ import { componentTemplate } from "../view/user.tmp.js";
 export default class UserList extends Block {
     constructor(tag, props, activeClass, template = componentTemplate) {
         super(tag, props, template);
+        this._element = null;
         this.activeClass = activeClass;
     }
     _getElement(temp = this._templateDef) {
@@ -16,8 +17,7 @@ export default class UserList extends Block {
         return this.rootElm.outerHTML;
     }
     setProps(nextProps) {
-        if (!nextProps)
-            return;
+        // if (!nextProps) return;
         this.props = nextProps;
         for (let i = 0; i < this.props.length; i++) {
             (this.props[i].active === true) ? this.props[i].active = this.activeClass : this.props[i].active = '';
@@ -35,7 +35,8 @@ export default class UserList extends Block {
         for (let i = 0; i < this.props.length; i++) {
             userList += templator.compile(this.props[i]);
         }
-        document.querySelector(elm).innerHTML = userList;
+        let elementRenderTarget = document.querySelector(elm);
+        elementRenderTarget.innerHTML = userList;
     }
     getElement(temp) {
         return this._getElement(temp);

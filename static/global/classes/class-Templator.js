@@ -41,7 +41,7 @@ export default class Templator {
     compile(ctx) {
         return this._compileTemplate(ctx);
     }
-    getData(obj, path, defaultValue) {
+    getData(obj, path, defaultValue = '') {
         const keys = path.split('.');
         let result = obj;
         for (let key of keys) {

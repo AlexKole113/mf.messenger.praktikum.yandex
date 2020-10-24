@@ -84,7 +84,7 @@ let usersCollection = [
 ];
 
 let userList          = new UserList('div#userList-component', usersCollection, 'current-user' );
-let searchBlock       = new Search('div#searchBlock-component', '' );
+let searchBlock       = new Search('div#searchBlock-component', {} );
 let chatAlert         = new ChatAlert('div.chat-alert',{alert_msg:'Собщений нет('})
 
 
