@@ -1,46 +1,33 @@
 import Templator from "../../../global/classes/class-Templator.js";
 import Block from "../../../global/classes/class-Block.js";
-import {userTemplate} from "../view/user.tmp.js";
+import {componentTemplate} from "../view/user.tmp.js";
 
 
-export default class UserList extends Block {
-    constructor( tag:string, props:any, activeClass:string ) {
-        super(tag, props);
+type props = {
+    [index:string]:any
+};
+
+
+export default class UserList <T extends object> extends Block <T> {
+
+
+    protected _element     :any        = null;
+    protected _meta        !:{tagName:string,props:any};
+    protected _templateDef !:template;
+    protected rootElm      !:HTMLElement;
+    protected props        !:props;
+    public    handlers     ?:object;
+    public    eventBus     ?:any;
+    public    activeClass  :string
+
+
+
+    constructor( tag:string, props:props, activeClass:string, template:template = componentTemplate ) {
+        super(tag, props,template);
         this.activeClass = activeClass;
-        //this.setProps(props)
     }
 
-    setProps( nextProps:object ) :object {
-        if (!nextProps) return;
-
-        this.props = nextProps;
-
-        for(let i=0; i < this.props.length; i++ ){
-            ( this.props[i].active === true ) ?  this.props[i].active = this.activeClass : this.props[i].active = '';
-            ( this.props[i].msg_amount < 1 )  ?  this.props[i].msg_amount = '' : this.props[i].msg_amount;
-        }
-
-        this.eventBus().emit(Block.EVENTS.FLOW_CDU);
-        return this;
-    }
-
-    render( elm:string ) {
-        if(!elm){
-            elm = this._meta.tagName;
-        }
-        let templator = new Templator( userTemplate );
-        let userList = '';
-        for(let i = 0; i < this.props.length; i++ ){
-            userList += templator.compile( this.props[i] )
-        }
-        document.querySelector(elm).innerHTML = userList ;
-    }
-
-    getElement( temp:any ) :string {
-        return this._getElement( temp  )
-    }
-
-    _getElement( temp:any = userTemplate ) :string {
+    protected _getElement( temp:template = this._templateDef ) :string {
         let templator = new Templator( temp );
 
         let userList = '';
@@ -53,6 +40,39 @@ export default class UserList extends Block {
 
     }
 
+
+    public setProps( nextProps:props ) :object {
+       // if (!nextProps) return;
+
+        this.props = nextProps;
+
+        for(let i=0; i < this.props.length; i++ ){
+            ( this.props[i].active === true ) ?  this.props[i].active = this.activeClass : this.props[i].active = '';
+            ( this.props[i].msg_amount < 1 )  ?  this.props[i].msg_amount = '' : this.props[i].msg_amount;
+        }
+
+        this.eventBus.emit(Block.EVENTS.FLOW_CDU);
+        return this;
+    }
+
+    public render( elm:string ) {
+        if(!elm){
+            elm = this._meta.tagName;
+        }
+        let templator = new Templator( this._templateDef );
+        let userList = '';
+        for(let i = 0; i < this.props.length; i++ ){
+            userList += templator.compile( this.props[i] )
+        }
+
+        let elementRenderTarget = <HTMLElement> document.querySelector(elm);
+
+        elementRenderTarget.innerHTML = userList ;
+    }
+
+    public getElement( temp:template ) :string {
+        return this._getElement( temp  )
+    }
 
 }
 

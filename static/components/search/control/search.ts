@@ -1,13 +1,13 @@
-import Templator from "../../../global/classes/class-Templator.js";
 import Block from "../../../global/classes/class-Block.js";
-import {searchTemplate} from "../view/search.tmp.js";
+import {componentTemplate} from "../view/search.tmp.js";
 
 
-export default class Seacrh extends Block {
-    constructor( tag:string, props:any ) {
-        super(tag, props);
+export default class Seacrh <T extends object> extends Block <T> {
+
+    constructor( tag:string, props:props, template:template = componentTemplate ) {
+        super(tag, props, template);
     }
-    _templateDef = searchTemplate;
+
 }
 
 

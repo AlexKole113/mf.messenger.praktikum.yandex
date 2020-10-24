@@ -1,4 +1,4 @@
-export let userTemplate = (function(){
+export let componentTemplate = (function(){
     return `<div class="user-list__item separator-dark {{active}}">
                 <div style="background-image: url({{photo}})" class="user-list__item-avatar bg_light-min border_light-max no-avatar">
                     <a href="{{userprofile}}" class="user-list__item-avatar-link"></a>

@@ -1,4 +1,4 @@
-export let sendMessageGroup = (function(){
+export let componentTemplate = (function(){
     return `<div class="chat-bottom__items separator-dark-top">
            
                 {{{send_message}}}

@@ -1,4 +1,4 @@
-export let chatMenu = (function(){
+export let componentTemplate = (function(){
     return `<div class="chat-top__items-menu-starter">
                 <a href="#" class="chat-top-menu__link">
                     <i class="fas fa-chevron-down fa-2x text-light-min"></i>

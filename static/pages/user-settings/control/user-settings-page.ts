@@ -8,7 +8,6 @@ import LoginLink from "../../../components/login-link/control/login-link.js";
 import {registrationPage} from "../view/user-settings.tmp.js";
 
 import { registrationFormValidateAll, clearAllfields, submitValidate } from "../../../global/functions/form-functions.js";
-import InputFile from "../../../components/input-file/control/input-file";
 
 
 let inputs = [

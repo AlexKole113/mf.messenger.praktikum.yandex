@@ -1,33 +1,12 @@
 import Templator from "../../../global/classes/class-Templator.js";
 import Block from "../../../global/classes/class-Block.js";
-import { inputGroup } from "../view/input-group.tmp.js";
+import { componentTemplate } from "../view/input-group.tmp.js";
 export default class InputGroup extends Block {
-    constructor(tag, props, selfClass) {
-        super(tag, props);
-        this.setProps = nextProps => {
-            if (!nextProps)
-                return;
-            this.props = nextProps;
-            this.eventBus().emit(Block.EVENTS.FLOW_CDU);
-            return this;
-        };
-        //this.setProps(props)
+    constructor(tag, props, template = componentTemplate) {
+        super(tag, props, template);
+        this._element = null;
     }
-    render(elm) {
-        if (!elm) {
-            elm = this._meta.tagName;
-        }
-        let templator = new Templator(inputGroup);
-        let inputList = '';
-        for (let i = 0; i < this.props.length; i++) {
-            inputList += templator.compile(this.props[i]);
-        }
-        document.querySelector(elm).innerHTML = inputList;
-    }
-    getElement(temp) {
-        return this._getElement(temp);
-    }
-    _getElement(temp = inputGroup) {
+    _getElement(temp) {
         let templator = new Templator(temp);
         let inputList = '';
         for (let i = 0; i < this.props.length; i++) {
@@ -35,6 +14,26 @@ export default class InputGroup extends Block {
         }
         this.rootElm.innerHTML = inputList;
         return this.rootElm.outerHTML;
+    }
+    setProps(nextProps) {
+        this.props = nextProps;
+        this.eventBus.emit(Block.EVENTS.FLOW_CDU);
+        return this;
+    }
+    render(elm) {
+        if (!elm) {
+            elm = this._meta.tagName;
+        }
+        let templator = new Templator(this._templateDef);
+        let inputList = '';
+        for (let i = 0; i < this.props.length; i++) {
+            inputList += templator.compile(this.props[i]);
+        }
+        let elementRenderTarget = document.querySelector(elm);
+        elementRenderTarget.innerHTML = inputList;
+    }
+    getElement(temp = this._templateDef) {
+        return this._getElement(temp);
     }
 }
 //# sourceMappingURL=input-group.js.map

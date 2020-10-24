@@ -1,9 +1,8 @@
 import Block from "../../../global/classes/class-Block.js";
-import { formTemplate } from "../view/form.tmp.js";
+import { componentTemplate } from "../view/form.tmp.js";
 export default class Form extends Block {
-    constructor(tag, props) {
-        super(tag, props);
-        this._templateDef = formTemplate;
+    constructor(tag, props, template = componentTemplate) {
+        super(tag, props, template);
     }
     _attachHandler(elm) {
         if (!elm) {
@@ -19,10 +18,12 @@ export default class Form extends Block {
                     });
                 }
                 else if (evName === 'submit') {
-                    document.querySelector(elm + ' form').addEventListener('submit', listner[evName]);
+                    let elmListnerTarg = document.querySelector(elm + ' form');
+                    elmListnerTarg.addEventListener('submit', listner[evName]);
                 }
                 else {
-                    document.querySelector(elm).addEventListener(evName, listner[evName]);
+                    let elmListnerTarg = document.querySelector(elm);
+                    elmListnerTarg.addEventListener(evName, listner[evName]);
                 }
             }
         }

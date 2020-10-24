@@ -2,15 +2,13 @@ export default class Templator {
     TEMPLATE_REGEXP_1 = /\{\{(.*?)\}\}/gi;
     TEMPLATE_REGEXP_2 = /\{\{\{(.*?)\}\}\}/gi;
 
-    constructor( template:string ) {
+    protected _template;
+
+    constructor( template:template ) {
         this._template = template;
     }
 
-    compile( ctx:string ) :string {
-        return this._compileTemplate( ctx );
-    }
-
-    _compileTemplate( ctx:string ) :string {
+    protected _compileTemplate( ctx:templateContent ) :string {
         let tmpl = this._template;
         let key = null;
         const regExp1 = this.TEMPLATE_REGEXP_1;
@@ -20,9 +18,9 @@ export default class Templator {
         while ((key = regExp2.exec(tmpl)) ) {
 
             if (key[1]) {
-                const tmplValue = key[1].trim();
+                const tmplValue:any = key[1].trim();
 
-                let data = this.getData(ctx, tmplValue);
+                let data = this.getData( ctx , tmplValue );
 
                 if (typeof data === "function") {
                     window[tmplValue] = data;
@@ -61,10 +59,13 @@ export default class Templator {
         return tmpl;
     }
 
-    getData( obj:object, path:any, defaultValue:any ) :any {
-        const keys = path.split('.');
+    public compile( ctx:templateContent ) :string {
+        return this._compileTemplate( ctx );
+    }
 
-        let result = obj;
+    public getData( obj:templateContent, path:any, defaultValue:any = '' )  {
+        const keys = path.split('.');
+        let result:any = obj;
         for (let key of keys) {
             result = result[key];
 
@@ -72,7 +73,6 @@ export default class Templator {
                 return defaultValue;
             }
         }
-
         return result ?? defaultValue;
     }
 
