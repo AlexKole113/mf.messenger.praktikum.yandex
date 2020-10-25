@@ -4,26 +4,33 @@ import {componentTemplate} from "../view/user.tmp.js";
 import EventBus from "../../../global/classes/class-EventBus";
 
 
-type props = {
-    [index:string]:any
-};
+type UserListProps = {
+    name:         string,
+    photo:        string,
+    userprofile:  string,
+    excerpt:      string,
+    time:         string,
+    last_msg_link: string,
+    msg_amount:   number|string,
+    active:       string|boolean
+}[];
 
 
-export default class UserList <T extends object> extends Block <T> {
+export default class UserList extends Block <UserListProps> {
 
 
     protected _element     :any        = null;
     protected _meta        !:{tagName:string,props:any};
     protected _templateDef !:template;
     protected rootElm      !:HTMLElement;
-    protected props        !:props;
+    protected props        !:UserListProps;
     public    handlers     ?:object;
     public    eventBus     !:EventBus;
     public    activeClass  :string
 
 
 
-    constructor( tag:string, props:props, activeClass:string, template:template = componentTemplate ) {
+    constructor( tag:string, props:UserListProps, activeClass:string, template:template = componentTemplate ) {
         super(tag, props,template);
         this.activeClass = activeClass;
     }
@@ -42,7 +49,7 @@ export default class UserList <T extends object> extends Block <T> {
     }
 
 
-    public setProps( nextProps:props ) :object {
+    public setProps( nextProps:UserListProps ) :object {
        // if (!nextProps) return;
 
         this.props = nextProps;

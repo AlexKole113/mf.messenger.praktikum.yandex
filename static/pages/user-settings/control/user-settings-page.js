@@ -68,10 +68,4 @@ let page = new Page('main.container', registrationPage, {
     form: form
 });
 page.render();
-// setTimeout(()=>{
-//     uploadAvatar.setProps({
-//         photo: 'https://cdn.pixabay.com/photo/2016/11/18/19/07/happy-1836445_1280.jpg',
-//         name: 'avatar'
-//     })
-// },2000)
 //# sourceMappingURL=user-settings-page.js.map

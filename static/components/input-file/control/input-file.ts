@@ -4,18 +4,24 @@ import {componentTemplate} from "../view/input-file.tmp.js";
 import EventBus from "../../../global/classes/class-EventBus";
 
 
-export default class InputFile <T extends object> extends Block <T> {
+type InputFileProps = {
+    name: string,
+    [key:string]: string
+}
+
+
+export default class InputFile extends Block <InputFileProps> {
 
     protected _element     :any        = null;
     protected _meta        :any;
     protected _templateDef !:template;
     protected rootElm      !:HTMLElement;
-    protected props        !:props;
+    protected props        !:InputFileProps;
     public    handlers     ?:object;
     public    eventBus     !:EventBus;
 
 
-    constructor( tag:string, props:props, template:template = componentTemplate ) {
+    constructor( tag:string, props:InputFileProps, template:template = componentTemplate ) {
         super(tag, props,template);
     }
 
@@ -27,7 +33,7 @@ export default class InputFile <T extends object> extends Block <T> {
     }
 
 
-    public setProps ( nextProps:props) {
+    public setProps ( nextProps:InputFileProps ) {
         this.props = nextProps;
         this.eventBus.emit(Block.EVENTS.FLOW_CDU);
         return this;

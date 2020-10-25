@@ -126,7 +126,7 @@ let sendMessageGroup  = new SendMessageGroup('div#sendMessageGroup-component',{
 
 let chatDetails        = new ChatDetails('div#chatDetails-component', activeChat )
 let chatMenu           = new ChatMenu('div#chatMenu-component', {
-    handlers: { 'click' : attach_menu_starter }
+    //'handlers': [{ 'click' : attach_menu_starter }],
 });
 
 
@@ -142,62 +142,62 @@ page.render();
 
 
 // --------------------------------------------- setProps() test ---------------------------------------------------
-
-usersCollection[0].active = false
-usersCollection.unshift({
-    photo: 'https://cs4.pikabu.ru/images/big_size_comm/2014-09_4/14111041328769.jpg',
-    userprofile: '#',
-    name: 'Черный Властелин',
-    excerpt: 'Вот ты и попался пупсик',
-    last_msg_link: '#',
-    msg_amount: 0,
-    time: '12:00',
-    active: true,
-})
-
-let newMsg = [{
-    content: 'Привет',
-    time: '10:00',
-    user: 0,
-}]
-
-
-//1
-setTimeout(()=>{
-    userList.setProps(usersCollection)
-    chatDetails.setProps({
-        name: 'Черный Властелин',
-        lastTime: 'в сети',
-        photo: 'https://cs4.pikabu.ru/images/big_size_comm/2014-09_4/14111041328769.jpg',
-        link: '#'
-    });
-    messageList.setProps(newMsg)
-
-},2000);
-
-//2
-setTimeout(()=>{
-    newMsg.push({
-        content: 'Я давно слежу за тобой...',
-        time: '10:00',
-        user: 0,
-    })
-
-    messageList.setProps( newMsg )
-},3000);
-
-//3
-setTimeout(()=>{
-
-    newMsg.push({
-        content: 'Вот ты и попался, пупсик',
-        time: '10:00',
-        user: 0,
-    })
-
-    messageList.setProps( newMsg )
-
-},4000);
-
-
+//
+// usersCollection[0].active = false
+// usersCollection.unshift({
+//     photo: 'https://cs4.pikabu.ru/images/big_size_comm/2014-09_4/14111041328769.jpg',
+//     userprofile: '#',
+//     name: 'Черный Властелин',
+//     excerpt: 'Вот ты и попался пупсик',
+//     last_msg_link: '#',
+//     msg_amount: 0,
+//     time: '12:00',
+//     active: true,
+// })
+//
+// let newMsg = [{
+//     content: 'Привет',
+//     time: '10:00',
+//     user: 0,
+// }]
+//
+//
+// //1
+// setTimeout(()=>{
+//     userList.setProps(usersCollection)
+//     chatDetails.setProps({
+//         name: 'Черный Властелин',
+//         lastTime: 'в сети',
+//         photo: 'https://cs4.pikabu.ru/images/big_size_comm/2014-09_4/14111041328769.jpg',
+//         link: '#'
+//     });
+//     messageList.setProps(newMsg)
+//
+// },2000);
+//
+// //2
+// setTimeout(()=>{
+//     newMsg.push({
+//         content: 'Я давно слежу за тобой...',
+//         time: '10:00',
+//         user: 0,
+//     })
+//
+//     messageList.setProps( newMsg )
+// },3000);
+//
+// //3
+// setTimeout(()=>{
+//
+//     newMsg.push({
+//         content: 'Вот ты и попался, пупсик',
+//         time: '10:00',
+//         user: 0,
+//     })
+//
+//     messageList.setProps( newMsg )
+//
+// },4000);
+//
+//
 

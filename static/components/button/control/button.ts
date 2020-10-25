@@ -3,12 +3,16 @@ import Block from "../../../global/classes/class-Block.js";
 import {componentTemplate} from "../view/button.tmp.js";
 
 
-export default class Button <T extends object> extends Block <T> {
+type ButtonProps = {
+    text:string
+}
+
+export default class Button extends Block <ButtonProps> {
 
     protected _templateDef !:template;
     public props           !:props;
 
-    constructor( tag:string, props:props , template:template = componentTemplate) {
+    constructor( tag:string, props:ButtonProps , template:template = componentTemplate) {
         super(tag, props, template );
     }
 

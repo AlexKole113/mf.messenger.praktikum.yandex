@@ -8,7 +8,7 @@ import Templator from "./class-Templator.js";
 // PS typescript есть в зависимостях, но я его не стал ставить из-за ограничений по размеру проекта
 
 
-export default class Block <T extends object> {
+export default class Block <Block extends object> {
 
     static EVENTS = {
         INIT: "init",
@@ -168,7 +168,7 @@ export default class Block <T extends object> {
         this.eventBus.emit(Block.EVENTS.FLOW_CDM);
     }
 
-    public setProps( nextProps:object|T = {} ) :object {
+    public setProps( nextProps:object|Block = {} ) :object {
 
         this.props = nextProps;
         Object.assign(this.props, nextProps);
