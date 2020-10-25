@@ -5,24 +5,27 @@ import {componentTemplate} from "../view/message.tmp.js";
 import EventBus from "../../../global/classes/class-EventBus";
 
 
-type props = {
-    [index:string]:any
-};
+type MessageProps = {
+    content:   string,
+    delivered?: boolean|string,
+    time:      string,
+    user:      number|string,
+}[];
 
 
-export default class Message <T extends object> extends Block <T> {
+export default class Message extends Block <MessageProps> {
 
     protected _element     :any        = null;
     protected _meta        !:{tagName:string,props:any};
     protected _templateDef !:template;
     protected rootElm      !:HTMLElement;
-    protected props        !:props;
+    protected props        !:MessageProps;
     public    handlers     ?:object;
     public    eventBus     !:EventBus;
 
 
 
-    constructor( tag:string, props:props, template:template = componentTemplate ) {
+    constructor( tag:string, props:MessageProps, template:template = componentTemplate ) {
         super(tag, props, template);
         this.actualize(props)
     }
@@ -40,7 +43,7 @@ export default class Message <T extends object> extends Block <T> {
     }
 
 
-    public setProps (nextProps:props) {
+    public setProps (nextProps:MessageProps) {
         this.props = nextProps;
 
         for( let i=0; i < this.props.length; i++ ){
@@ -75,7 +78,7 @@ export default class Message <T extends object> extends Block <T> {
         return this._getElement( temp  )
     }
 
-    public actualize( props:props ){
+    public actualize( props:MessageProps ){
         if ( !props ) return;
 
         this.props = props;

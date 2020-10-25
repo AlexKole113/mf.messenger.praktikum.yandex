@@ -1,14 +1,17 @@
 import Block from "../../../global/classes/class-Block.js";
 import {componentTemplate} from "../view/delivered.tmp.js";
 
+type DeliveredProps = {
+    [key:string]:any
+}
 
-export default class Delivered <T extends object> extends Block <T> {
+export default class Delivered extends Block <DeliveredProps> {
 
-    protected props        !:props;
+    protected props        !:DeliveredProps;
     protected _templateDef !:template;
     public  rootElm        !:HTMLElement;
 
-    constructor( tag:string, props:props, template:template = componentTemplate ) {
+    constructor( tag:string, props:DeliveredProps, template:template = componentTemplate ) {
         super(tag, props, template);
     }
 

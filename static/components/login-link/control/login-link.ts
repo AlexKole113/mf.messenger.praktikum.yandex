@@ -3,15 +3,20 @@ import Block from "../../../global/classes/class-Block.js";
 import {componentTemplate} from "../view/login-link.tmp.js";
 
 
-export default class LoginLink <T extends object> extends Block <T> {
+type LoginLinkProps = {
+    text: string,
+    link: string,
+}
+
+export default class LoginLink extends Block <LoginLinkProps> {
 
 
     protected _templateDef !:template;
     protected rootElm      !:HTMLElement;
-    protected props        !:props;
+    protected props        !:LoginLinkProps;
 
 
-    constructor( tag:string, props:props, template:template = componentTemplate ) {
+    constructor( tag:string, props:LoginLinkProps, template:template = componentTemplate ) {
         super(tag, props, template);
     }
 

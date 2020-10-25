@@ -1,10 +1,13 @@
 import Block from "../../../global/classes/class-Block.js";
 import {componentTemplate} from "../view/chat-menu.tmp.js";
 
+type ChatMenuProps = {
+    [key:string] :string
+}
 
-export default class ChatMenu <T extends object> extends Block <T> {
+export default class ChatMenu extends Block <ChatMenuProps> {
 
-    constructor( tag:string, props:props, template:template = componentTemplate ) {
+    constructor( tag:string, props:ChatMenuProps, template:template = componentTemplate ) {
         super(tag, props, template);
     }
 

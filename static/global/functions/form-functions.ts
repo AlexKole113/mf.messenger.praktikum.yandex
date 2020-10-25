@@ -1,5 +1,8 @@
 const MIN_STRING_LENGTH  = 2;
 const MIN_PASSW_LENGTH   = 8;
+const EMAIL_CHECKER      = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
+const PHONE_CHECKER      = /[a-z]/;
+
 const noValidClass       = 'no-valid';
 const alerts             = {
     badName    : 'Без Имени сюда не пустят',
@@ -11,9 +14,14 @@ const alerts             = {
 }
 
 
-const validateFunctions :{[key:string]:CallableFunction} = {
-    validate_first_name : function ( elm:HTMLInputElement  ) :boolean {
-        let field = elm;
+type Validator = (T: HTMLInputElement) => boolean;
+type ValidatorsMap = Record<string, Validator>;
+
+
+const validatorsMap :ValidatorsMap = {
+
+    validate_first_name :   <Validator> function ( elm:HTMLInputElement  ) :boolean {
+        const field = elm;
         if( field.value.length < MIN_STRING_LENGTH ){
             let nxtSibling = <HTMLElement> field.nextElementSibling;
             nxtSibling.innerText = alerts.badName;
@@ -23,11 +31,21 @@ const validateFunctions :{[key:string]:CallableFunction} = {
         }
         return true
     },
-    validate_second_name : function ( elm:HTMLInputElement ) :boolean {
-        return this.validate_first_name( elm )
+
+    validate_second_name :  <Validator> function ( elm:HTMLInputElement )  :boolean {
+        const field = elm;
+        if( field.value.length < MIN_STRING_LENGTH ){
+            let nxtSibling = <HTMLElement> field.nextElementSibling;
+            nxtSibling.innerText = alerts.badName;
+            nxtSibling.classList.add(noValidClass)
+            field.classList.add(noValidClass)
+            return false
+        }
+        return true
     },
-    validate_login : function( elm:HTMLInputElement ) :boolean {
-        let field = elm;
+
+    validate_login :        <Validator>  function( elm:HTMLInputElement )  :boolean {
+        const field = elm;
         if( field.value.length < MIN_STRING_LENGTH ){
             let nxtSibling = <HTMLElement> field.nextElementSibling;
             nxtSibling .innerText = alerts.badlogin;
@@ -38,10 +56,10 @@ const validateFunctions :{[key:string]:CallableFunction} = {
 
         return true
     },
-    validate_email : function( elm:HTMLInputElement ) :boolean {
-        let field = elm;
-        let re =  /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
-        if( !re.test(field.value.toLowerCase()) ){
+
+    validate_email :        <Validator> function( elm:HTMLInputElement )   :boolean {
+        const field = elm;
+        if( !EMAIL_CHECKER.test(field.value.toLowerCase()) ){
             let nxtSibling = <HTMLElement> field.nextElementSibling;
             nxtSibling.innerText = alerts.badEmail;
             nxtSibling.classList.add(noValidClass)
@@ -51,10 +69,10 @@ const validateFunctions :{[key:string]:CallableFunction} = {
 
         return true
     },
-    validate_phone : function( elm:HTMLInputElement ) :boolean {
-        let field = elm;
-        let re =  /[a-z]/;
-        if( re.test(field.value.toLowerCase()) || field.value.length < 3 ){
+
+    validate_phone :        <Validator> function( elm:HTMLInputElement )   :boolean {
+        const field = elm;
+        if( PHONE_CHECKER.test(field.value.toLowerCase()) || field.value.length < 3 ){
             let nxtSibling = <HTMLElement> field.nextElementSibling;
             nxtSibling .innerText = alerts.badPhone;
             nxtSibling .classList.add(noValidClass);
@@ -64,8 +82,9 @@ const validateFunctions :{[key:string]:CallableFunction} = {
 
         return true
     },
-    validate_password : function( elm:HTMLInputElement ) :boolean {
-        let field = elm;
+
+    validate_password :     <Validator> function( elm:HTMLInputElement )   :boolean {
+        const field = elm;
         if( field.value.length < MIN_PASSW_LENGTH ){
             let nxtSibling = <HTMLElement> field.nextElementSibling;
             nxtSibling.innerText = alerts.badPass;
@@ -76,28 +95,27 @@ const validateFunctions :{[key:string]:CallableFunction} = {
 
         return true
     },
-    validate_avatar : function( elm:HTMLInputElement ) {
-        let field = elm;
-        if(field){
-            return true
-        }
 
+    validate_avatar :       <Validator> function( elm:HTMLInputElement )   :boolean {
+        if(!elm) return true
+        return false
     },
+
 }
 
 
 function registrationFormValidateAll( e:Event ) {
-    let elm = <HTMLInputElement> e.target;
-    validateFunctions[`validate_${elm.name}`]( e.target );
+    const elm = <HTMLInputElement> e.target;
+    validatorsMap[`validate_${elm.name}`]( elm );
 }
 
 
 function submitValidate( e:Event ) {
-    let form = <HTMLElement> e.currentTarget;
-    let fields = form.querySelectorAll('input' );
-    let errors = []
+    const form = <HTMLElement> e.currentTarget;
+    const fields = form.querySelectorAll('input' );
+    const errors = []
     fields.forEach( ( elm )=>{
-        if( !validateFunctions[`validate_${elm.name}`]( elm ) ){
+        if( !validatorsMap[`validate_${elm.name}`]( elm ) ){
             errors.push( elm.name )
         }
     })
@@ -109,12 +127,12 @@ function submitValidate( e:Event ) {
 
 
 function clearAllfields( e:Event ) {
-    let field = <HTMLElement> e.target;
+    const field = <HTMLElement> e.target;
     field.classList.remove(noValidClass);
-    let nxtSibling = <HTMLElement> field.nextElementSibling;
+    const nxtSibling = <HTMLElement> field.nextElementSibling;
     nxtSibling.classList.remove(noValidClass);
-    let innText :any = nxtSibling.dataset.label;
-    nxtSibling.innerText = innText;
+    const innText :string|undefined = nxtSibling.dataset.label;
+    nxtSibling.textContent = innText || '';
 }
 
 

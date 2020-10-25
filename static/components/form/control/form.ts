@@ -1,13 +1,24 @@
 import Block from "../../../global/classes/class-Block.js";
 import {componentTemplate} from "../view/form.tmp.js";
 
-export default class Form <T extends object> extends Block <T> {
+
+type FormProps = {
+    title:     string,
+    inputs:    string,
+    button:    string,
+    loggin:    string,
+    handlers:  { [key:string]: CallableFunction|any }[]
+}
+
+
+
+export default class Form extends Block <FormProps> {
 
     protected _meta  !:{tagName:string,props:any};
-    public    props  !:props
+    public    props  !:FormProps
 
 
-    constructor(tag: string, props:props, template:template = componentTemplate) {
+    constructor(tag: string, props:FormProps, template:template = componentTemplate) {
         super(tag, props, template );
     }
 

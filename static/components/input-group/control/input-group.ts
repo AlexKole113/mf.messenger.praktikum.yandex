@@ -3,19 +3,25 @@ import Block from "../../../global/classes/class-Block.js";
 import {componentTemplate} from "../view/input-group.tmp.js";
 import EventBus from "../../../global/classes/class-EventBus";
 
+type InputGroupProps = {
+    type: string,
+    name: string,
+    label: string,
 
-export default class InputGroup <T extends object> extends Block <T> {
+}[]
+
+export default class InputGroup  extends Block <InputGroupProps> {
 
     protected _element     :any        = null;
     protected _meta        !:{tagName:string,props:any};
     protected _templateDef !:template;
     protected rootElm      !:HTMLElement;
-    protected props        !:props;
+    protected props        !:InputGroupProps;
     public    handlers     ?:object;
     public    eventBus     !:EventBus;
 
 
-    constructor( tag:string, props:props, template:template = componentTemplate ) {
+    constructor( tag:string, props:InputGroupProps, template:template = componentTemplate ) {
         super(tag, props ,template);
     }
 
@@ -32,7 +38,7 @@ export default class InputGroup <T extends object> extends Block <T> {
     }
 
 
-    public setProps(nextProps:props) {
+    public setProps(nextProps:InputGroupProps) {
         this.props = nextProps;
         this.eventBus.emit(Block.EVENTS.FLOW_CDU);
         return this;

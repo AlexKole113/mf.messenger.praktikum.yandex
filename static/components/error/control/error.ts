@@ -1,9 +1,14 @@
 import Block from "../../../global/classes/class-Block.js";
 import {componentTemplate} from "../view/error.tmp.js";
 
-export default class ErrorShow <T extends object> extends Block <T> {
+type ErrorShowProps = {
+    code: string,
+    text: string,
+}
 
-    constructor( tag:string, props:props,template:template = componentTemplate ) {
+export default class ErrorShow extends Block <ErrorShowProps> {
+
+    constructor( tag:string, props:ErrorShowProps, template:template = componentTemplate ) {
         super(tag, props,template);
     }
 

@@ -3,12 +3,17 @@ import Block from "../../../global/classes/class-Block.js";
 import {componentTemplate} from "../view/send-message.tmp.js";
 
 
-export default class SendMessage <T extends object> extends Block <T> {
+type SendMessageProps = {
+    [key:string] :string
+}
+
+
+export default class SendMessage extends Block <SendMessageProps> {
 
     protected _templateDef !:template;
-    protected props        !:props;
+    protected props        !:SendMessageProps;
 
-    constructor( tag:string, props:any, template:template = componentTemplate ) {
+    constructor( tag:string, props:SendMessageProps, template:template = componentTemplate ) {
         super( tag, props, template );
     }
 
