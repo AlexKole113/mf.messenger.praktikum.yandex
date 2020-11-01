@@ -72,7 +72,9 @@ let formProps = {
 }
 
 let form = new Form('div#form-component', formProps )
-let page = new Page( 'main.container', registrationPage, {
+let pageUserSettings = new Page( 'main.container', registrationPage, {
     form: form
 });
-page.render();
+
+
+export {pageUserSettings}

@@ -64,8 +64,8 @@ let formProps = {
     handlers: [{ 'blur': registrationFormValidateAll }, { 'input': clearAllfields }, { 'submit': submitValidate }]
 };
 let form = new Form('div#form-component', formProps);
-let page = new Page('main.container', registrationPage, {
+let pageUserSettings = new Page('main.container', registrationPage, {
     form: form
 });
-page.render();
+export { pageUserSettings };
 //# sourceMappingURL=user-settings-page.js.map

@@ -5,14 +5,14 @@ import EventBus from "../../../global/classes/class-EventBus";
 
 
 type UserListProps = {
-    name:         string,
-    photo:        string,
-    userprofile:  string,
-    excerpt:      string,
-    time:         string,
-    last_msg_link: string,
-    msg_amount:   number|string,
-    active:       string|boolean
+    name            :string,
+    photo           :string,
+    userprofile     :string,
+    excerpt         :string,
+    time            :string,
+    last_msg_link   :string,
+    msg_amount      ?:number|string,
+    active          :string|boolean
 }[];
 
 
@@ -56,7 +56,7 @@ export default class UserList extends Block <UserListProps> {
 
         for(let i=0; i < this.props.length; i++ ){
             ( this.props[i].active === true ) ?  this.props[i].active = this.activeClass : this.props[i].active = '';
-            ( this.props[i].msg_amount < 1 )  ?  this.props[i].msg_amount = '' : this.props[i].msg_amount;
+            //( this.props[i].msg_amount < 1 )  ?  this.props[i].msg_amount = '' : this.props[i].msg_amount;
         }
 
         this.eventBus.emit(Block.EVENTS.FLOW_CDU);

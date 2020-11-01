@@ -10,7 +10,6 @@
   box-shadow: 0px 1px 4px 2px #00000026;
 
   &-search {
-
     padding: .8rem 0;
     display: flex;
     align-items: flex-end;
@@ -177,6 +176,10 @@
     justify-content: center;
     align-items: center;
 
+    &__txt {
+      z-index: -1;
+    }
+
     @include lg {
       display: flex;
     }
@@ -195,6 +198,7 @@
 
 
 @include lg {
+
   .user-list:not(.show-in-mob) {
     position: absolute;
     z-index: 25;
@@ -203,11 +207,14 @@
     width: 300px;
     height: 100%;
     transition: all $transition-timing+s;
+
+    &.open {
+      left:0;
+    }
+
   }
 
-  &.open {
-    left:0;
-  }
+
 
 }
 

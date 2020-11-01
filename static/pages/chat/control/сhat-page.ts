@@ -10,56 +10,56 @@ import Message from "../../../components/message/control/message.js";
 import Page from "../../../global/classes/class-Page.js";
 import {chatPage} from "../view/chat-page.tmp.js";
 
-import {attach_menu_starter} from "../../../global/functions/menu-functions.js";
+import {attach_menu_starter, chat_menus_starter } from "../../../global/functions/menu-functions.js";
 
 
 let usersCollection = [
     {
         photo: 'https://cdn.pixabay.com/photo/2016/11/18/19/07/happy-1836445_1280.jpg',
-        userprofile: '#',
+        userprofile: '/chat',
         name: 'Андрей',
         excerpt: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit',
-        last_msg_link: '#',
-        msg_amount: 0,
+        last_msg_link: '/chat',
+        // msg_amount: 0,
         time: '10:00',
         active: true,
     },
     {
         photo: 'https://cdn.pixabay.com/photo/2016/01/19/14/53/camera-1149041_1280.jpg',
-        userprofile: '#',
+        userprofile: '/chat',
         name: 'Киноклуб',
         excerpt: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit',
-        last_msg_link: '#',
+        last_msg_link: '/chat',
         msg_amount: 8,
         time: '09:00',
         active: false,
     },
     {
         photo: 'https://cdn.pixabay.com/photo/2016/06/14/10/42/scarecrow-1456235_1280.png',
-        userprofile: '#',
+        userprofile: '/chat',
         name: 'Design Destroyer',
         excerpt: 'Lorem ipsum dolor',
-        last_msg_link: '#',
-        msg_amount: 0,
+        last_msg_link: '/chat',
+        // msg_amount: 0,
         time: '09:15',
         active: false,
     },
     {
         photo: 'https://cdn.pixabay.com/photo/2017/05/11/08/48/model-2303361_1280.jpg',
-        userprofile: '#',
+        userprofile: '/chat',
         name: 'Лена',
         excerpt: 'Привет',
-        last_msg_link: '#',
-        msg_amount: 0,
+        last_msg_link: '/chat',
+        // msg_amount: 0,
         time: '08:30',
         active: false,
     },
     {
         photo: '#',
-        userprofile: '#',
+        userprofile: '/chat',
         name: 'Mr.No Аватар',
         excerpt: 'Привет',
-        last_msg_link: '#',
+        last_msg_link: '/chat',
         msg_amount: 2,
         time: '07:00',
         active: false,
@@ -67,21 +67,21 @@ let usersCollection = [
     },
     {
         photo: 'https://cdn.pixabay.com/photo/2015/11/06/11/32/girl-1026246_1280.jpg',
-        userprofile: '#',
+        userprofile: '/chat',
         name: 'Маша',
         excerpt: 'Привет',
-        last_msg_link: '#',
-        msg_amount: 0,
+        last_msg_link: '/chat',
+        // msg_amount: 0,
         time: '12:00',
         active: false,
 
     },
     {
         photo: 'https://cdn.pixabay.com/photo/2019/06/02/17/33/woman-4246954_1280.jpg',
-        userprofile: '#',
+        userprofile: '/chat',
         name: 'User',
         excerpt: 'Привет',
-        last_msg_link: '#',
+        last_msg_link: '/chat',
         msg_amount: 4,
         time: '12:00',
         active: false,
@@ -110,7 +110,7 @@ let activeChat      = {
     name: 'Андрей',
     lastTime: 'Был 1 минуту назад',
     photo: 'https://cdn.pixabay.com/photo/2016/11/18/19/07/happy-1836445_1280.jpg',
-    link: '#'
+    link: '#',
 };
 
 
@@ -126,11 +126,11 @@ let sendMessageGroup  = new SendMessageGroup('div#sendMessageGroup-component',{
 
 let chatDetails        = new ChatDetails('div#chatDetails-component', activeChat )
 let chatMenu           = new ChatMenu('div#chatMenu-component', {
-    //'handlers': [{ 'click' : attach_menu_starter }],
+    'handlers': [{ 'click' : chat_menus_starter }],
 });
 
 
-let page = new Page( 'main.container', chatPage, {
+let pageChat = new Page( 'main.container', chatPage, {
     search_block : searchBlock,
     user_collection_block :  userList,
     send_message_group : sendMessageGroup,
@@ -138,7 +138,9 @@ let page = new Page( 'main.container', chatPage, {
     chat_menu: chatMenu,
     messages: messageList,
 });
-page.render();
+
+export {pageChat}
+
 
 
 // --------------------------------------------- setProps() test ---------------------------------------------------
@@ -198,6 +200,4 @@ page.render();
 //     messageList.setProps( newMsg )
 //
 // },4000);
-//
-//
 

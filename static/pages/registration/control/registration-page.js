@@ -40,20 +40,20 @@ let inputs = [
 let button = {
     text: 'Зарегистрироваться',
 };
-let loginLink = {
+let additional = {
     text: 'Войти',
-    link: '#'
+    link: '/auth'
 };
 let formProps = {
     title: 'Регистрация',
     inputs: new InputGroup('div#input-component', inputs).getElement(),
     button: new Button('div#btn-component', button).getElement(),
-    loggin: new LoginLink('div#logIn-component', loginLink).getElement(),
+    additional: new LoginLink('div#logIn-component', additional).getElement(),
     handlers: [{ 'blur': registrationFormValidateAll }, { 'input': clearAllfields }, { 'submit': submitValidate }]
 };
 let form = new Form('div#form-component', formProps);
-let page = new Page('main.container', registrationPage, {
+let pageRegistration = new Page('main.container', registrationPage, {
     form: form
 });
-page.render();
+export { pageRegistration };
 //# sourceMappingURL=registration-page.js.map

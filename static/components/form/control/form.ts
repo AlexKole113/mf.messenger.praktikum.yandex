@@ -3,11 +3,11 @@ import {componentTemplate} from "../view/form.tmp.js";
 
 
 type FormProps = {
-    title:     string,
-    inputs:    string,
-    button:    string,
-    loggin:    string,
-    handlers:  { [key:string]: CallableFunction|any }[]
+    title:       string,
+    inputs:      string,
+    button:      string,
+    additional:  string,
+    handlers:   { [key:string]: CallableFunction|any }[]
 }
 
 

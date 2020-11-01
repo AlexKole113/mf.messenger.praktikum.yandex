@@ -100,6 +100,10 @@ function submitValidate(e) {
     if (errors.length > 0) {
         e.preventDefault();
     }
+    else {
+        e.preventDefault();
+        window.location.href = '/users';
+    }
 }
 function clearAllfields(e) {
     const field = e.target;

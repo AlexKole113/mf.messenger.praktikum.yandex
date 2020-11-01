@@ -21,7 +21,7 @@ export default class UserList extends Block {
         this.props = nextProps;
         for (let i = 0; i < this.props.length; i++) {
             (this.props[i].active === true) ? this.props[i].active = this.activeClass : this.props[i].active = '';
-            (this.props[i].msg_amount < 1) ? this.props[i].msg_amount = '' : this.props[i].msg_amount;
+            //( this.props[i].msg_amount < 1 )  ?  this.props[i].msg_amount = '' : this.props[i].msg_amount;
         }
         this.eventBus.emit(Block.EVENTS.FLOW_CDU);
         return this;

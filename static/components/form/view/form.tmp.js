@@ -7,7 +7,7 @@ export let componentTemplate = (function(){
                 {{{inputs}}}
                 <div class="form-registration__input-group">
                     {{{button}}}
-                    {{{loggin}}} 
+                    {{{additional}}} 
                 </div>
             </form>`;
 })();

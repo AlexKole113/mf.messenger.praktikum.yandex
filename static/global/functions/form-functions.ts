@@ -122,6 +122,9 @@ function submitValidate( e:Event ) {
 
     if( errors.length > 0 ){
         e.preventDefault();
+    } else {
+        e.preventDefault();
+        window.location.href = '/users';
     }
 }
 
