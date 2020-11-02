@@ -6,10 +6,7 @@ const router        = express.Router();
 const fs            = require('fs');
 
 
-
 let indexHtml = fs.readFileSync( path.join(__dirname, '../index.html') ).toString();
-
-
 
 app.use(express.static('.'));
 app.use('/.netlify/functions/server', router);
