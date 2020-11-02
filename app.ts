@@ -34,11 +34,9 @@ router
 
 
 document.addEventListener('click',(e)=>{
-
     if( typeof e.target.dataset.route !== 'undefined' ) {
         e.preventDefault();
         let path = e.target.dataset.route;
-        console.log( path )
         router.go( path )
     }
 })
