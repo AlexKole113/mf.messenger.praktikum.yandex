@@ -2,6 +2,8 @@ const express       = require('express');
 const serverless    = require('serverless-http');
 const app           = express();
 const router        = express.Router();
+const url           = `https://ya-messenger.netlify.app`;
+
 
 let indexHtml = `
     <!DOCTYPE html>
@@ -13,12 +15,12 @@ let indexHtml = `
         <script src="https://kit.fontawesome.com/1c7c26c897.js" crossorigin="anonymous"></script>
     
     
-        <link rel="stylesheet" href="https://ya-messenger.netlify.app/static/pages/authorization/view/style/authorization.css">
-        <link rel="stylesheet" href="https://ya-messenger.netlify.app/static/pages/registration/view/style/registration.css">
-        <link rel="stylesheet" href="https://ya-messenger.netlify.app/static/pages/user-settings/view/style/user-settings.css">
-        <link rel="stylesheet" href="https://ya-messenger.netlify.app/static/pages/users/view/style/users.css">
-        <link rel="stylesheet" href="https://ya-messenger.netlify.app/static/pages/chat/view/style/chat.css">
-        <link rel="stylesheet" href="https://ya-messenger.netlify.app/static/pages/404/view/style/error.css">
+        <link rel="stylesheet" href="${url}/static/pages/authorization/view/style/authorization.css">
+        <link rel="stylesheet" href="${url}/static/pages/registration/view/style/registration.css">
+        <link rel="stylesheet" href="${url}/static/pages/user-settings/view/style/user-settings.css">
+        <link rel="stylesheet" href="${url}/static/pages/users/view/style/users.css">
+        <link rel="stylesheet" href="${url}/static/pages/chat/view/style/chat.css">
+        <link rel="stylesheet" href="${url}/static/pages/404/view/style/error.css">
     
         <title>Title</title>
     </head>
@@ -28,8 +30,8 @@ let indexHtml = `
     
     <div class="mobile-wrapper"></div>
     
-    <script type="module" src="https://ya-messenger.netlify.app/app.js"></script>
-    <script src="https://ya-messenger.netlify.app/static/assets/js/mobile.js"></script>
+    <script type="module" src="${url}/app.js"></script>
+    <script src="${url}/static/assets/js/mobile.js"></script>
     </body>
     </html>`;
 

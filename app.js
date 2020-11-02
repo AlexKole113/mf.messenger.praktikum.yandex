@@ -8,8 +8,9 @@ import Router from "./static/global/classes/class-Router.js";
 // import HTTPTransport from "./static/global/classes/class-HTTPTransport.js";
 // let tst = new HTTPTransport();
 // tst.queryStringify({ 'key1' : 1, 'key2' : { d: '2', g: [3,4] }, 'key3': {'e': '5' } }  )
-let pathname = window.location.pathname;
-pathname = (pathname === '/') ? "/auth" : pathname;
+let url = window.location.pathname.split('/');
+let pathname = url[url.length - 1];
+pathname = (pathname === '/') ? "/auth" : `/${pathname}`;
 const router = new Router();
 router
     .use("/auth", pageAuthorization)

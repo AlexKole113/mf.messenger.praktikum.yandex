@@ -17,8 +17,9 @@ import Router from "./static/global/classes/class-Router.js";
 
 
 
-let pathname  = window.location.pathname;
-pathname = ( pathname === '/' ) ? "/auth" : pathname;
+let url  = window.location.pathname.split('/');
+let pathname = url[url.length-1]
+pathname = ( pathname === '/' ) ? "/auth" : `/${pathname}`;
 
 
 const router    = new Router();
