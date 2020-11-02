@@ -3,5 +3,5 @@
   functions = "functions"
 
  [[redirects]]
-   from = "ya-messenger.netlify.app"
-     to = "ya-messenger.netlify.app/.netlify/functions/server/"
+   from = "/"
+     to = "/.netlify/functions/server/"
