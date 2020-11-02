@@ -3,5 +3,21 @@
   functions = "functions"
 
  [[redirects]]
-   from = "/"
-     to = "/.netlify/functions/server/"
+   from = "/chat"
+     to = "/.netlify/functions/server/chat"
+
+ [[redirects]]
+    from = "/auth"
+    to = "/.netlify/functions/server/auth"
+
+ [[redirects]]
+     from = "/users"
+     to = "/.netlify/functions/server/users"
+
+ [[redirects]]
+      from = "/registration"
+      to = "/.netlify/functions/server/registration"
+
+ [[redirects]]
+       from = "/settings"
+       to = "/.netlify/functions/server/settings"
