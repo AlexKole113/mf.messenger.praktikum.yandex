@@ -1,3 +1,4 @@
-[[redirects]]
-  from = "/*"
-  to = "/"
+[build]
+  command = "npm run build"
+  functions = "./server.js" #  netlify-lambda reads this
+  publish = "build"
