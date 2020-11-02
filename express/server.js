@@ -13,12 +13,12 @@ let indexHtml = `
         <script src="https://kit.fontawesome.com/1c7c26c897.js" crossorigin="anonymous"></script>
     
     
-        <link rel="stylesheet" href="static/pages/authorization/view/style/authorization.css">
-        <link rel="stylesheet" href="static/pages/registration/view/style/registration.css">
-        <link rel="stylesheet" href="static/pages/user-settings/view/style/user-settings.css">
-        <link rel="stylesheet" href="static/pages/users/view/style/users.css">
-        <link rel="stylesheet" href="static/pages/chat/view/style/chat.css">
-        <link rel="stylesheet" href="static/pages/404/view/style/error.css">
+        <link rel="stylesheet" href="https://ya-messenger.netlify.app/static/pages/authorization/view/style/authorization.css">
+        <link rel="stylesheet" href="https://ya-messenger.netlify.app/static/pages/registration/view/style/registration.css">
+        <link rel="stylesheet" href="https://ya-messenger.netlify.app/static/pages/user-settings/view/style/user-settings.css">
+        <link rel="stylesheet" href="https://ya-messenger.netlify.app/static/pages/users/view/style/users.css">
+        <link rel="stylesheet" href="https://ya-messenger.netlify.app/static/pages/chat/view/style/chat.css">
+        <link rel="stylesheet" href="https://ya-messenger.netlify.app/static/pages/404/view/style/error.css">
     
         <title>Title</title>
     </head>
@@ -28,8 +28,8 @@ let indexHtml = `
     
     <div class="mobile-wrapper"></div>
     
-    <script type="module" src="app.js"></script>
-    <script src="static/assets/js/mobile.js"></script>
+    <script type="module" src="https://ya-messenger.netlify.app/app.js"></script>
+    <script src="https://ya-messenger.netlify.app/static/assets/js/mobile.js"></script>
     </body>
     </html>`;
 
