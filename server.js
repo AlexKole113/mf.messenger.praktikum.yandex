@@ -10,8 +10,8 @@
 const app   = require('./express/server');
 const PORT  = 80;
 app.listen( PORT, () => console.log( `Local app listening on port ${PORT}!` ));
-//app.get('*', (req, res) => { res.sendFile(`${__dirname}/index.html`) })
+app.get('*', (req, res) => { res.sendFile(`${__dirname}/index.html`) })
 
 
-let indexHtml = fs.readFileSync(`${__dirname}/index.html`).toString();
-app.get('*', (req, res) => { res.send( indexHtml ) } );
+// let indexHtml = fs.readFileSync(`${__dirname}/index.html`).toString();
+// app.get('*', (req, res) => { res.send( indexHtml ) } );
