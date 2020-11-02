@@ -4,7 +4,7 @@ const app           = express();
 const router        = express.Router();
 
 
-app.get('/', (req, res) => { res.sendFile(`${__dirname}/index.html`) })
+app.get('*', (req, res) => { res.sendFile(`${__dirname}/index.html`) })
 app.use('/.netlify/functions/api', router )
 
 
