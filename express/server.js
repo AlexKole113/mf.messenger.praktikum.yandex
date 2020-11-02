@@ -6,7 +6,7 @@ const fs            = require('fs');
 
 
 
-let indexHtml = fs.readFileSync(`${__dirname}/../index.html`).toString();
+let indexHtml = fs.readFileSync(`../index.html`).toString();
 
 
 
