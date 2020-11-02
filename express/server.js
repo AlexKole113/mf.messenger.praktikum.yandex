@@ -12,7 +12,7 @@ const fs            = require('fs');
 
 
 app.use(express.static('.'));
-let indexHtml = fs.readFileSync(`./index.html` ).toString();
+let indexHtml = fs.readFileSync(`index.html` ).toString();
 
 app.use('/.netlify/functions/server', router);
 app.get('*', (req, res) => { res.send( indexHtml ) } );
