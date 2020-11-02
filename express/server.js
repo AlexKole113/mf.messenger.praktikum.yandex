@@ -1,13 +1,18 @@
 const express       = require('express');
-const path          = require('path');
 const serverless    = require('serverless-http');
 const app           = express();
+const router        = express.Router();
+const fs            = require('fs');
 
 
-const router = express.Router();
-//app.use(express.static('.'));
-app.use('/.netlify/functions/server', router);  // path must route to lambda
-app.get('*', (req, res) => res.sendFile(path.join(__dirname, '../index.html')));
+
+let indexHtml = fs.readFileSync(`${__dirname}/../index.html`).toString();
+
+
+
+app.use(express.static('.'));
+app.use('/.netlify/functions/server', router);
+app.get('*', (req, res) => { res.send( indexHtml ) } );
 
 
 module.exports = app;
