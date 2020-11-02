@@ -35,7 +35,6 @@ export default class Router {
         //route.render(route, pathname);
         route.renderPage();
         this._currentRoute = this.getRoute(pathname);
-        // window.location.hash = this._currentRoute._pathname;
     }
     go(pathname) {
         window.history.pushState({ page: pathname }, `${pathname}`, pathname);

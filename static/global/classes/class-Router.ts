@@ -46,7 +46,6 @@ export default class Router {
         route.renderPage()
 
         this._currentRoute = this.getRoute( pathname );
-       // window.location.hash = this._currentRoute._pathname;
     }
 
     go( pathname ) {
