@@ -6,14 +6,10 @@ const router        = express.Router();
 const fs            = require('fs');
 
 
-
-
-
+let indexHtml = fs.readFileSync( `${__dirname}/index.html` ).toString();
 
 
 app.use(express.static('.'));
-let indexHtml = fs.readFileSync(`index.html` ).toString();
-
 app.use('/.netlify/functions/server', router);
 app.get('*', (req, res) => { res.send( indexHtml ) } );
 
