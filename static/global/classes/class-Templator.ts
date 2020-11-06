@@ -9,11 +9,13 @@ export default class Templator {
     }
 
     protected _compileTemplate( ctx:templateContent ) :string {
+
         let tmpl = this._template;
         let key = null;
         const regExp1 = this.TEMPLATE_REGEXP_1;
         const regExp2 = this.TEMPLATE_REGEXP_2;
 
+        if(typeof tmpl === 'undefined') throw new Error('Не загружен шаблон');
 
         while ((key = regExp2.exec(tmpl)) ) {
 

@@ -202,9 +202,11 @@ body {
         opacity: 1 !important;
         color: #c17582; }
     .form-registration__input-group-enter {
-      margin: 1rem 0;
+      margin-top: .5rem;
       text-decoration: none;
       font-size: .8rem; }
+    .form-registration__input-group-enter:nth-child(2) {
+      margin-top: 1rem; }
     .form-registration__input-group:last-child {
       margin-bottom: 0; }
 
@@ -268,7 +270,11 @@ body {
   transition: all 0.8s; }
 
 #authorization-page .form-registration__input-group-enter {
-  margin: 1rem 0;
+  text-decoration: none;
+  font-size: .8rem; }
+
+#authorization-page .form-registration__input-group-enter:first-child {
+  margin-top: 1rem;
   text-decoration: none;
   font-size: .8rem; }
 
@@ -330,11 +336,12 @@ body {
     top: -1.25rem;
     transition: all 0.8s; }
   #user-settings-page .form-registration__input-group-enter {
-    margin: 1rem 0;
     text-decoration: none;
     font-size: .8rem; }
-  #user-settings-page .form-registration__input-group:last-child {
-    margin-bottom: 0; }
+  #user-settings-page .form-registration__input-group-enter:first-child {
+    margin-top: 1rem;
+    text-decoration: none;
+    font-size: .8rem; }
   #user-settings-page .form-registration__ava-group {
     display: flex;
     flex-wrap: wrap;
@@ -365,6 +372,12 @@ body {
     background-position: 50% 50%; }
   #user-settings-page .form-registration .upload-img-group__uploader {
     display: none; }
+
+.backend-alerts:not(:empty) {
+  color: #c17582;
+  text-align: center;
+  border: 1px solid #c17582;
+  padding: 5px; }
 
 .bg_dark-max {
   background-color: #2b2b2b; }

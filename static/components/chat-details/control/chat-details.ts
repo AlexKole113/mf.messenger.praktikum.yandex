@@ -9,6 +9,7 @@ export default class ChatDetails extends Block <ChatDetailsProps> {
         super( tag, props, template );
     }
 
+
 }
 
 

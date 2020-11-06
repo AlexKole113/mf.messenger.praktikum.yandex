@@ -3,13 +3,9 @@ import {componentTemplate} from "../view/form.tmp.js";
 
 
 type FormProps = {
-    title:     string,
-    inputs:    string,
-    button:    string,
-    loggin:    string,
-    handlers:  { [key:string]: CallableFunction|any }[]
+    inputs: string,
+    handlers:   { [key:string]: CallableFunction|any }[]
 }
-
 
 
 export default class Form extends Block <FormProps> {

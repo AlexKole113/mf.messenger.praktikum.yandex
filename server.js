@@ -1,10 +1,9 @@
-const express = require('express');
+const express   = require('express');
+const app       = express();
+const PORT      = 80;
 
-const app = express();
-const PORT = 4000;
 
-app.use(express.static('./static'));
+app.use(express.static('.'));
+app.listen( PORT, () => console.log( `Local app listening on port ${PORT}!` ));
+app.get('*', (req, res) => { res.sendFile(`${__dirname}/index.html`) })
 
-app.listen(PORT, function () {
-    console.log(`80 порт это пор по умолчанию для http, а текущий - ${PORT}!`);
-});

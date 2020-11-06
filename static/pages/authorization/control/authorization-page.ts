@@ -24,22 +24,33 @@ let inputs = [
 let button = {
     text: 'Войти',
 }
-let underLink = {
+
+const forgotPassLink = new LoginLink('div#logIn-component', {
     text: 'Забыли пароль',
     link: '#'
-}
+} ).getElement();
+
+const registerLink = new LoginLink('div#logIn-component', {
+    text: 'Регистрация',
+    link: '/registration'
+} ).getElement();
+
 
 let formProps = {
     title: 'Авторизация',
+    formType: 'authorization',
     inputs: new InputGroup('div#input-component', inputs ).getElement(),
     button: new Button('div#btn-component', button ).getElement(),
-    loggin: new LoginLink('div#logIn-component', underLink ).getElement(),
+    additional: forgotPassLink + registerLink,
     handlers: [{ 'blur': registrationFormValidateAll },{ 'input': clearAllfields }, { 'submit': submitValidate }]
 }
 
 let form = new Form('div#form-component', formProps )
-let page = new Page( 'main.container', registrationPage, {
+let pageAuthorization = new Page( 'main.container', registrationPage, {
     form: form
 });
-page.render();
+
+
+
+export {pageAuthorization};
 

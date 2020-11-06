@@ -1,0 +1,68 @@
+
+.modal {
+  display: none;
+  position: absolute!important;
+  top: 25%;
+  left: 50%;
+  width: 320px;
+  transform: translateX(-50%);
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  &.open {
+    display: flex;
+  }
+
+  &_body {
+    width: 100%;
+  }
+
+  &-msg-group{
+    width: 100%;
+
+    &__input{
+      border-top-width: 0;
+      border-left-width: 0;
+      border-right-width: 0;
+      border-bottom-width: 1px;
+      border-style: solid;
+      outline: none;
+      font-size: 1rem;
+      z-index: 10;
+      position: relative;
+      width: 100%;
+      font-size: 1.5rem;
+      transition: all 1s;
+
+      &:focus{
+        width: calc(100% - 1rem);
+      }
+
+      &:focus + .modal-msg-group__send {
+        right: .75rem;
+        opacity: 1;
+
+      }
+
+    }
+    &__send {
+      text-decoration: none;
+        transition: right 1s, opacity 1.3s;
+        position: absolute;
+        font-size: 1.5rem;
+        right: 50px;
+        opacity: 0;
+        top: 1.3rem;
+        z-index: 15;
+        width: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        i {
+          position: relative;
+          z-index: -1;
+        }
+    }
+  }
+
+}

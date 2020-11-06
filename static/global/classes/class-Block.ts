@@ -2,12 +2,6 @@ import EventBus from "./class-EventBus.js";
 import Templator from "./class-Templator.js";
 
 
-// Спасибо большое за детальный фидбэк! За ссылки на инфу отдельное большое спасибо!
-// Я успел исправить не все, но все что было помечено как "надо исправить" вроде исправил.
-// Конечно же в ходе дальнейшей работы я буду возвращаться к твоим комментам чтобы внести изменения.
-// PS typescript есть в зависимостях, но я его не стал ставить из-за ограничений по размеру проекта
-
-
 export default class Block <Block extends object> {
 
     static EVENTS = {
@@ -29,8 +23,8 @@ export default class Block <Block extends object> {
 
     protected constructor ( tagName:string = "div", props:props, templateDef:template = '' ) {
 
-        this.eventBus = new EventBus();
-        this.props = this._makePropsProxy( props );
+        this.eventBus     = new EventBus();
+        this.props        = this._makePropsProxy( props );
         this._templateDef = templateDef;
 
         this._meta = {

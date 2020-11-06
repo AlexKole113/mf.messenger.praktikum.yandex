@@ -18,13 +18,17 @@
       min-width: 50px;
       margin-bottom: 1.75rem;
       margin-top: auto;
-      &-attach {
 
+
+      &-attach {
+        cursor: pointer;
       }
 
       &-emodji {
-
+          cursor: pointer;
       }
+
+
 
     }
 

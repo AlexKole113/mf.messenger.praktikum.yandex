@@ -6,7 +6,7 @@ export let componentTemplate = (function(){
         </div>
         <div class="user-list-search separator-dark">
             <div class="user-list-search__group">
-                <input class="user-list-search__input bg_dark-min border_light-min text-light-max" type="text" name="search" >
+                <input class="user-list-search__input bg_dark-min border_light-min text-light-max" type="text" name="{{search_type}}" >
                 <i class='fas fa-search text-light-min'></i>
             </div>
         </div>`;

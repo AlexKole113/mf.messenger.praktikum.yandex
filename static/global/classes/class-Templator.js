@@ -9,6 +9,8 @@ export default class Templator {
         let key = null;
         const regExp1 = this.TEMPLATE_REGEXP_1;
         const regExp2 = this.TEMPLATE_REGEXP_2;
+        if (typeof tmpl === 'undefined')
+            throw new Error('Не загружен шаблон');
         while ((key = regExp2.exec(tmpl))) {
             if (key[1]) {
                 const tmplValue = key[1].trim();
