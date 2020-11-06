@@ -10,22 +10,27 @@ export default class ChatRooms extends ChatApi {
     static _createChat      = 'https://ya-praktikum.tech/api/v2/chats';
     static _addUsertoChat   = 'https://ya-praktikum.tech/api/v2/chats/users'
 
-    _users      :object[];
-    _chatRooms  :object[];
+    _users       = [{}];;
+    _chatRooms   = [{}];
 
-    _userListUpdater( elm ){
+    // constructor() {
+    //     super();
+    // }
+
+
+    _userListUpdater( elm:{[key:string]:CallableFunction} ){
         elm.setProps( this._users );
     }
 
-    searchUsers( data , elm , roomID ) {
+    searchUsers( data:{} , elm:{[key:string]:CallableFunction} , roomID:string|number ) {
         const searchUsersTransport = new HTTPTransport( ChatRooms._userSearch );
         return searchUsersTransport.post( { data: JSON.stringify({ login: data } ) } )
-        .then( ( response ) => {
+        .then( ( response:ApiResponse ) => {
             if ( response.status !== 200 ) {
                 return JSON.parse( response.response ).reason ;
             } else {
                 let allUsers = JSON.parse( response.response );
-                allUsers.forEach( ( user ) => {
+                allUsers.forEach( ( user:{[key:string]:any} ) => {
                     for( let field in user ){
                         if( field === 'avatar' ){
                             user[field] =  ChatApi._baseDomain + user[field]
@@ -37,7 +42,7 @@ export default class ChatRooms extends ChatApi {
         })
         .then( ( allUsers ) => {
            return this.getUsersinChatRooms( roomID )
-           .then( ( usersInRooms ) => {
+           .then( ( usersInRooms:any ) => {
 
                     for( let i = 0; i < allUsers.length; i++ ){
                         for( let j = 0; j < usersInRooms.length; j++ ){
@@ -60,43 +65,50 @@ export default class ChatRooms extends ChatApi {
     getAllChatRooms() {
         const allChatsRequest = new HTTPTransport( ChatRooms._allChats );
         return allChatsRequest.get()
-        .then( ( response ) => {
+        .then( ( response:ApiResponse ) => {
             return this._chatRooms = JSON.parse( response.response );
         })
     }
 
-    getUsersinChatRooms( roomID ){
-        if(!roomID) return;
+    getUsersinChatRooms( roomID:string|number ){
+        if(!roomID) return Promise.reject(false);
         const requestURL = `https://ya-praktikum.tech/api/v2/chats/${roomID}/users`;
         const requestUsers =  new HTTPTransport( requestURL );
         return requestUsers.get()
-        .then( ( response ) => {
+        .then( ( response:ApiResponse ) => {
 
             let allUsersResponse = JSON.parse( response.response );
-            allUsersResponse.forEach(( user )=>{
+            allUsersResponse.forEach(( user:{[key:string]:any} )=>{
                 user.avatar = ChatApi._baseDomain + user.avatar;
                 user.add_remove_chat = new RemoveFromChat('span.remove-from-chat',{user_id:user.id, user_login: user.login }).getElement();
             })
 
-            const clearUsers = [];
+            const clearUsers = [allUsersResponse[0]]
             for(let i = 0; i < allUsersResponse.length; i++){
-                let   counter    = 0;
-                for(let j = 0; j < allUsersResponse.length; j++){
-                   if( allUsersResponse[j].id === allUsersResponse[i].id ) counter+=1;
+                let coincidence = false;
+
+                for(let j = 0; j < clearUsers.length; j++){
+                    if(allUsersResponse[i].id === clearUsers[j].id ) {
+                        coincidence = true;
+                        break;
+                    }
                 }
-                if(counter < 2 ) clearUsers.push( allUsersResponse[i] ) ;
+
+                if( coincidence === false ) clearUsers.push(allUsersResponse[i]);
+
             }
 
-            console.log(allUsersResponse)
+            //console.log(allUsersResponse)
+            //console.log(clearUsers)
             //return allUsersResponse;
             return clearUsers;
         } )
     }
 
-    createSingleChatRoom( chatName ){
+    createSingleChatRoom( chatName:string ){
         const chatCreateRequest = new HTTPTransport( ChatRooms._createChat );
         return chatCreateRequest.post({ data: JSON.stringify({ title: chatName } ) })
-        .then( ( response ) => {
+        .then( ( response:ApiResponse ) => {
             if( response.status !== 200 ){
               return false
             }
@@ -105,10 +117,10 @@ export default class ChatRooms extends ChatApi {
 
     }
 
-    addUserToChatRoom( userID, chatID ){
+    addUserToChatRoom( userID:string|number, chatID:string|number ){
         const addUserRequest = new HTTPTransport( ChatRooms._addUsertoChat );
         return addUserRequest.put({ data: JSON.stringify({ users: [userID], chatId: chatID  } ) })
-        .then( ( response ) => {
+        .then( ( response:ApiResponse ) => {
             if( response.status !== 200 ){
                 return false
             }
@@ -116,10 +128,10 @@ export default class ChatRooms extends ChatApi {
         })
     }
 
-    removeUserFromChatRoom( userID, chatID ){
+    removeUserFromChatRoom( userID:string|number, chatID:string|number ){
         const removeUserRequest = new HTTPTransport( ChatRooms._addUsertoChat );
         return removeUserRequest.delete({ data: JSON.stringify({ users: [userID], chatId: chatID  } ) })
-            .then( ( response ) => {
+            .then( ( response:ApiResponse ) => {
                 if( response.status !== 200 ){
                     return false
                 }
@@ -128,11 +140,11 @@ export default class ChatRooms extends ChatApi {
     }
 
 
-    getUserByID(id){
+    getUserByID(id:string|number){
         const requestURL = `https://ya-praktikum.tech/api/v2/user/${id}`;
         const requestUser =  new HTTPTransport( requestURL );
         return requestUser.get()
-        .then( ( response ) => {
+        .then( ( response:ApiResponse ) => {
             return response.response;
         })
     }

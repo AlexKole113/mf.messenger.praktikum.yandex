@@ -4,17 +4,6 @@ import {componentTemplate} from "../view/user.tmp.js";
 import EventBus from "../../../global/classes/class-EventBus";
 
 
-type UserListProps = {
-    name            :string,
-    photo           :string,
-    userprofile     :string,
-    excerpt         :string,
-    time            :string,
-    last_msg_link   :string,
-    msg_amount      ?:number|string,
-    active          :string|boolean
-}[];
-
 
 export default class UserList extends Block <UserListProps> {
 

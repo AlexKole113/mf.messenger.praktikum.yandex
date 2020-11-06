@@ -24,7 +24,6 @@ export default class ChatApi {
                 return JSON.parse(response.response).reason;
             }
             else {
-                console.log(response);
                 return true;
             }
         });
@@ -82,6 +81,7 @@ export default class ChatApi {
         if (Object.keys(otherData).length !== 0) {
             allData.push(otherDataUpdater.put({ data: JSON.stringify(otherData) }));
         }
+        // @ts-ignore
         return Promise.allSettled(allData)
             .then((response) => {
             let errors = [];
@@ -103,11 +103,9 @@ export default class ChatApi {
         return exit.post()
             .then((response) => {
             if (response.status !== 200) {
-                console.log(response);
                 return false;
             }
             else {
-                console.log(response);
                 return true;
             }
         });

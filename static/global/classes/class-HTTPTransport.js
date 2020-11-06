@@ -30,12 +30,15 @@ export default class HTTPTransport {
                 if (!headers) {
                     xhr.setRequestHeader("Content-Type", "application/json");
                 }
+                if (timeout) {
+                    xhr.timeout = timeout;
+                }
                 xhr.onload = function () {
                     resolve(xhr);
                 };
-                xhr.onabort = resolve;
                 xhr.onerror = resolve;
                 xhr.ontimeout = resolve;
+                xhr.onabort = reject;
                 if (method === HTTPTransport.METHODS.GET || !data) {
                     xhr.send(null);
                 }

@@ -3,6 +3,15 @@ import HTTPTransport from "../classes/class-HTTPTransport.js";
 import RemoveFromChat from "../../components/remove-from-chat/control/remove-from-chat.js";
 import AddToChat from "../../components/add-to-chat/control/add-to-chat.js";
 export default class ChatRooms extends ChatApi {
+    constructor() {
+        super(...arguments);
+        this._users = [{}];
+        this._chatRooms = [{}];
+    }
+    ;
+    // constructor() {
+    //     super();
+    // }
     _userListUpdater(elm) {
         elm.setProps(this._users);
     }
@@ -52,7 +61,7 @@ export default class ChatRooms extends ChatApi {
     }
     getUsersinChatRooms(roomID) {
         if (!roomID)
-            return;
+            return Promise.reject(false);
         const requestURL = `https://ya-praktikum.tech/api/v2/chats/${roomID}/users`;
         const requestUsers = new HTTPTransport(requestURL);
         return requestUsers.get()
@@ -62,17 +71,20 @@ export default class ChatRooms extends ChatApi {
                 user.avatar = ChatApi._baseDomain + user.avatar;
                 user.add_remove_chat = new RemoveFromChat('span.remove-from-chat', { user_id: user.id, user_login: user.login }).getElement();
             });
-            const clearUsers = [];
+            const clearUsers = [allUsersResponse[0]];
             for (let i = 0; i < allUsersResponse.length; i++) {
-                let counter = 0;
-                for (let j = 0; j < allUsersResponse.length; j++) {
-                    if (allUsersResponse[j].id === allUsersResponse[i].id)
-                        counter += 1;
+                let coincidence = false;
+                for (let j = 0; j < clearUsers.length; j++) {
+                    if (allUsersResponse[i].id === clearUsers[j].id) {
+                        coincidence = true;
+                        break;
+                    }
                 }
-                if (counter < 2)
+                if (coincidence === false)
                     clearUsers.push(allUsersResponse[i]);
             }
-            console.log(allUsersResponse);
+            //console.log(allUsersResponse)
+            //console.log(clearUsers)
             //return allUsersResponse;
             return clearUsers;
         });

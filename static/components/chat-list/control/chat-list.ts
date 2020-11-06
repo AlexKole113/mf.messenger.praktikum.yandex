@@ -4,19 +4,16 @@ import {componentTemplate} from "../view/chat-list.tmp.js";
 import EventBus from "../../../global/classes/class-EventBus";
 
 
-type UserListProps = {
-    name            :string,
-    photo           :string,
-    userprofile     :string,
-    excerpt         :string,
-    time            :string,
-    last_msg_link   :string,
-    msg_amount      ?:number|string,
-    active          :string|boolean
+type ChatListProps = {
+    avatar:             string,
+    id:          string|number,
+    title:              string,
+    excerpt:            string,
+    msg_amount:  string|number,
 }[];
 
 
-export default class ChatList extends Block <UserListProps> {
+export default class ChatList extends Block <ChatListProps> {
 
 
     protected _element     :any        = null;
@@ -30,7 +27,7 @@ export default class ChatList extends Block <UserListProps> {
 
 
 
-    constructor( tag:string, props:UserListProps, activeClass:string, template:template = componentTemplate ) {
+    constructor( tag:string, props:ChatListProps, activeClass:string, template:template = componentTemplate ) {
         super(tag, props,template);
         this.activeClass = activeClass;
     }

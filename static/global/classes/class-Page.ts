@@ -4,7 +4,7 @@ import Block from "./class-Block.js";
 
 export default class Page <T extends object> extends Block <T> {
 
-    static EVENTS = {
+    static PAGE_EVENTS = {
         PAGE_WAS_RENDER: "page_render"
     };
 
@@ -14,18 +14,16 @@ export default class Page <T extends object> extends Block <T> {
     public    components   :props;
 
     constructor( rootElement:string ='main', template:string, components:object = {} ) {
-
         super( rootElement, components );
         this._templateDef = template;
         this.components   = components;
-
     }
 
     protected _registerEvents() {
         this.eventBus.on(Block.EVENTS.INIT, this.init.bind(this));
         this.eventBus.on(Block.EVENTS.FLOW_CDM, this._componentDidMount.bind(this));
         this.eventBus.on(Block.EVENTS.FLOW_RENDER, this._render.bind(this));
-        this.eventBus.on(Page.EVENTS.PAGE_WAS_RENDER, this._pageWasRender.bind(this) );
+        this.eventBus.on(Page.PAGE_EVENTS.PAGE_WAS_RENDER, this._pageWasRender.bind(this) );
         this.eventBus.on(Block.EVENTS.FLOW_CDU, this._componentDidUpdate.bind(this) );
     }
 
@@ -45,7 +43,7 @@ export default class Page <T extends object> extends Block <T> {
     protected _pageWasRender() {
         const allHandlers = this.props.handlers;
         if( allHandlers ){
-            allHandlers.forEach( ( handler ) => {
+            allHandlers.forEach( ( handler:{[key:string]:CallableFunction} ) => {
                 for( let name in handler ) {
                     if( name === 'render' ){
                         handler[name]();
@@ -65,7 +63,7 @@ export default class Page <T extends object> extends Block <T> {
             this.components[prop].eventBus.emit(Block.EVENTS.FLOW_CDU )
         }
 
-        this.eventBus.emit(Page.EVENTS.PAGE_WAS_RENDER);
+        this.eventBus.emit(Page.PAGE_EVENTS.PAGE_WAS_RENDER);
     }
 
 

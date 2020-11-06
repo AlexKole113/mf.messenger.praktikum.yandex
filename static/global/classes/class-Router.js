@@ -11,11 +11,12 @@ export default class Router {
         Router.__instance = this;
     }
     use(pathname, block, props = {}) {
-        const route = new Route(pathname, block, Object.assign({ rootQuery: this._rootQuery }, props), this._rootQuery);
-        this.routes.push(route);
+        const route = new Route(pathname, block, Object.assign({ rootQuery: this._rootQuery }, props), Router.__instance._rootQuery);
+        Router.__instance.routes.push(route);
         return Router.__instance;
     }
     start() {
+        //@ts-ignore
         window.onpopstate = (event => {
             if (event.state) {
                 let state = JSON.stringify(event.state.page).replace(/"/g, '');
@@ -57,7 +58,7 @@ export default class Router {
         window.history.forward();
     }
     getRoute(pathname) {
-        return this.routes.find(route => route.match(pathname));
+        return Router.__instance.routes.find((route) => { return route.match(pathname); });
     }
     _authorizationCheck() {
         const checker = new ChatApi();
@@ -68,8 +69,8 @@ export default class Router {
             url = url.replace(/#/g, '');
             url = url.split('?')[0];
             let path = url.split('/');
-            path = `/${path[path.length - 1]}`;
-            return path;
+            let newpath = `/${path[path.length - 1]}`;
+            return newpath;
         }
         else {
             return url;

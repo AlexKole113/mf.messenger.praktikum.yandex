@@ -1,7 +1,14 @@
 import Route from "./class-Route.js";
 import ChatApi from "../api/class-ChatApi.js";
 
+
 export default class Router {
+
+    protected _currentRoute   !:object|null;
+    protected _rootQuery;
+    static    __instance       :object|any;
+    routes;
+
 
     constructor( rootQuery = {} ) {
         if (Router.__instance) {
@@ -14,13 +21,14 @@ export default class Router {
         Router.__instance       = this;
     }
 
-    use( pathname, block, props = {} ) {
-        const route = new Route( pathname, block, { rootQuery: this._rootQuery, ...props }, this._rootQuery);
-        this.routes.push( route );
+    use( pathname:string, block:any, props:{} = {} ) {
+        const route = new Route( pathname, block, { rootQuery: this._rootQuery, ...props }, Router.__instance._rootQuery);
+        Router.__instance.routes.push( route );
         return Router.__instance;
     }
 
     start() {
+        //@ts-ignore
         window.onpopstate = ( event => {
             if( event.state ){
                 let state = JSON.stringify( event.state.page ).replace(/"/g,'');
@@ -29,12 +37,13 @@ export default class Router {
         }).bind(this);
     }
 
-    _onRoute( pathname ) {
+    _onRoute( pathname:string ) {
         let route = this.getRoute( this._pathDetector(pathname) );
         if (!route) {
             pathname = '/error';
             route    = this.getRoute( '/error' )
         }
+
 
         if (!this._currentRoute) {
             this._currentRoute = this.getRoute( '/auth' );
@@ -49,7 +58,7 @@ export default class Router {
         this._currentRoute = this.getRoute( this._pathDetector(pathname) );
     }
 
-    go( pathname ) {
+    go( pathname:string ) {
 
         this._authorizationCheck()
         .then( ( data ) => {
@@ -75,8 +84,8 @@ export default class Router {
         window.history.forward()
     }
 
-    getRoute(pathname) {
-        return this.routes.find(route => route.match(pathname));
+    getRoute(pathname:string) {
+        return Router.__instance.routes.find( (route:string) => { return route.match(pathname) });
     }
 
     _authorizationCheck() {
@@ -84,13 +93,13 @@ export default class Router {
         return checker.checkAuthorization();
     }
 
-    _pathDetector( url ){
+    _pathDetector( url:string ){
         if( url.indexOf('?') !== -1 ) {
             url      = url.replace(/#/g,'')
             url      = url.split('?')[0];
             let path = url.split('/');
-            path = `/${path[path.length-1]}`;
-            return path;
+            let newpath = `/${path[path.length-1]}`;
+            return newpath;
         } else {
            return  url;
         }

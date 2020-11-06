@@ -12,7 +12,7 @@ const alerts = {
     badEmail: 'Введите корректный email',
     badPass: `Пароль не может быть короче ${MIN_PASSW_LENGTH} символов`,
     NoMatchPass: `Пароль не совпадает`,
-    OldPassEmpty: `Введите текущий пароль`,
+    OldPassEmpty: `Введите пароль`,
 };
 const backEndAlertsElement = '.backend-alerts';
 const validatorsMap = {
@@ -116,7 +116,14 @@ const validatorsMap = {
     validate_newPassword: function (elm) {
         const field = elm;
         const passwordOld = document.querySelector('input[name="oldPassword"]');
-        if (field.value > 0 && passwordOld.value.length < 1) {
+        if (field.value.length > 0 && passwordOld.value.length < 1) {
+            let nxtSibling = passwordOld.nextElementSibling;
+            nxtSibling.innerText = alerts.OldPassEmpty;
+            nxtSibling.classList.add(NO_VALID_CLASS);
+            passwordOld.classList.add(NO_VALID_CLASS);
+            return false;
+        }
+        else if (field.value.length < 1 && passwordOld.value.length > 0) {
             let nxtSibling = field.nextElementSibling;
             nxtSibling.innerText = alerts.OldPassEmpty;
             nxtSibling.classList.add(NO_VALID_CLASS);
@@ -128,13 +135,15 @@ const validatorsMap = {
 };
 const submitersMap = {
     authorization: function (form, dataFields) {
+        if (!form && !dataFields)
+            return;
         const auth = new ChatApi();
         auth.authorization(dataFields)
             .then((responseApi) => {
             if (responseApi !== true) {
                 if (document.querySelector(backEndAlertsElement)) {
                     const elm = document.querySelector(backEndAlertsElement);
-                    elm.textContent = responseApi;
+                    elm.textContent = responseApi.toString();
                 }
             }
             else {
@@ -143,13 +152,17 @@ const submitersMap = {
         });
     },
     registration: function (form, dataFields) {
+        if (!form && !dataFields)
+            return;
+        if (typeof dataFields === 'undefined')
+            return;
         const reg = new ChatApi();
         reg.registration(dataFields)
             .then((responseApi) => {
             if (responseApi !== true) {
                 if (document.querySelector(backEndAlertsElement)) {
                     const elm = document.querySelector(backEndAlertsElement);
-                    elm.textContent = responseApi;
+                    elm.textContent = responseApi || '';
                 }
             }
             else {
@@ -158,16 +171,20 @@ const submitersMap = {
         });
     },
     userSettings: function (form, dataFields) {
+        if (!form && !dataFields)
+            return;
         const upd = new ChatApi();
         if (dataFields.avatar.length !== 0) {
             let formData = new FormData();
-            let file = document.querySelector('input[name="avatar"]').files[0];
-            formData.append('avatar', file);
-            dataFields.avatar = formData;
+            let fileElm = document.querySelector('input[name="avatar"]');
+            if (fileElm) {
+                let file = fileElm.files[0];
+                formData.append('avatar', file);
+                dataFields.avatar = formData;
+            }
         }
         upd.updateUserDetails(dataFields)
             .then((responseApi) => {
-            console.log(responseApi);
             if (responseApi !== true) {
                 let textResponse = ``;
                 if (Array.isArray(responseApi)) {
@@ -176,13 +193,15 @@ const submitersMap = {
                     });
                     if (document.querySelector(backEndAlertsElement)) {
                         const elm = document.querySelector(backEndAlertsElement);
-                        elm.textContent = responseApi;
+                        if (elm) {
+                            elm.textContent = textResponse;
+                        }
                     }
                 }
                 else {
                     if (document.querySelector(backEndAlertsElement)) {
                         const elm = document.querySelector(backEndAlertsElement);
-                        elm.textContent = responseApi;
+                        elm.textContent = responseApi.toString();
                     }
                 }
                 setFieldsValue();
@@ -200,10 +219,16 @@ function setFieldsValue() {
         for (let field in userData) {
             if (document.querySelector(`input[name=${field}]`)) {
                 if (field === 'avatar' && userData[field]) {
-                    document.querySelector(`input[name=${field}]`).parentElement.style.backgroundImage = `url(https://ya-praktikum.tech/${userData[field]})`;
+                    const elm = document.querySelector(`input[name=${field}]`);
+                    if (elm.parentElement) {
+                        elm.parentElement.style.backgroundImage = `url(https://ya-praktikum.tech/${userData[field]})`;
+                    }
                 }
                 else {
-                    document.querySelector(`input[name=${field}]`).value = userData[field];
+                    const elm = document.querySelector(`input[name=${field}]`);
+                    if (elm) {
+                        elm.value = userData[field];
+                    }
                 }
             }
         }

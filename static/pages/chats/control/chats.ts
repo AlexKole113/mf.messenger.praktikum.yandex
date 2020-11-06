@@ -10,9 +10,15 @@ import {chat_menus_starter, chatMenuLogOut} from "../../../global/functions/menu
 import {getAllChats,chatCreator} from "../../../global/functions/menu-functions.js";
 
 
+const AllChatsExample = [{
+    avatar: '',
+    id: '',
+    title: '',
+    excerpt: '',
+    msg_amount: '',
+}]
 
-
-let chatList           = new ChatList('div#userList-component', [{}], 'current-user' );
+let chatList           = new ChatList('div#userList-component', AllChatsExample, 'current-user' );
 let searchBlock        = new Search('div#searchBlock-component', { search_type:'search-chats' } );
 let chatAlert          = new ChatAlert('div.chat-alert',{alert_msg:'Выберите чат'});
 let modal              = new Modal('div#addchat.modal.bg_dark-gradient',{});

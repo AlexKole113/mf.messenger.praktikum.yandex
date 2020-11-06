@@ -27,9 +27,11 @@ router
 
 document.addEventListener('click',(e)=>{
     //e.preventDefault()
-    if( typeof e.target.dataset.route !== 'undefined' ) {
+    const target = <HTMLElement> e.target;
+
+    if( typeof target.dataset.route !== 'undefined' ) {
         e.preventDefault();
-        let path = e.target.dataset.route;
+        let path = target.dataset.route;
         router.go( path )
     }
 })

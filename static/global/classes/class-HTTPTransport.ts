@@ -1,4 +1,4 @@
-export default class HTTPTransport {
+export default class HTTPTransport implements Sender {
 
     static METHODS = {
         GET:    'GET',
@@ -55,13 +55,17 @@ export default class HTTPTransport {
                 xhr.setRequestHeader( "Content-Type","application/json" );
             }
 
+            if( timeout ){
+                xhr.timeout = timeout;
+            }
+
             xhr.onload = function() {
                 resolve(xhr);
             };
 
-            xhr.onabort = resolve;
             xhr.onerror = resolve;
             xhr.ontimeout = resolve;
+            xhr.onabort = reject;
 
             if (method === HTTPTransport.METHODS.GET || !data) {
                 xhr.send(null );

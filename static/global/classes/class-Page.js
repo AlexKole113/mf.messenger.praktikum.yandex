@@ -10,7 +10,7 @@ export default class Page extends Block {
         this.eventBus.on(Block.EVENTS.INIT, this.init.bind(this));
         this.eventBus.on(Block.EVENTS.FLOW_CDM, this._componentDidMount.bind(this));
         this.eventBus.on(Block.EVENTS.FLOW_RENDER, this._render.bind(this));
-        this.eventBus.on(Page.EVENTS.PAGE_WAS_RENDER, this._pageWasRender.bind(this));
+        this.eventBus.on(Page.PAGE_EVENTS.PAGE_WAS_RENDER, this._pageWasRender.bind(this));
         this.eventBus.on(Block.EVENTS.FLOW_CDU, this._componentDidUpdate.bind(this));
     }
     _render(temp = this._templateDef) {
@@ -45,10 +45,10 @@ export default class Page extends Block {
                 continue;
             this.components[prop].eventBus.emit(Block.EVENTS.FLOW_CDU);
         }
-        this.eventBus.emit(Page.EVENTS.PAGE_WAS_RENDER);
+        this.eventBus.emit(Page.PAGE_EVENTS.PAGE_WAS_RENDER);
     }
 }
-Page.EVENTS = {
+Page.PAGE_EVENTS = {
     PAGE_WAS_RENDER: "page_render"
 };
 //# sourceMappingURL=class-Page.js.map

@@ -1,7 +1,8 @@
 import HTTPTransport from "../classes/class-HTTPTransport.js";
 
 
-export default class ChatApi {
+export default class ChatApi implements Api {
+
 
     static _baseDomain          = 'https://ya-praktikum.tech';
 
@@ -15,12 +16,11 @@ export default class ChatApi {
     static _changeUserAvatar    = 'https://ya-praktikum.tech/api/v2/user/profile/avatar';
 
 
-
-    registration( data ){
+    registration ( data:object ){
         if(!data) return;
         const registrationTransport = new HTTPTransport( ChatApi._registrationURL );
         return registrationTransport.post( { data:JSON.stringify( data ) } )
-        .then( ( response ) => {
+        .then( ( response:ApiResponse ) => {
             if ( response.status !== 200 ) {
                 return JSON.parse( response.response ).reason ;
             } else {
@@ -29,15 +29,14 @@ export default class ChatApi {
         })
     }
 
-    authorization( data ) {
+    authorization( data:object ) {
         if(!data) return;
         const authorizationTransport = new HTTPTransport( ChatApi._authorizationURL );
         return authorizationTransport.post( { data: JSON.stringify( data ) } )
-        .then( ( response ) => {
+        .then( ( response:ApiResponse ) => {
             if ( response.status !== 200 ) {
                return JSON.parse( response.response ).reason ;
             } else {
-                console.log(response)
                return true;
             }
         })
@@ -46,7 +45,7 @@ export default class ChatApi {
     getUserDetails(){
         const userDetails  = new HTTPTransport( ChatApi._userDetailURL );
         return userDetails.get()
-            .then( ( response )=>{
+            .then( ( response:ApiResponse )=>{
                 if( response.status !== 200 ){
                     return false
                 } else  {
@@ -58,7 +57,7 @@ export default class ChatApi {
     checkAuthorization() {
         const userChecker    = new HTTPTransport( ChatApi._userDetailURL );
         return userChecker.get()
-            .then( ( response ) => {
+            .then( ( response:ApiResponse ) => {
                 if( response.status !== 200 ){
                     return false
                 } else  {
@@ -67,14 +66,14 @@ export default class ChatApi {
             })
     }
 
-    updateUserDetails( data ){
-        const avatarDataUpdater     = new HTTPTransport( ChatApi._changeUserAvatar );
-        const passwordDataUpdater   = new HTTPTransport( ChatApi._changeUserPassword );
-        const otherDataUpdater      = new HTTPTransport( ChatApi._changeUserDetails );
-        const avatarData            = {};
-        const passwordData          = {};
-        const otherData             = {};
-        const allData               = [];
+    updateUserDetails( data:{[key:string]:string}){
+        const avatarDataUpdater     :HTTPSender                 = new HTTPTransport( ChatApi._changeUserAvatar );
+        const passwordDataUpdater   :HTTPSender                 = new HTTPTransport( ChatApi._changeUserPassword );
+        const otherDataUpdater      :HTTPSender                 = new HTTPTransport( ChatApi._changeUserDetails );
+        const avatarData            :{[key:string]:string}      = {};
+        const passwordData          :{[key:string]:string}      = {};
+        const otherData             :{[key:string]:string}      = {};
+        const allData                                           = [];
 
         for( let fieldName in data ){
             if( fieldName === 'avatar' ){
@@ -99,11 +98,12 @@ export default class ChatApi {
             allData.push( otherDataUpdater.put( { data: JSON.stringify( otherData ) } ) );
         }
 
+        // @ts-ignore
        return Promise.allSettled( allData )
-        .then( ( response ) => {
-            let errors = [];
+        .then( ( response:ApiResponse ) => {
+            let errors :string[] = [];
 
-            response.forEach( ( response ) => {
+            response.forEach( ( response:ApiResponse ) => {
                 if( response.value.status !== 200 ){
                     errors.push(response.value.response )
                 }
@@ -122,12 +122,10 @@ export default class ChatApi {
     logout(){
         const exit    = new HTTPTransport( ChatApi._logout );
         return exit.post()
-            .then( ( response ) => {
+            .then( ( response:ApiResponse ) => {
                 if( response.status !== 200 ){
-                    console.log(response)
                     return false;
                 } else  {
-                    console.log(response)
                     return true;
                 }
             })

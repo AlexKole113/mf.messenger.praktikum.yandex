@@ -7,6 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+// @ts-nocheck
 import 'mocha';
 import * as chai from 'chai';
 const assert = chai.assert;
@@ -26,11 +27,79 @@ import HTTPTransport from "../global/classes/class-HTTPTransport.js";
 import Page from "../global/classes/class-Page.js";
 import Message from "../components/message/control/message.js";
 import Button from "../components/button/control/button.js";
-// #0 -  шаблонизатора, компоненты,  роутера,  модуля отправки запросов. Понадобятся позитивные кейсы, негативные, фаззинг-тестирование и проверка граничных значений.
-// #1 Тестируем публичный интерфейс сущностей (модулей) - те те методы через которые используются публично и взаимодействуют с др модулями
-// #2 Проверяется возврат значений (return), изменение стостояния объекта (this.что-то), выполнение обращения к внешней системе (fetch, HTTPXML)
-// #3 3 - стадии ( подготовка , действие , проверка )
-// #4  Перед тестом нужно понять - что является тестируемой сущностью, какой сценарий проверяется в тесте и какой результат проверяется
+describe('Шаблоны и компоненты', () => {
+    it('Создание HTML из шаблона c заменой символов', () => {
+        const componentTemplate = `<button type="submit" class="form-registration__input-group-item-btn bg_dark-min text-light-max" >{{text}}</button>`;
+        const templator = new Templator(componentTemplate);
+        expect(templator.compile({ text: '<h1>Текст кнопки</h1>' })).to.equal(`<button type="submit" class="form-registration__input-group-item-btn bg_dark-min text-light-max" >&lt;h1&gt;Текст кнопки&lt;/h1&gt;</button>`);
+    });
+    it('Создание HTML из шаблона без замены символов', () => {
+        const componentTemplate = `<button type="submit" class="form-registration__input-group-item-btn bg_dark-min text-light-max" >{{{text}}}</button>`;
+        const templator = new Templator(componentTemplate);
+        expect(templator.compile({ text: '<h1>Текст кнопки</h1>' })).to.equal(`<button type="submit" class="form-registration__input-group-item-btn bg_dark-min text-light-max" ><h1>Текст кнопки</h1></button>`);
+    });
+    it('Создание свойств компонента', () => {
+        const message = new Message('div#messagelist-component', [{ content: 'sometextSomeText', time: '10:00' }]);
+        expect(message.getElement()).to.includes('sometextSomeText');
+        expect(message.getElement()).to.includes('10:00');
+    });
+    it('Изменение свойств компонента', () => {
+        const textUndo = 'TextUndo';
+        const button = new Button('div#btn-component', { text: textUndo });
+        expect(button.getElement()).to.equal(`<button type="submit" class="form-registration__input-group-item-btn bg_dark-min text-light-max" >${textUndo}</button>`);
+        const textAfter = 'TextAfter';
+        button.setProps({ text: textAfter });
+        expect(button.getElement()).to.equal(`<button type="submit" class="form-registration__input-group-item-btn bg_dark-min text-light-max" >${textAfter}</button>`);
+    });
+    it('Передача на вход не корректных данных', () => {
+        const templator = new Templator(undefined);
+        expect(templator.compile.bind(templator)).to.throw('Не загружен шаблон');
+    });
+});
+describe('Роутинг', () => {
+    it('Роутер - пушим и получаем роуты', () => {
+        const page1 = new Page('body', `<div class="error-msg"></div>`, {});
+        const page2 = new Page('body', `<div class="error-msg"></div>`, {});
+        const page3 = new Page('body', `<div class="error-msg"></div>`, {});
+        const router = new Router();
+        router
+            .use("/test1", page1)
+            .use("/test2", page2)
+            .use("/test3", page3);
+        expect(router.getRoute("/test1")._pathname).to.equal("/test1");
+        expect(router.getRoute("/test2")._pathname).to.equal("/test2");
+        expect(router.getRoute("/test3")._pathname).to.equal("/test3");
+    });
+    it('Роутер - переходы', () => {
+        const page4 = new Page('body', `<div class="error-msg"></div>`, {});
+        const page5 = new Page('body', `<div class="error-msg"></div>`, {});
+        const page6 = new Page('body', `<div class="error-msg"></div>`, {});
+        const router = new Router('.app');
+        router.go = (pathname) => { router._onRoute(pathname); };
+        router
+            .use('/test4', page4)
+            .use("/test5", page5)
+            .use("/test6", page6);
+        //console.log(router.routes)
+        router.go("/test4");
+        expect(router._currentRoute._pathname).to.equal('/test4');
+        router.go("/test6");
+        expect(router._currentRoute._pathname).to.equal('/test6');
+    });
+    it('Роутер - переход на не существующий адрес', () => {
+        const page7 = new Page('body', `<div class="error-msg"></div>`, {});
+        const page8 = new Page('body', `<div class="error-msg"></div>`, {});
+        const page9 = new Page('body', `<div class="error-msg"></div>`, {});
+        const router = new Router();
+        router.go = (pathname) => { router._onRoute(pathname); };
+        router
+            .use('/error', page7)
+            .use("/test8", page8)
+            .use("/test9", page9);
+        router.go("/andresDoNotExist1234");
+        expect(router._currentRoute._pathname).to.equal('/error');
+    });
+});
 describe('Отправка и получение данных с бэка', () => {
     it('Создание get строки', () => {
         const tst = new HTTPTransport();
@@ -66,77 +135,5 @@ describe('Отправка и получение данных с бэка', () =
         const response = yield tst.post({ data: { 'somedata': [1, 2] } });
         expect(response.response).to.deep.equal({ 'somedata': [1, 2] });
     }));
-    // TODO: не передача url и данных
-    // TODO: возврат ошибки с сервера
-    // TODO: таймаут и за таймаутом
-});
-describe('Шаблоны и компоненты', () => {
-    it('Создание HTML из шаблона c заменой символов', () => {
-        const componentTemplate = `<button type="submit" class="form-registration__input-group-item-btn bg_dark-min text-light-max" >{{text}}</button>`;
-        const templator = new Templator(componentTemplate);
-        expect(templator.compile({ text: '<h1>Текст кнопки</h1>' })).to.equal(`<button type="submit" class="form-registration__input-group-item-btn bg_dark-min text-light-max" >&lt;h1&gt;Текст кнопки&lt;/h1&gt;</button>`);
-    });
-    it('Создание HTML из шаблона без замены символов', () => {
-        const componentTemplate = `<button type="submit" class="form-registration__input-group-item-btn bg_dark-min text-light-max" >{{{text}}}</button>`;
-        const templator = new Templator(componentTemplate);
-        expect(templator.compile({ text: '<h1>Текст кнопки</h1>' })).to.equal(`<button type="submit" class="form-registration__input-group-item-btn bg_dark-min text-light-max" ><h1>Текст кнопки</h1></button>`);
-    });
-    it('Создание свойств компонента', () => {
-        const message = new Message('div#messagelist-component', [{ content: 'sometextSomeText', time: '10:00' }]);
-        expect(message.getElement()).to.includes('sometextSomeText');
-        expect(message.getElement()).to.includes('10:00');
-    });
-    it('Изменение свойств компонента', () => {
-        const textUndo = 'TextUndo';
-        const button = new Button('div#btn-component', { text: textUndo });
-        expect(button.getElement()).to.equal(`<button type="submit" class="form-registration__input-group-item-btn bg_dark-min text-light-max" >${textUndo}</button>`);
-        const textAfter = 'TextAfter';
-        button.setProps({ text: textAfter });
-        expect(button.getElement()).to.equal(`<button type="submit" class="form-registration__input-group-item-btn bg_dark-min text-light-max" >${textAfter}</button>`);
-    });
-    // TODO: Templator -> передача не корректного шаблона (undefined) , отсутсвие шаблона , отсутствие полей нужных в шаблоне
-    // TODO: Компонент -> передача вместо свойств бреда
-    // TODO: Компонент -> передача не корректного времени -> ^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$
-});
-describe('Роутинг', () => {
-    it('Роутер - пушим и получаем роуты', () => {
-        const router = new Router();
-        const page = new Page();
-        router
-            .use("/test1", page)
-            .use("/test2", page)
-            .use("/test3", page);
-        expect(router.getRoute("/test1")._pathname).to.equal("/test1");
-        expect(router.getRoute("/test2")._pathname).to.equal("/test2");
-        expect(router.getRoute("/test3")._pathname).to.equal("/test3");
-    });
-    it('Роутер - переходы', () => {
-        const router = new Router();
-        router.start = () => { };
-        router.go = (pathname) => { router._onRoute(pathname); };
-        const page = new Page();
-        router
-            .use("/test1", page)
-            .use("/test2", page)
-            .use("/test3", page);
-        router.go("/test2");
-        expect(router._currentRoute._pathname).to.equal("/test2");
-        router.go("/test1");
-        expect(router._currentRoute._pathname).to.equal("/test1");
-    });
-    it('Роутер - переход на не существующий адрес', () => {
-        const router = new Router();
-        router.start = () => { };
-        router.go = (pathname) => { router._onRoute(pathname); };
-        const page = new Page();
-        router
-            .use('/error', page)
-            .use("/test2", page)
-            .use("/test3", page);
-        router.go("/andresDoNotExist1234");
-        expect(router._currentRoute._pathname).to.equal('/error');
-    });
-    // TODO: отсутствие page
-    // TODO: создание длинющего path
 });
 //# sourceMappingURL=test.js.map

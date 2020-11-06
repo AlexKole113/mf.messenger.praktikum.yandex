@@ -3,7 +3,6 @@ import Form from "../../../components/form/control/form.js";
 import InputGroup from "../../../components/input-group/control/input-group.js";
 import InputFile from "../../../components/input-file/control/input-file.js";
 import Button from "../../../components/button/control/button.js";
-import LoginLink from "../../../components/login-link/control/login-link.js";
 
 import {registrationPage} from "../view/user-settings.tmp.js";
 
@@ -18,7 +17,7 @@ let inputs = [
     },
     {
         type: 'text',
-        label: 'display_name',
+        label: 'Ник',
         name: 'display_name',
     },
     {
@@ -55,13 +54,9 @@ let inputs = [
 let button = {
     text: 'Сохранить',
 }
-let loginLink = {
-    text: 'Войти',
-    link: '#'
-}
 
 let avatar = {
-    photo: 'https://cdn.pixabay.com/photo/2017/05/11/08/48/model-2303361_1280.jpg',
+    photo: '',
     name: 'avatar'
 };
 
@@ -73,7 +68,7 @@ let formProps = {
     inputfile: uploadAvatar.getElement(),
     inputs: new InputGroup('div#input-component', inputs ).getElement(),
     button: new Button('div#btn-component', button ).getElement(),
-    loggin: new LoginLink('div#logIn-component', loginLink ).getElement(),
+    additional: '',
     handlers: [{ 'blur': registrationFormValidateAll },{ 'input': clearAllfields }, { 'submit': submitValidate }]
 }
 

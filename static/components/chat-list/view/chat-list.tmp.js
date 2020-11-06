@@ -5,10 +5,10 @@ export let componentTemplate = (function(){
                 </div>
                 <div class="user-list__item-info">
                     <p class="user-list__item-info-name"><a href="" data-route="/chat?chatid={{id}}" data-chat_id="{{id}}"  class="user-list__item-info-name-link text-light-max">{{title}}</a></p>
-                    <p class="user-list__item-info-last-msg"><a href="/chat?chatid={{id}}"  data-route="/chat" data-chat_id="{{id}}" class="user-list__item-info-last-msg-link text-light-min">{{excerpt}}</a></p>
+                    <p class="user-list__item-info-last-msg"><a href="/chat?chatid={{id}}"  data-route="/chat?chatid={{id}}" data-chat_id="{{id}}" class="user-list__item-info-last-msg-link text-light-min">{{excerpt}}</a></p>
                 </div>
                 <div class="user-list__item-actions">
-                    <span class="user-list__item-actions-newmsg"><a href="/chat?chatid={{id}}" data-route="/chat" data-chat_id="{{id}}"  class="new-msg-background text-light " >{{msg_amount}}1</a></span>
+                    <span class="user-list__item-actions-newmsg"><a href="/chat?chatid={{id}}" data-route="/chat?chatid={{id}}" data-chat_id="{{id}}"  class="new-msg-background text-light " >{{msg_amount}}1</a></span>
                 </div>
             </div>`;
 })();

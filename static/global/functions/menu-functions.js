@@ -77,13 +77,15 @@ function usersSearch() {
 
 function addremoveToSingleChat() {
     document.addEventListener('click', (e) => {
-        event.preventDefault()
-        if( e.target.hasAttribute('data-chat_include') ){
-            const link   = e.target;
+        e.preventDefault();
+
+        if( e.target.hasAttribute('data-chat_include') ||
+            e.target.parentElement.hasAttribute('data-chat_include') ){
+
+            const link   = ( e.target.hasAttribute('data-chat_include') ) ? e.target : e.target.parentElement;
             const action = link.dataset.chat_include;
             const userID = link.dataset.user_id;
             const chatID = urlQueryGetHelper();
-
 
             if( action === 'add' ){
                 const userAddRequest = new ChatRooms();

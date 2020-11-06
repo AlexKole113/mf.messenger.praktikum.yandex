@@ -16,12 +16,12 @@ const alerts              = {
     badEmail       : 'Введите корректный email',
     badPass        : `Пароль не может быть короче ${MIN_PASSW_LENGTH} символов`,
     NoMatchPass    : `Пароль не совпадает`,
-    OldPassEmpty   : `Введите текущий пароль`,
+    OldPassEmpty   : `Введите пароль`,
 }
 const backEndAlertsElement =  '.backend-alerts';
 
 
-type Validator = ( T: HTMLInputElement ) => boolean;
+type Validator = ( T: HTMLInputElement ) => boolean|void;
 type ValidatorsMap = Record<string, Validator>;
 type Submiter = ( T: HTMLElement , B: object ) => void;
 type SubmitersMap = Record<string, Submiter>;
@@ -119,7 +119,7 @@ const validatorsMap :ValidatorsMap = {
 
     validate_password_repeat :     <Validator> function( elm:HTMLInputElement )       :boolean {
         const field     = elm;
-        const password  = document.querySelector('input[name="password"]');
+        const password  = <HTMLInputElement> document.querySelector('input[name="password"]');
 
         if( field.value !== password.value ){
             let nxtSibling = <HTMLElement> field.nextElementSibling;
@@ -132,19 +132,25 @@ const validatorsMap :ValidatorsMap = {
         return true
     },
 
-    validate_avatar :              <Validator> function( elm:HTMLInputElement )       :boolean {
+    validate_avatar :              <Validator> function( elm:HTMLInputElement )        {
         if( elm ) return true
     },
 
-    validate_oldPassword:              <Validator> function( elm:HTMLInputElement )   :boolean {
+    validate_oldPassword:              <Validator> function( elm:HTMLInputElement )    {
         if( elm ) return true
     },
 
     validate_newPassword:              <Validator> function( elm:HTMLInputElement )   :boolean {
-        const field     = elm;
-        const passwordOld  = document.querySelector('input[name="oldPassword"]');
+        const field        = elm;
+        const passwordOld  = <HTMLInputElement> document.querySelector('input[name="oldPassword"]');
 
-        if( field.value > 0 && passwordOld.value.length < 1 ){
+        if( field.value.length > 0 && passwordOld.value.length < 1 ) {
+            let nxtSibling = <HTMLElement> passwordOld.nextElementSibling;
+            nxtSibling.innerText = alerts.OldPassEmpty;
+            nxtSibling.classList.add(NO_VALID_CLASS)
+            passwordOld.classList.add(NO_VALID_CLASS)
+            return false;
+        } else if ( field.value.length < 1 && passwordOld.value.length > 0 ) {
             let nxtSibling = <HTMLElement> field.nextElementSibling;
             nxtSibling.innerText = alerts.OldPassEmpty;
             nxtSibling.classList.add(NO_VALID_CLASS)
@@ -159,47 +165,56 @@ const validatorsMap :ValidatorsMap = {
 const submitersMap  :SubmitersMap  = {
 
     authorization: <Submiter> function ( form:HTMLElement, dataFields:object ) :void {
-       const auth       = new ChatApi()
+        if(!form && !dataFields) return
+
+       const auth :ApiResponse     = new ChatApi()
        auth.authorization( dataFields )
-       .then( ( responseApi ) => {
+       .then( ( responseApi:string|boolean ) => {
             if ( responseApi !== true ) {
                 if( document.querySelector( backEndAlertsElement ) ){
-                    const elm = document.querySelector( backEndAlertsElement );
-                    elm.textContent = responseApi;
+                    const elm = <HTMLElement> document.querySelector( backEndAlertsElement );
+                    elm.textContent = responseApi.toString();
                 }
             } else {
                 window.location.href = '/chats';
             }
         })
     },
-    registration: <Submiter> function ( form:HTMLElement,dataFields:object )  :void {
-        const reg       = new ChatApi()
+    registration: <Submiter> function ( form:HTMLElement, dataFields:object )  :void {
+        if(!form && !dataFields) return;
+
+        if( typeof dataFields === 'undefined' ) return;
+        const reg :ApiResponse     = new ChatApi();
+
         reg.registration( dataFields )
-            .then( ( responseApi ) => {
+            .then( ( responseApi:boolean ) => {
                 if ( responseApi !== true ) {
                     if( document.querySelector( backEndAlertsElement ) ){
-                        const elm = document.querySelector( backEndAlertsElement );
-                        elm.textContent = responseApi;
+                        const elm = <HTMLElement> document.querySelector( backEndAlertsElement );
+                        elm.textContent = responseApi || '';
                     }
                 } else {
                     window.location.href = '/chats';
                 }
             })
     },
-    userSettings: <Submiter> function ( form:HTMLElement,dataFields:object )  :void {
-        const upd       = new ChatApi()
+    userSettings: <Submiter> function ( form:HTMLElement, dataFields:{[avatar:string]:any} )  :void {
+        if( !form && !dataFields) return;
+        const upd  = new ChatApi()
 
         if( dataFields.avatar.length !== 0 ){
-            let formData = new FormData();
-            let file     = document.querySelector('input[name="avatar"]').files[0];
-            formData.append('avatar', file  );
-            dataFields.avatar = formData;
+            let formData         = new FormData();
+            let fileElm :any     = document.querySelector('input[name="avatar"]');
+            if( fileElm ){
+                let file  = fileElm.files[0];
+                formData.append('avatar', file  );
+                dataFields.avatar = formData;
+            }
         }
 
 
         upd.updateUserDetails( dataFields )
-            .then( ( responseApi ) => {
-                console.log( responseApi )
+            .then( ( responseApi:boolean ) => {
                 if ( responseApi !== true ) {
                     let textResponse =``;
                     if( Array.isArray( responseApi ) ){
@@ -207,13 +222,16 @@ const submitersMap  :SubmitersMap  = {
                             textResponse += responseItem + ' ';
                         } )
                         if( document.querySelector( backEndAlertsElement ) ){
-                            const elm = document.querySelector( backEndAlertsElement );
-                            elm.textContent = responseApi;
+                            const elm = <HTMLElement> document.querySelector( backEndAlertsElement );
+                            if( elm  ){
+                                elm.textContent = textResponse;
+                            }
+
                         }
                     } else {
                         if( document.querySelector( backEndAlertsElement ) ){
-                            const elm = document.querySelector( backEndAlertsElement );
-                            elm.textContent = responseApi;
+                            const elm = <HTMLElement> document.querySelector( backEndAlertsElement );
+                            elm.textContent = responseApi.toString();
                         }
                     }
                     setFieldsValue();
@@ -235,9 +253,17 @@ function setFieldsValue() {
             if(document.querySelector(`input[name=${field}]`)){
 
                 if( field === 'avatar' &&  userData[field] ){
-                    document.querySelector(`input[name=${field}]`).parentElement.style.backgroundImage = `url(https://ya-praktikum.tech/${userData[field]})`
+                    const elm = <HTMLElement> document.querySelector(`input[name=${field}]`);
+                    if( elm.parentElement ){
+                        elm.parentElement.style.backgroundImage = `url(https://ya-praktikum.tech/${userData[field]})`
+                    }
+
                 } else {
-                    document.querySelector(`input[name=${field}]`).value = userData[field];
+                    const elm = <HTMLInputElement> document.querySelector(`input[name=${field}]`);
+                    if( elm ){
+                        elm.value = userData[field];
+                    }
+
                 }
 
             }
@@ -255,17 +281,17 @@ function registrationFormValidateAll( e:Event ) {
 
 function submitValidate( e:Event ) {
     e.preventDefault();
-    const form       = <HTMLElement> e.currentTarget;
-    const formType   = form.dataset.form_type;
-    const fields     = form.querySelectorAll('input' );
-    const errors     = [];
-    const dataFields = {};
+    const form                               = <HTMLElement> e.currentTarget;
+    const formType                           = form.dataset.form_type;
+    const fields                             = form.querySelectorAll('input' );
+    const errors                             = [];
+    const dataFields :{[key:string]:string}  = {};
 
-    fields.forEach( ( elm ) => {
+    fields.forEach( ( elm :HTMLInputElement ) => {
         if( !validatorsMap[`validate_${elm.name}`]( elm ) ){
             errors.push( elm.name )
         } else {
-            dataFields[elm.name] = elm.value;
+            dataFields[ elm.name ] = elm.value;
         }
     })
 

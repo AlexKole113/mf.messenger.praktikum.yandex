@@ -9,7 +9,7 @@ import Message from "../../../components/message/control/message.js";
 import Page from "../../../global/classes/class-Page.js";
 import { chatPage } from "../view/chat-page.tmp.js";
 import { attach_menu_starter, chat_menus_starter, chatMenuLogOut, usersSearch, addremoveToSingleChat, showUsers } from "../../../global/functions/menu-functions.js";
-const usersCollection = [{ avatar: '', login: '', active: '', }];
+const usersCollection = [{ avatar: '', login: '', active: '' }];
 const messageFeed = [
     {
         content: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Assumenda autem cumque cupiditate earum eos et facere, maiores necessitatibus nulla odit officiis placeat porro, quibusdam reprehenderit sunt tempore voluptatem. Consectetur, pariatur!',
@@ -53,7 +53,7 @@ let pageChat = new Page('main.container', chatPage, {
     chat_deatails: chatDetails,
     chat_menu: chatMenu,
     messages: messageList,
-    handlers: [{ 'render': usersSearch.bind(userList) }, { 'render': showUsers.bind(userList) }, { 'render': chatMenuLogOut }, { 'render': addremoveToSingleChat },]
+    handlers: [{ 'render': usersSearch.bind(userList) }, { 'render': showUsers.bind(userList) }, { 'render': chatMenuLogOut }, { 'render': addremoveToSingleChat }]
 });
 export { pageChat };
 //# sourceMappingURL=сhat.js.map
