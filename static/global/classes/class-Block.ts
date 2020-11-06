@@ -23,8 +23,8 @@ export default class Block <Block extends object> {
 
     protected constructor ( tagName:string = "div", props:props, templateDef:template = '' ) {
 
-        this.eventBus = new EventBus();
-        this.props = this._makePropsProxy( props );
+        this.eventBus     = new EventBus();
+        this.props        = this._makePropsProxy( props );
         this._templateDef = templateDef;
 
         this._meta = {

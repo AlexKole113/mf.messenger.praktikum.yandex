@@ -1,42 +1,50 @@
 export default class HTTPTransport {
-    constructor() {
-        this.get = (url, options = {}) => {
-            options.data = this.queryStringify(options.data);
-            return this.request(url, Object.assign(Object.assign({}, options), { method: HTTPTransport.METHODS.GET }), options.timeout);
+    constructor(url) {
+        this.get = (options = {}) => {
+            if (Object.keys(options).length !== 0) {
+                options.data = this.queryStringify(options.data);
+            }
+            return this.request(Object.assign(Object.assign({}, options), { method: HTTPTransport.METHODS.GET }), options.timeout);
         };
-        this.put = (url, options = {}) => {
-            return this.request(url, Object.assign(Object.assign({}, options), { method: HTTPTransport.METHODS.PUT }), options.timeout);
+        this.put = (options = {}) => {
+            return this.request(Object.assign(Object.assign({}, options), { method: HTTPTransport.METHODS.PUT }), options.timeout);
         };
-        this.post = (url, options = {}) => {
-            return this.request(url, Object.assign(Object.assign({}, options), { method: HTTPTransport.METHODS.POST }), options.timeout);
+        this.post = (options = {}) => {
+            return this.request(Object.assign(Object.assign({}, options), { method: HTTPTransport.METHODS.POST }), options.timeout);
         };
-        this.delete = (url, options = {}) => {
-            return this.request(url, Object.assign(Object.assign({}, options), { method: HTTPTransport.METHODS.DELETE }), options.timeout);
+        this.delete = (options = {}) => {
+            return this.request(Object.assign(Object.assign({}, options), { method: HTTPTransport.METHODS.DELETE }), options.timeout);
         };
-        this.request = (url, options = {}) => {
-            const { method, data } = options;
+        this.request = (options = {}, timeout) => {
+            let { method, data, headers } = options;
             return new Promise((resolve, reject) => {
                 const xhr = new XMLHttpRequest();
+                xhr.withCredentials = true;
                 if (method === HTTPTransport.METHODS.GET) {
-                    xhr.open(method, url + options.data);
+                    data = data || '';
+                    xhr.open(method, this.url + data);
                 }
                 else {
-                    xhr.open(method, url);
+                    xhr.open(method, this.url);
+                }
+                if (!headers) {
+                    xhr.setRequestHeader("Content-Type", "application/json");
                 }
                 xhr.onload = function () {
                     resolve(xhr);
                 };
-                xhr.onabort = reject;
-                xhr.onerror = reject;
-                xhr.ontimeout = reject;
+                xhr.onabort = resolve;
+                xhr.onerror = resolve;
+                xhr.ontimeout = resolve;
                 if (method === HTTPTransport.METHODS.GET || !data) {
-                    xhr.send();
+                    xhr.send(null);
                 }
                 else {
                     xhr.send(data);
                 }
             });
         };
+        this.url = url;
     }
     queryStringify(data) {
         if (typeof data !== 'object')
@@ -45,7 +53,10 @@ export default class HTTPTransport {
         for (let key in data) {
             getString += this._recursQueryStringCreator(data[key], ``, key);
         }
-        return getString;
+        if (getString[getString.length - 1] === '&') {
+            getString = getString.substring(0, getString.length - 1);
+        }
+        return `?${getString}`;
     }
     _recursQueryStringCreator(data, string, key = ``) {
         let keyGlob = key;

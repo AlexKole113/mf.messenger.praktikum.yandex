@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "es2015",
+    "target": "es6",
     "module": "es2015",
     "noImplicitAny": true,
     "noUnusedLocals": true,

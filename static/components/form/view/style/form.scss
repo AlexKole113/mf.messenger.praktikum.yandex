@@ -110,7 +110,6 @@
 
 }
 
-
 #authorization-page {
   .form-registration {
     box-sizing: border-box;
@@ -255,7 +254,6 @@
     float: left;
   }
 
-
   @media (max-width: 575.98px) {
     .form-registration__ava-group {
       justify-content: center; } }
@@ -281,7 +279,11 @@
     background-position: 50% 50%; }
   .form-registration .upload-img-group__uploader {
     display: none; }
+}
 
-
-
+.backend-alerts:not(:empty) {
+  color: #c17582;
+  text-align: center;
+  border: 1px solid rgb(193, 117, 130);
+  padding: 5px;
 }

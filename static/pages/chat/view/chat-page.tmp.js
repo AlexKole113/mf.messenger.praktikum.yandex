@@ -11,7 +11,7 @@ export let chatPage = (function(){
                 <div class="chat-top bg_dark">
                     <div class="chat-top__items separator-dark">
                         <div class="chat-top__items-mobile-list">
-                            <a href="#" class="chat-top-mobile-user-list">
+                            <a href="" class="chat-top-mobile-user-list">
                                 <i class="fas fa-bars fa-2x text-light-min mobile-menu-starter"></i>
                             </a>
                         </div>

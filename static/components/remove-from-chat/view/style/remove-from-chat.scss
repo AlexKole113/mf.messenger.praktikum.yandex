@@ -1,0 +1,10 @@
+a[data-chat_include="remove"] {
+  font-size: .8rem;
+  position: relative;
+  z-index: 5;
+
+  i {
+    position: relative;
+    z-index: -1;
+  }
+}

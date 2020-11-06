@@ -46,6 +46,7 @@ let additional = {
 };
 let formProps = {
     title: 'Регистрация',
+    formType: 'registration',
     inputs: new InputGroup('div#input-component', inputs).getElement(),
     button: new Button('div#btn-component', button).getElement(),
     additional: new LoginLink('div#logIn-component', additional).getElement(),

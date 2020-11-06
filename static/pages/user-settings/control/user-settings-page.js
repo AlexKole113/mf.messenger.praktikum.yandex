@@ -5,12 +5,17 @@ import InputFile from "../../../components/input-file/control/input-file.js";
 import Button from "../../../components/button/control/button.js";
 import LoginLink from "../../../components/login-link/control/login-link.js";
 import { registrationPage } from "../view/user-settings.tmp.js";
-import { registrationFormValidateAll, clearAllfields, submitValidate } from "../../../global/functions/form-functions.js";
+import { registrationFormValidateAll, clearAllfields, submitValidate, setFieldsValue } from "../../../global/functions/form-functions.js";
 let inputs = [
     {
         type: 'text',
         label: 'Имя',
         name: 'first_name',
+    },
+    {
+        type: 'text',
+        label: 'display_name',
+        name: 'display_name',
     },
     {
         type: 'text',
@@ -34,13 +39,13 @@ let inputs = [
     },
     {
         type: 'text',
-        label: 'Пароль',
-        name: 'password',
+        label: 'Пароль старый',
+        name: 'oldPassword',
     },
     {
         type: 'text',
-        label: 'Пароль еще раз',
-        name: 'password',
+        label: 'Пароль новый',
+        name: 'newPassword',
     }
 ];
 let button = {
@@ -57,6 +62,7 @@ let avatar = {
 let uploadAvatar = new InputFile('div#input-file-component', avatar);
 let formProps = {
     title: 'Настройки пользователя',
+    formType: 'userSettings',
     inputfile: uploadAvatar.getElement(),
     inputs: new InputGroup('div#input-component', inputs).getElement(),
     button: new Button('div#btn-component', button).getElement(),
@@ -65,7 +71,8 @@ let formProps = {
 };
 let form = new Form('div#form-component', formProps);
 let pageUserSettings = new Page('main.container', registrationPage, {
-    form: form
+    form: form,
+    handlers: [{ 'render': setFieldsValue }],
 });
 export { pageUserSettings };
 //# sourceMappingURL=user-settings-page.js.map

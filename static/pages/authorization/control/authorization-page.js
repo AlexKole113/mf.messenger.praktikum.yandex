@@ -30,6 +30,7 @@ const registerLink = new LoginLink('div#logIn-component', {
 }).getElement();
 let formProps = {
     title: 'Авторизация',
+    formType: 'authorization',
     inputs: new InputGroup('div#input-component', inputs).getElement(),
     button: new Button('div#btn-component', button).getElement(),
     additional: forgotPassLink + registerLink,
