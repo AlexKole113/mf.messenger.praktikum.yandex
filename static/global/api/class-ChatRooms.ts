@@ -1,7 +1,11 @@
 import ChatApi from "./class-ChatApi.js";
-import HTTPTransport from "../classes/class-HTTPTransport.js";
-import RemoveFromChat from "../../components/remove-from-chat/control/remove-from-chat.js";
-import AddToChat from "../../components/add-to-chat/control/add-to-chat.js";
+
+declare global {
+    interface Window {
+        APPTransport:any;
+    }
+}
+
 
 export default class ChatRooms extends ChatApi {
 
@@ -10,21 +14,11 @@ export default class ChatRooms extends ChatApi {
     static _createChat      = 'https://ya-praktikum.tech/api/v2/chats';
     static _addUsertoChat   = 'https://ya-praktikum.tech/api/v2/chats/users'
 
-    _users       = [{}];;
+    _users       = [{}];
     _chatRooms   = [{}];
 
-    // constructor() {
-    //     super();
-    // }
-
-
-    _userListUpdater( elm:{[key:string]:CallableFunction} ){
-        elm.setProps( this._users );
-    }
-
-    searchUsers( data:{} , elm:{[key:string]:CallableFunction} , roomID:string|number ) {
-        const searchUsersTransport = new HTTPTransport( ChatRooms._userSearch );
-        return searchUsersTransport.post( { data: JSON.stringify({ login: data } ) } )
+    searchUsers( data:{} ) {
+        return window.APPTransport.post( ChatRooms._userSearch , { data: JSON.stringify({ login: data } ) } )
         .then( ( response:ApiResponse ) => {
             if ( response.status !== 200 ) {
                 return JSON.parse( response.response ).reason ;
@@ -40,114 +34,75 @@ export default class ChatRooms extends ChatApi {
                 return allUsers;
             }
         })
-        .then( ( allUsers ) => {
-           return this.getUsersinChatRooms( roomID )
-           .then( ( usersInRooms:any ) => {
-
-                    for( let i = 0; i < allUsers.length; i++ ){
-                        for( let j = 0; j < usersInRooms.length; j++ ){
-                            if( allUsers[i].id === usersInRooms[j].id ){
-                                allUsers[i].add_remove_chat = new RemoveFromChat('span.remove-from-chat',{user_id:allUsers[i].id, user_login: allUsers[i].login }).getElement();
-                            }
-                        }
-
-                        if(!allUsers[i].add_remove_chat){
-                            allUsers[i].add_remove_chat = new AddToChat('span.add-to-chat',{user_id:allUsers[i].id, user_login: allUsers[i].login}).getElement()
-                        }
-                    }
-                    this._users = allUsers;
-                    this._userListUpdater(elm)
-                } )
-
+        .catch((e:Error)=>{
+            console.log(e)
         })
     }
 
     getAllChatRooms() {
-        const allChatsRequest = new HTTPTransport( ChatRooms._allChats );
-        return allChatsRequest.get()
+        return window.APPTransport.get( ChatRooms._allChats )
         .then( ( response:ApiResponse ) => {
             return this._chatRooms = JSON.parse( response.response );
         })
+        .catch((e:Error)=>{
+            console.log(e)
+        })
     }
 
-    getUsersinChatRooms( roomID:string|number ){
+    getUsersinChatRooms( roomID:string ){
         if(!roomID) return Promise.reject(false);
-        const requestURL = `https://ya-praktikum.tech/api/v2/chats/${roomID}/users`;
-        const requestUsers =  new HTTPTransport( requestURL );
-        return requestUsers.get()
-        .then( ( response:ApiResponse ) => {
-
-            let allUsersResponse = JSON.parse( response.response );
-            allUsersResponse.forEach(( user:{[key:string]:any} )=>{
-                user.avatar = ChatApi._baseDomain + user.avatar;
-                user.add_remove_chat = new RemoveFromChat('span.remove-from-chat',{user_id:user.id, user_login: user.login }).getElement();
-            })
-
-            const clearUsers = [allUsersResponse[0]]
-            for(let i = 0; i < allUsersResponse.length; i++){
-                let coincidence = false;
-
-                for(let j = 0; j < clearUsers.length; j++){
-                    if(allUsersResponse[i].id === clearUsers[j].id ) {
-                        coincidence = true;
-                        break;
-                    }
-                }
-
-                if( coincidence === false ) clearUsers.push(allUsersResponse[i]);
-
-            }
-
-            //console.log(allUsersResponse)
-            //console.log(clearUsers)
-            //return allUsersResponse;
-            return clearUsers;
-        } )
+        return window.APPTransport.get(`https://ya-praktikum.tech/api/v2/chats/${roomID}/users`)
     }
 
     createSingleChatRoom( chatName:string ){
-        const chatCreateRequest = new HTTPTransport( ChatRooms._createChat );
-        return chatCreateRequest.post({ data: JSON.stringify({ title: chatName } ) })
+        return window.APPTransport.post( ChatRooms._createChat,{ data: JSON.stringify({ title: chatName } ) })
         .then( ( response:ApiResponse ) => {
             if( response.status !== 200 ){
               return false
             }
             return true;
         })
+        .catch((e:Error)=>{
+            console.log(e)
+        })
 
     }
 
     addUserToChatRoom( userID:string|number, chatID:string|number ){
-        const addUserRequest = new HTTPTransport( ChatRooms._addUsertoChat );
-        return addUserRequest.put({ data: JSON.stringify({ users: [userID], chatId: chatID  } ) })
+        return window.APPTransport.put( ChatRooms._addUsertoChat, { data: JSON.stringify({ users: [userID], chatId: chatID  } ) })
         .then( ( response:ApiResponse ) => {
             if( response.status !== 200 ){
                 return false
             }
             return true;
         })
+        .catch((e:Error)=>{
+            console.log(e)
+        })
     }
 
     removeUserFromChatRoom( userID:string|number, chatID:string|number ){
-        const removeUserRequest = new HTTPTransport( ChatRooms._addUsertoChat );
-        return removeUserRequest.delete({ data: JSON.stringify({ users: [userID], chatId: chatID  } ) })
-            .then( ( response:ApiResponse ) => {
+        return window.APPTransport.delete( ChatRooms._addUsertoChat, { data: JSON.stringify({ users: [userID], chatId: chatID  } ) })
+        .then( ( response:ApiResponse ) => {
                 if( response.status !== 200 ){
                     return false
                 }
                 return true;
             })
+        .catch((e:Error)=>{
+            console.log(e)
+        })
+
     }
 
-
     getUserByID(id:string|number){
-        const requestURL = `https://ya-praktikum.tech/api/v2/user/${id}`;
-        const requestUser =  new HTTPTransport( requestURL );
-        return requestUser.get()
+        return window.APPTransport.get(`https://ya-praktikum.tech/api/v2/user/${id}`)
         .then( ( response:ApiResponse ) => {
             return response.response;
         })
+        .catch((e:Error)=>{
+            console.log(e)
+        })
     }
-
 
 }

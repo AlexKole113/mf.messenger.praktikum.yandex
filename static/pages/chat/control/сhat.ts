@@ -11,7 +11,7 @@ import Message from "../../../components/message/control/message.js";
 import Page from "../../../global/classes/class-Page.js";
 import {chatPage} from "../view/chat-page.tmp.js";
 
-import {attach_menu_starter, chat_menus_starter, chatMenuLogOut, usersSearch, addremoveToSingleChat, showUsers } from "../../../global/functions/menu-functions.js";
+import {attach_menu_starter, chat_menus_starter, chatMenuLogOut, usersSearch, addremoveToSingleChat, showUsers } from "../../../global/functions/functions.js";
 
 const usersCollection = [{avatar:'', login:'', active:''}];
 const messageFeed     = [

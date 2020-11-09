@@ -1,25 +1,22 @@
-import HTTPTransport from "../classes/class-HTTPTransport.js";
-
 
 export default class ChatApi implements Api {
 
 
     static _baseDomain          = 'https://ya-praktikum.tech';
 
-    static _authorizationURL    = 'https://ya-praktikum.tech/api/v2/auth/signin';
-    static _registrationURL     = 'https://ya-praktikum.tech/api/v2/auth/signup';
-    static _userDetailURL       = 'https://ya-praktikum.tech/api/v2/auth/user';
-    static _logout              = 'https://ya-praktikum.tech/api/v2/auth/logout';
+    static _authorizationURL    = ChatApi._baseDomain +'/api/v2/auth/signin';
+    static _registrationURL     = ChatApi._baseDomain +'/api/v2/auth/signup';
+    static _userDetailURL       = ChatApi._baseDomain +'/api/v2/auth/user';
+    static _logout              = ChatApi._baseDomain +'/api/v2/auth/logout';
 
-    static _changeUserDetails   = 'https://ya-praktikum.tech/api/v2/user/profile';
-    static _changeUserPassword  = 'https://ya-praktikum.tech/api/v2/user/password';
-    static _changeUserAvatar    = 'https://ya-praktikum.tech/api/v2/user/profile/avatar';
+    static _changeUserDetails   = ChatApi._baseDomain +'/api/v2/user/profile';
+    static _changeUserPassword  = ChatApi._baseDomain +'/api/v2/user/password';
+    static _changeUserAvatar    = ChatApi._baseDomain +'/api/v2/user/profile/avatar';
 
 
-    registration ( data:object ){
-        if(!data) return;
-        const registrationTransport = new HTTPTransport( ChatApi._registrationURL );
-        return registrationTransport.post( { data:JSON.stringify( data ) } )
+    registration ( data:RegistrationData ){
+        if(typeof data === "undefined") return;
+        return window.APPTransport.post(ChatApi._registrationURL, { data:JSON.stringify( data ) } )
         .then( ( response:ApiResponse ) => {
             if ( response.status !== 200 ) {
                 return JSON.parse( response.response ).reason ;
@@ -27,12 +24,15 @@ export default class ChatApi implements Api {
                 return true;
             }
         })
+        .catch((e:Error)=>{
+            console.log(e)
+        })
     }
 
-    authorization( data:object ) {
-        if(!data) return;
-        const authorizationTransport = new HTTPTransport( ChatApi._authorizationURL );
-        return authorizationTransport.post( { data: JSON.stringify( data ) } )
+    authorization( data:AuthorizationData ) {
+        if(typeof data === "undefined") return;
+
+        return window.APPTransport.post(ChatApi._authorizationURL, { data: JSON.stringify( data ) } )
         .then( ( response:ApiResponse ) => {
             if ( response.status !== 200 ) {
                return JSON.parse( response.response ).reason ;
@@ -40,36 +40,40 @@ export default class ChatApi implements Api {
                return true;
             }
         })
+        .catch((e:Error)=>{
+            console.log(e)
+        })
     }
 
     getUserDetails(){
-        const userDetails  = new HTTPTransport( ChatApi._userDetailURL );
-        return userDetails.get()
-            .then( ( response:ApiResponse )=>{
-                if( response.status !== 200 ){
-                    return false
-                } else  {
-                    return JSON.parse( response.response );
-                }
-            })
+        return window.APPTransport.get(ChatApi._userDetailURL)
+        .then( ( response:ApiResponse )=>{
+            if( response.status !== 200 ){
+                return false
+            } else  {
+                return JSON.parse( response.response );
+            }
+        })
+        .catch((e:Error)=>{
+            console.log(e)
+        })
     }
 
     checkAuthorization() {
-        const userChecker    = new HTTPTransport( ChatApi._userDetailURL );
-        return userChecker.get()
-            .then( ( response:ApiResponse ) => {
+        return window.APPTransport.get(ChatApi._userDetailURL)
+        .then( ( response:ApiResponse ) => {
                 if( response.status !== 200 ){
                     return false
                 } else  {
                     if( JSON.parse(response.response).id ) return true;
                 }
             })
+        .catch((e:Error)=>{
+            console.log(e)
+        })
     }
 
     updateUserDetails( data:{[key:string]:string}){
-        const avatarDataUpdater     :HTTPSender                 = new HTTPTransport( ChatApi._changeUserAvatar );
-        const passwordDataUpdater   :HTTPSender                 = new HTTPTransport( ChatApi._changeUserPassword );
-        const otherDataUpdater      :HTTPSender                 = new HTTPTransport( ChatApi._changeUserDetails );
         const avatarData            :{[key:string]:string}      = {};
         const passwordData          :{[key:string]:string}      = {};
         const otherData             :{[key:string]:string}      = {};
@@ -87,15 +91,15 @@ export default class ChatApi implements Api {
 
 
         if ( Object.keys( avatarData ).length !== 0) {
-            allData.push( avatarDataUpdater.put( { data: avatarData.avatar, headers: "Content-Type: multipart/form-data"  } ) );
+            allData.push( window.APPTransport.put(ChatApi._changeUserAvatar, { data: avatarData.avatar, headers: "Content-Type: multipart/form-data"  } ) );
         }
 
         if ( Object.keys( passwordData ).length !== 0) {
-            allData.push( passwordDataUpdater.put( { data: JSON.stringify( passwordData ) } ) );
+            allData.push( window.APPTransport.put(ChatApi._changeUserPassword, { data: JSON.stringify( passwordData ) } ) );
         }
 
         if ( Object.keys( otherData ).length !== 0) {
-            allData.push( otherDataUpdater.put( { data: JSON.stringify( otherData ) } ) );
+            allData.push( window.APPTransport.put(ChatApi._changeUserDetails, { data: JSON.stringify( otherData ) } ) );
         }
 
         // @ts-ignore
@@ -116,19 +120,23 @@ export default class ChatApi implements Api {
             }
 
         })
-
+        .catch((e:Error)=>{
+           console.log(e)
+        })
     }
 
     logout(){
-        const exit    = new HTTPTransport( ChatApi._logout );
-        return exit.post()
-            .then( ( response:ApiResponse ) => {
+        return window.APPTransport.post(ChatApi._logout)
+        .then( ( response:ApiResponse ) => {
                 if( response.status !== 200 ){
                     return false;
                 } else  {
                     return true;
                 }
             })
+        .catch((e:Error)=>{
+            console.log(e)
+        })
     }
 
 

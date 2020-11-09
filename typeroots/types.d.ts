@@ -1,9 +1,28 @@
 declare module '*';
 
+interface Sender {
+    get:    HTTPSenderFunc,
+    post:   HTTPSenderFunc,
+    put:    HTTPSenderFunc,
+    delete: HTTPSenderFunc,
+}
+
+interface Api {
+    registration:   ( data:RegistrationData ) => PromiseLike<any>,
+    authorization:  ( data:AuthorizationData ) => PromiseLike<any>,
+    logout:         ( data:object|null ) => PromiseLike<any>,
+}
+
 interface EventBus {
-    on:   CallableFunction,
-    off:  CallableFunction,
-    emit: CallableFunction,
+    on:   ( event:string, callback:CallableFunction ) => void,
+    off:  ( event:string, callback:CallableFunction ) => void,
+    emit: ( event:string, ...args:any ) => void,
+}
+
+interface Block {
+    setProps:   ( nextProps:object|Block ) => Block,
+    render:     ( elm?:string, temp?:string)  => void,
+    getElement: ( temp?:string)  => string,
 }
 
 interface Route {
@@ -13,18 +32,6 @@ interface Route {
     render: CallableFunction,
 }
 
-interface Api {
-    registration: CallableFunction,
-    authorization:CallableFunction,
-    logout:       CallableFunction,
-}
-
-interface Sender {
-    get:    CallableFunction,
-    post:   CallableFunction,
-    put:    CallableFunction,
-    delete: CallableFunction,
-}
 
 type UserListProps = {
     login           :string,
@@ -46,25 +53,31 @@ type ApiResponse = {
     response         :any,
 }|any;
 
+
+type RegistrationData = {
+    first_name:  string,
+    second_name: string,
+    login:       string,
+    email:       string,
+    password:    string,
+    phone:       string,
+}
+
+type AuthorizationData = {
+    login:    string,
+    password: string
+}
+
+
+
 type HTTPSender  = {
-    [key:string] : CallableFunction
+    [key:string] : HTTPSenderFunc
 }|any;
 
 
 type ApiExample = {
     [key:string] :any
 }
-
-
-
-
-interface Block {
-    setProps:   CallableFunction,
-    render:     CallableFunction,
-    getElement: CallableFunction,
-}
-
-interface User {}
 
 type props = {
     [index:string]:any,
@@ -74,6 +87,8 @@ type templateContent = {
     [index:string]:any
 }
 
-type template = string;
+type HTTPSenderFunc = ( url:string, options:{[key:string]:any} ) => PromiseLike<any>;
+type template       = string;
+
 
 
