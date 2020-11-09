@@ -4,6 +4,8 @@ import {pageChat} from "./static/pages/chat/control/сhat.js";
 import {pageRegistration} from "./static/pages/registration/control/registration-page.js";
 import {pageUserSettings} from "./static/pages/user-settings/control/user-settings-page.js";
 import {pageError404} from "./static/pages/404/control/error-page-404.js";
+import {GLOBAL_EVENTS} from "./static/global/functions/hooks.js";
+
 
 import Router from "./static/global/classes/class-Router.js";
 
@@ -24,7 +26,6 @@ router
     .start();
 
 
-
 document.addEventListener('click',(e)=>{
     //e.preventDefault()
     const target = <HTMLElement> e.target;
@@ -36,6 +37,8 @@ document.addEventListener('click',(e)=>{
     }
 })
 
+
+GLOBAL_EVENTS.BUS.emit( GLOBAL_EVENTS.HOOKS.APP_START );
 router.go( pathname );
 
 

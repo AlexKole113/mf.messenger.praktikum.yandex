@@ -64,6 +64,7 @@ export default class Page <T extends object> extends Block <T> {
         }
 
         this.eventBus.emit(Page.PAGE_EVENTS.PAGE_WAS_RENDER);
+
     }
 
 

@@ -68,8 +68,8 @@ export default class Router {
         if (url.indexOf('?') !== -1) {
             url = url.replace(/#/g, '');
             url = url.split('?')[0];
-            let path = url.split('/');
-            let newpath = `/${path[path.length - 1]}`;
+            const path = url.split('/');
+            const newpath = `/${path[path.length - 1]}`;
             return newpath;
         }
         else {

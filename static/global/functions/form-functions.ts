@@ -231,7 +231,10 @@ const submitersMap  :SubmitersMap  = {
                     } else {
                         if( document.querySelector( backEndAlertsElement ) ){
                             const elm = <HTMLElement> document.querySelector( backEndAlertsElement );
-                            elm.textContent = responseApi.toString();
+                            if( typeof responseApi !== 'undefined' ){
+                                elm.textContent = responseApi.toString();
+                            }
+
                         }
                     }
                     setFieldsValue();
@@ -248,7 +251,7 @@ const submitersMap  :SubmitersMap  = {
 function setFieldsValue() {
     const currentUser = new ChatApi();
     currentUser.getUserDetails()
-    .then( ( userData ) => {
+    .then( ( userData:UserListProps ) => {
         for( let field in userData ){
             if(document.querySelector(`input[name=${field}]`)){
 
@@ -260,8 +263,8 @@ function setFieldsValue() {
 
                 } else {
                     const elm = <HTMLInputElement> document.querySelector(`input[name=${field}]`);
-                    if( elm ){
-                        elm.value = userData[field];
+                    if( elm && userData[field] ){
+                        elm.value = (userData[field]).toString();
                     }
 
                 }
@@ -308,9 +311,11 @@ function clearAllfields( e:Event ) {
     const field = <HTMLElement> e.target;
     field.classList.remove(NO_VALID_CLASS);
     const nxtSibling = <HTMLElement> field.nextElementSibling;
-    nxtSibling.classList.remove(NO_VALID_CLASS);
-    const innText :string|undefined = nxtSibling.dataset.label;
-    nxtSibling.textContent = innText || '';
+    if(nxtSibling){
+        nxtSibling.classList.remove(NO_VALID_CLASS);
+        const innText :string|undefined = nxtSibling.dataset.label;
+        nxtSibling.textContent = innText || '';
+    }
 }
 
 

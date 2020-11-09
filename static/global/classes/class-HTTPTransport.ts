@@ -7,32 +7,51 @@ export default class HTTPTransport implements Sender {
         DELETE: 'DELETE',
     };
 
-    url:string
+    url = '';
 
-    constructor( url:string ) {
+    get = (url:string, options:{[key:string]:any} = {} ) => {
         this.url = url;
-    }
-
-
-    get = ( options:{[key:string]:any} = {} ) => {
-
         if ( Object.keys(options).length !== 0 ) {
             options.data = this.queryStringify( options.data )
         }
 
-        return this.request( { ...options, method: HTTPTransport.METHODS.GET }, options.timeout );
+        const request = this.request( { ...options, method: HTTPTransport.METHODS.GET }, options.timeout )
+        .then( ( response:ApiResponse ) => {
+            if( response.status !== 200) throw new Error(`Сервер ответил ${response.status}: ${response.reason}`)
+            return response;
+        });
+
+        return request;
     };
 
-    put = ( options:{[key:string]:any} = {} ) => {
-        return this.request( { ...options, method: HTTPTransport.METHODS.PUT }, options.timeout )
+    put = (url:string, options:{[key:string]:any} = {} ) => {
+        this.url = url;
+        const request = this.request( { ...options, method: HTTPTransport.METHODS.PUT }, options.timeout )
+        .then( ( response:ApiResponse )=>{
+            if( response.status !== 200 ) throw new Error(`Сервер ответил ${response.status}: ${response.reason}`)
+            return response;
+        });
+        return request;
     };
 
-    post = ( options:{[key:string]:any} = {} ) => {
-        return this.request({ ...options, method: HTTPTransport.METHODS.POST }, options.timeout );
+    post = (url:string, options:{[key:string]:any} = {} ) => {
+        this.url = url;
+        const request = this.request({ ...options, method: HTTPTransport.METHODS.POST }, options.timeout )
+        .then( ( response:ApiResponse )=>{
+            if(response.status !== 200) throw new Error(`Сервер ответил ${response.status}: ${response.reason}`)
+            return response;
+        });
+        return request;
     };
 
-    delete = ( options:{[key:string]:any} = {} ) => {
-        return this.request({ ...options, method: HTTPTransport.METHODS.DELETE }, options.timeout );
+    delete = (url:string, options:{[key:string]:any} = {} ) => {
+        this.url = url;
+        const request = this.request({ ...options, method: HTTPTransport.METHODS.DELETE }, options.timeout )
+        .then( ( response:ApiResponse )=>{
+            if( response.status !== 200 ) throw new Error(`Сервер ответил ${response.status}: ${response.reason}`)
+            return response;
+        });
+        return request;
     };
 
 

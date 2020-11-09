@@ -61,7 +61,7 @@ export default class Router {
     go( pathname:string ) {
 
         this._authorizationCheck()
-        .then( ( data ) => {
+        .then( ( data:ApiResponse ) => {
             if(!data && this._pathDetector(pathname) !== '/registration'){
                 this._onRoute( '/auth' );
             } else{
@@ -95,10 +95,10 @@ export default class Router {
 
     _pathDetector( url:string ){
         if( url.indexOf('?') !== -1 ) {
-            url      = url.replace(/#/g,'')
-            url      = url.split('?')[0];
-            let path = url.split('/');
-            let newpath = `/${path[path.length-1]}`;
+            url           = url.replace(/#/g,'')
+            url           = url.split('?')[0];
+            const path    = url.split('/');
+            const newpath = `/${path[path.length-1]}`;
             return newpath;
         } else {
            return  url;

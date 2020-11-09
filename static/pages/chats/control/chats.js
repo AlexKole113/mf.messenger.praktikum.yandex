@@ -5,8 +5,8 @@ import Modal from "../../../components/modal/control/modal.js";
 import Page from "../../../global/classes/class-Page.js";
 import { chats } from "../view/chats.tmp.js";
 import MenuChats from "../../../components/menu-chats/control/menu-chats.js";
-import { chat_menus_starter, chatMenuLogOut } from "../../../global/functions/menu-functions.js";
-import { getAllChats, chatCreator } from "../../../global/functions/menu-functions.js";
+import { chat_menus_starter, chatMenuLogOut } from "../../../global/functions/functions.js";
+import { getAllChats, chatCreator } from "../../../global/functions/functions.js";
 const AllChatsExample = [{
         avatar: '',
         id: '',

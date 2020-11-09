@@ -201,7 +201,9 @@ const submitersMap = {
                 else {
                     if (document.querySelector(backEndAlertsElement)) {
                         const elm = document.querySelector(backEndAlertsElement);
-                        elm.textContent = responseApi.toString();
+                        if (typeof responseApi !== 'undefined') {
+                            elm.textContent = responseApi.toString();
+                        }
                     }
                 }
                 setFieldsValue();
@@ -226,8 +228,8 @@ function setFieldsValue() {
                 }
                 else {
                     const elm = document.querySelector(`input[name=${field}]`);
-                    if (elm) {
-                        elm.value = userData[field];
+                    if (elm && userData[field]) {
+                        elm.value = (userData[field]).toString();
                     }
                 }
             }
@@ -266,9 +268,11 @@ function clearAllfields(e) {
     const field = e.target;
     field.classList.remove(NO_VALID_CLASS);
     const nxtSibling = field.nextElementSibling;
-    nxtSibling.classList.remove(NO_VALID_CLASS);
-    const innText = nxtSibling.dataset.label;
-    nxtSibling.textContent = innText || '';
+    if (nxtSibling) {
+        nxtSibling.classList.remove(NO_VALID_CLASS);
+        const innText = nxtSibling.dataset.label;
+        nxtSibling.textContent = innText || '';
+    }
 }
 export { registrationFormValidateAll, clearAllfields, submitValidate, setFieldsValue };
 //# sourceMappingURL=form-functions.js.map

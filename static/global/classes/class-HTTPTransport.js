@@ -1,19 +1,48 @@
 export default class HTTPTransport {
-    constructor(url) {
-        this.get = (options = {}) => {
+    constructor() {
+        this.url = '';
+        this.get = (url, options = {}) => {
+            this.url = url;
             if (Object.keys(options).length !== 0) {
                 options.data = this.queryStringify(options.data);
             }
-            return this.request(Object.assign(Object.assign({}, options), { method: HTTPTransport.METHODS.GET }), options.timeout);
+            const request = this.request(Object.assign(Object.assign({}, options), { method: HTTPTransport.METHODS.GET }), options.timeout)
+                .then((response) => {
+                if (response.status !== 200)
+                    throw new Error(`Сервер ответил ${response.status}: ${response.reason}`);
+                return response;
+            });
+            return request;
         };
-        this.put = (options = {}) => {
-            return this.request(Object.assign(Object.assign({}, options), { method: HTTPTransport.METHODS.PUT }), options.timeout);
+        this.put = (url, options = {}) => {
+            this.url = url;
+            const request = this.request(Object.assign(Object.assign({}, options), { method: HTTPTransport.METHODS.PUT }), options.timeout)
+                .then((response) => {
+                if (response.status !== 200)
+                    throw new Error(`Сервер ответил ${response.status}: ${response.reason}`);
+                return response;
+            });
+            return request;
         };
-        this.post = (options = {}) => {
-            return this.request(Object.assign(Object.assign({}, options), { method: HTTPTransport.METHODS.POST }), options.timeout);
+        this.post = (url, options = {}) => {
+            this.url = url;
+            const request = this.request(Object.assign(Object.assign({}, options), { method: HTTPTransport.METHODS.POST }), options.timeout)
+                .then((response) => {
+                if (response.status !== 200)
+                    throw new Error(`Сервер ответил ${response.status}: ${response.reason}`);
+                return response;
+            });
+            return request;
         };
-        this.delete = (options = {}) => {
-            return this.request(Object.assign(Object.assign({}, options), { method: HTTPTransport.METHODS.DELETE }), options.timeout);
+        this.delete = (url, options = {}) => {
+            this.url = url;
+            const request = this.request(Object.assign(Object.assign({}, options), { method: HTTPTransport.METHODS.DELETE }), options.timeout)
+                .then((response) => {
+                if (response.status !== 200)
+                    throw new Error(`Сервер ответил ${response.status}: ${response.reason}`);
+                return response;
+            });
+            return request;
         };
         this.request = (options = {}, timeout) => {
             let { method, data, headers } = options;
@@ -47,7 +76,6 @@ export default class HTTPTransport {
                 }
             });
         };
-        this.url = url;
     }
     queryStringify(data) {
         if (typeof data !== 'object')

@@ -114,40 +114,40 @@ describe('Отправка и получение данных с бэка', () =
         expect(getString).to.equal('?key1=1&key2[d]=2&key2[g][0]=3&key2[g][1]=4&key3[e]=5');
     });
     it('Отправка HTTPTransport GET', () => {
-        const tst       = new HTTPTransport('localhost');
-        tst.request     = (options:{[key:string]:any} = {}, timeout:number ) => {
+        const tst       = new HTTPTransport();
+        tst.request     = (options, timeout:number ) => {
             const {method, data } = options;
 
             expect( tst.url ).to.equal( 'localhost' );
             expect( method ).to.equal( 'GET' );
             expect( data ).to.equal( '?somedata[0]=1&somedata[1]=2' );
-
+            return Promise.resolve({status:200} )
         }
 
-        tst.get({ data : {'somedata': [1,2]} } );
+        tst.get('localhost',{ data : {'somedata': [1,2]} } );
 
     });
     it('Отправка HTTPTransport POST', () => {
-        const tst       = new HTTPTransport('localhost');
-        tst.request     = ( options:{[key:string]:any} = {}, timeout:number ) => {
+        const tst       = new HTTPTransport();
+        tst.request     = ( options, timeout) => {
             const {method, data } = options;
 
             expect( tst.url ).to.equal( 'localhost' );
             expect( method ).to.equal( 'POST' );
             expect( data ).to.deep.equal( { 'somedata': [1,2] } );
-
+            return Promise.resolve({status:200} )
         }
 
-        tst.post({ data : {'somedata': [1,2]} } );
+        tst.post('localhost',{ data : {'somedata': [1,2]} } );
     });
     it('Получение HTTPTransport', async () => {
-        const tst       = new HTTPTransport('localhost');
+        const tst       = new HTTPTransport();
         tst.request     = ( options:{[key:string]:any} = {}, timeout:number ) => {
             const { data } = options;
-            return Promise.resolve({ response: data } );
+            return Promise.resolve({status:200,response:data} )
         }
 
-        const response = await tst.post({ data : {'somedata': [1,2]} } );
+        const response = await tst.post('localhost',{ data : {'somedata': [1,2]} } );
 
         expect( response.response ).to.deep.equal( { 'somedata': [1,2] } );
 
