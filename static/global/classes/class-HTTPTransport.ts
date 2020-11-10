@@ -17,7 +17,7 @@ export default class HTTPTransport implements Sender {
 
         const request = this.request( { ...options, method: HTTPTransport.METHODS.GET }, options.timeout )
         .then( ( response:ApiResponse ) => {
-            if( response.status !== 200) throw new Error(`Сервер ответил ${response.status}: ${response.reason}`)
+            if( !response ) throw new Error( `Ошибка HTTPTransport` )
             return response;
         });
 
@@ -27,8 +27,8 @@ export default class HTTPTransport implements Sender {
     put = (url:string, options:{[key:string]:any} = {} ) => {
         this.url = url;
         const request = this.request( { ...options, method: HTTPTransport.METHODS.PUT }, options.timeout )
-        .then( ( response:ApiResponse )=>{
-            if( response.status !== 200 ) throw new Error(`Сервер ответил ${response.status}: ${response.reason}`)
+        .then( ( response:ApiResponse ) => {
+            if( !response ) throw new Error( `Ошибка HTTPTransport` )
             return response;
         });
         return request;
@@ -37,8 +37,8 @@ export default class HTTPTransport implements Sender {
     post = (url:string, options:{[key:string]:any} = {} ) => {
         this.url = url;
         const request = this.request({ ...options, method: HTTPTransport.METHODS.POST }, options.timeout )
-        .then( ( response:ApiResponse )=>{
-            if(response.status !== 200) throw new Error(`Сервер ответил ${response.status}: ${response.reason}`)
+        .then( ( response:ApiResponse ) => {
+            if( !response ) throw new Error( `Ошибка HTTPTransport` )
             return response;
         });
         return request;
@@ -47,8 +47,8 @@ export default class HTTPTransport implements Sender {
     delete = (url:string, options:{[key:string]:any} = {} ) => {
         this.url = url;
         const request = this.request({ ...options, method: HTTPTransport.METHODS.DELETE }, options.timeout )
-        .then( ( response:ApiResponse )=>{
-            if( response.status !== 200 ) throw new Error(`Сервер ответил ${response.status}: ${response.reason}`)
+        .then( ( response:ApiResponse ) => {
+            if( !response ) throw new Error( `Ошибка HTTPTransport` )
             return response;
         });
         return request;
@@ -57,14 +57,14 @@ export default class HTTPTransport implements Sender {
 
     request = ( options:{[key:string]:any} = {}, timeout:number) => {
 
-        let {method, data, headers } = options;
+        const {method, data = '', headers } = options;
+
 
         return new Promise((resolve, reject) => {
             const xhr = new XMLHttpRequest();
             xhr.withCredentials = true;
 
             if( method === HTTPTransport.METHODS.GET ){
-                data = data || '';
                 xhr.open(method, this.url + data );
             } else {
                 xhr.open( method, this.url );

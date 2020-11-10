@@ -24,9 +24,6 @@ export default class ChatApi implements Api {
                 return true;
             }
         })
-        .catch((e:Error)=>{
-            console.log(e)
-        })
     }
 
     authorization( data:AuthorizationData ) {
@@ -35,13 +32,13 @@ export default class ChatApi implements Api {
         return window.APPTransport.post(ChatApi._authorizationURL, { data: JSON.stringify( data ) } )
         .then( ( response:ApiResponse ) => {
             if ( response.status !== 200 ) {
+               // Извиняюсь, но я не оч понял. Хотел переделать на проверку " === 'OK'" но получается это тоже самое что и сейчас.
+               // Мне вроде при авторизации нечего возвращать в случае успеха, в остальных случаях возвращаю
+               // причину отказа в авторизации ?
                return JSON.parse( response.response ).reason ;
             } else {
                return true;
             }
-        })
-        .catch((e:Error)=>{
-            console.log(e)
         })
     }
 
@@ -102,7 +99,6 @@ export default class ChatApi implements Api {
             allData.push( window.APPTransport.put(ChatApi._changeUserDetails, { data: JSON.stringify( otherData ) } ) );
         }
 
-        // @ts-ignore
        return Promise.allSettled( allData )
         .then( ( response:ApiResponse ) => {
             let errors :string[] = [];
@@ -118,11 +114,8 @@ export default class ChatApi implements Api {
             } else {
                 return errors;
             }
+        })
 
-        })
-        .catch((e:Error)=>{
-           console.log(e)
-        })
     }
 
     logout(){
@@ -138,6 +131,5 @@ export default class ChatApi implements Api {
             console.log(e)
         })
     }
-
 
 }

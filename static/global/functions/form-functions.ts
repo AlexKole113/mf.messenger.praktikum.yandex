@@ -173,12 +173,22 @@ const submitersMap  :SubmitersMap  = {
             if ( responseApi !== true ) {
                 if( document.querySelector( backEndAlertsElement ) ){
                     const elm = <HTMLElement> document.querySelector( backEndAlertsElement );
-                    elm.textContent = responseApi.toString();
+                    if(typeof responseApi !== 'undefined'){
+                        elm.textContent = responseApi.toString();
+                    }
+
                 }
             } else {
                 window.location.href = '/chats';
             }
         })
+       .catch((e:Error)=>{
+           console.log(e)
+           if( document.querySelector( backEndAlertsElement ) ){
+               const elm = <HTMLElement> document.querySelector( backEndAlertsElement );
+               elm.textContent = e.message;
+           }
+       })
     },
     registration: <Submiter> function ( form:HTMLElement, dataFields:object )  :void {
         if(!form && !dataFields) return;
@@ -197,16 +207,22 @@ const submitersMap  :SubmitersMap  = {
                     window.location.href = '/chats';
                 }
             })
+            .catch((e:Error)=>{
+                if( document.querySelector( backEndAlertsElement ) ){
+                    const elm = <HTMLElement> document.querySelector( backEndAlertsElement );
+                    elm.textContent = e.message;
+                }
+            })
     },
     userSettings: <Submiter> function ( form:HTMLElement, dataFields:{[avatar:string]:any} )  :void {
         if( !form && !dataFields) return;
         const upd  = new ChatApi()
 
         if( dataFields.avatar.length !== 0 ){
-            let formData         = new FormData();
-            let fileElm :any     = document.querySelector('input[name="avatar"]');
-            if( fileElm ){
-                let file  = fileElm.files[0];
+            const formData                          = new FormData();
+            const fileElm :HTMLInputElement|null    = document.querySelector('input[name="avatar"]');
+            if( fileElm && fileElm.files ){
+                const file  = fileElm.files[0];
                 formData.append('avatar', file  );
                 dataFields.avatar = formData;
             }
@@ -214,7 +230,7 @@ const submitersMap  :SubmitersMap  = {
 
 
         upd.updateUserDetails( dataFields )
-            .then( ( responseApi:boolean ) => {
+            .then( ( responseApi ) => {
                 if ( responseApi !== true ) {
                     let textResponse =``;
                     if( Array.isArray( responseApi ) ){
@@ -226,15 +242,13 @@ const submitersMap  :SubmitersMap  = {
                             if( elm  ){
                                 elm.textContent = textResponse;
                             }
-
                         }
                     } else {
                         if( document.querySelector( backEndAlertsElement ) ){
                             const elm = <HTMLElement> document.querySelector( backEndAlertsElement );
                             if( typeof responseApi !== 'undefined' ){
-                                elm.textContent = responseApi.toString();
+                                elm.textContent = responseApi;
                             }
-
                         }
                     }
                     setFieldsValue();
@@ -242,7 +256,14 @@ const submitersMap  :SubmitersMap  = {
                     setFieldsValue();
                 }
             })
-
+            .catch((e:Error)=>{
+                if( document.querySelector( backEndAlertsElement ) ){
+                    const elm = <HTMLElement> document.querySelector( backEndAlertsElement );
+                    if( elm  ){
+                        elm.textContent = e.message;
+                    }
+                }
+            })
 
     },
 }

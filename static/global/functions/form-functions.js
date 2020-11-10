@@ -143,11 +143,20 @@ const submitersMap = {
             if (responseApi !== true) {
                 if (document.querySelector(backEndAlertsElement)) {
                     const elm = document.querySelector(backEndAlertsElement);
-                    elm.textContent = responseApi.toString();
+                    if (typeof responseApi !== 'undefined') {
+                        elm.textContent = responseApi.toString();
+                    }
                 }
             }
             else {
                 window.location.href = '/chats';
+            }
+        })
+            .catch((e) => {
+            console.log(e);
+            if (document.querySelector(backEndAlertsElement)) {
+                const elm = document.querySelector(backEndAlertsElement);
+                elm.textContent = e.message;
             }
         });
     },
@@ -168,6 +177,12 @@ const submitersMap = {
             else {
                 window.location.href = '/chats';
             }
+        })
+            .catch((e) => {
+            if (document.querySelector(backEndAlertsElement)) {
+                const elm = document.querySelector(backEndAlertsElement);
+                elm.textContent = e.message;
+            }
         });
     },
     userSettings: function (form, dataFields) {
@@ -175,10 +190,10 @@ const submitersMap = {
             return;
         const upd = new ChatApi();
         if (dataFields.avatar.length !== 0) {
-            let formData = new FormData();
-            let fileElm = document.querySelector('input[name="avatar"]');
-            if (fileElm) {
-                let file = fileElm.files[0];
+            const formData = new FormData();
+            const fileElm = document.querySelector('input[name="avatar"]');
+            if (fileElm && fileElm.files) {
+                const file = fileElm.files[0];
                 formData.append('avatar', file);
                 dataFields.avatar = formData;
             }
@@ -202,7 +217,7 @@ const submitersMap = {
                     if (document.querySelector(backEndAlertsElement)) {
                         const elm = document.querySelector(backEndAlertsElement);
                         if (typeof responseApi !== 'undefined') {
-                            elm.textContent = responseApi.toString();
+                            elm.textContent = responseApi;
                         }
                     }
                 }
@@ -210,6 +225,14 @@ const submitersMap = {
             }
             else {
                 setFieldsValue();
+            }
+        })
+            .catch((e) => {
+            if (document.querySelector(backEndAlertsElement)) {
+                const elm = document.querySelector(backEndAlertsElement);
+                if (elm) {
+                    elm.textContent = e.message;
+                }
             }
         });
     },
