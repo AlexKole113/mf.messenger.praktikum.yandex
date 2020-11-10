@@ -32,6 +32,10 @@ interface Route {
     render: CallableFunction,
 }
 
+declare interface PromiseConstructor {
+    allSettled(promises: Array<Promise<any>>): Promise<Array<{status: 'fulfilled' | 'rejected', value?: any, reason?: any}>>;
+}
+
 
 type UserListProps = {
     login           :string,
