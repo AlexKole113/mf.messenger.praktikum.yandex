@@ -18,9 +18,6 @@ export default class ChatApi {
         return window.APPTransport.post(ChatApi._authorizationURL, { data: JSON.stringify(data) })
             .then((response) => {
             if (response.status !== 200) {
-                // Извиняюсь, но я не оч понял. Хотел переделать на проверку " === 'OK'" но получается это тоже самое что и сейчас.
-                // Мне вроде при авторизации нечего возвращать в случае успеха, в остальных случаях возвращаю
-                // причину отказа в авторизации ?
                 return JSON.parse(response.response).reason;
             }
             else {

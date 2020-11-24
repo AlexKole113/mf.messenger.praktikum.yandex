@@ -4,14 +4,14 @@ export default class ChatApi implements Api {
 
     static _baseDomain          = 'https://ya-praktikum.tech';
 
-    static _authorizationURL    = ChatApi._baseDomain +'/api/v2/auth/signin';
-    static _registrationURL     = ChatApi._baseDomain +'/api/v2/auth/signup';
-    static _userDetailURL       = ChatApi._baseDomain +'/api/v2/auth/user';
-    static _logout              = ChatApi._baseDomain +'/api/v2/auth/logout';
+    static _authorizationURL    = ChatApi._baseDomain + '/api/v2/auth/signin';
+    static _registrationURL     = ChatApi._baseDomain + '/api/v2/auth/signup';
+    static _userDetailURL       = ChatApi._baseDomain + '/api/v2/auth/user';
+    static _logout              = ChatApi._baseDomain + '/api/v2/auth/logout';
 
-    static _changeUserDetails   = ChatApi._baseDomain +'/api/v2/user/profile';
-    static _changeUserPassword  = ChatApi._baseDomain +'/api/v2/user/password';
-    static _changeUserAvatar    = ChatApi._baseDomain +'/api/v2/user/profile/avatar';
+    static _changeUserDetails   = ChatApi._baseDomain + '/api/v2/user/profile';
+    static _changeUserPassword  = ChatApi._baseDomain + '/api/v2/user/password';
+    static _changeUserAvatar    = ChatApi._baseDomain + '/api/v2/user/profile/avatar';
 
 
     registration ( data:RegistrationData ){
@@ -32,9 +32,6 @@ export default class ChatApi implements Api {
         return window.APPTransport.post(ChatApi._authorizationURL, { data: JSON.stringify( data ) } )
         .then( ( response:ApiResponse ) => {
             if ( response.status !== 200 ) {
-               // Извиняюсь, но я не оч понял. Хотел переделать на проверку " === 'OK'" но получается это тоже самое что и сейчас.
-               // Мне вроде при авторизации нечего возвращать в случае успеха, в остальных случаях возвращаю
-               // причину отказа в авторизации ?
                return JSON.parse( response.response ).reason ;
             } else {
                return true;
