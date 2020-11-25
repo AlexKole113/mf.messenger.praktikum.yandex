@@ -1,6 +1,5 @@
 import ChatApi from "../api/class-ChatApi.js";
 
-
 const MIN_STRING_LENGTH      = 1;
 const MIN_PASSW_LENGTH       = 1;
 const EMAIL_CHECKER          = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
