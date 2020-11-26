@@ -5,7 +5,7 @@ module.exports = {
     output: {
         filename: 'app.js'
     },
-    watch: true,
+   // watch: true,
     module: {
         rules: [{
             test:/\.(s*)css$/,
