@@ -19,7 +19,7 @@ const validatorsMap = {
     validate_first_name: function (elm) {
         const field = elm;
         if (field.value.length < MIN_STRING_LENGTH) {
-            let nxtSibling = field.nextElementSibling;
+            const nxtSibling = field.nextElementSibling;
             nxtSibling.innerText = alerts.badName;
             nxtSibling.classList.add(NO_VALID_CLASS);
             field.classList.add(NO_VALID_CLASS);
@@ -30,7 +30,7 @@ const validatorsMap = {
     validate_display_name: function (elm) {
         const field = elm;
         if (field.value.length < MIN_STRING_LENGTH) {
-            let nxtSibling = field.nextElementSibling;
+            const nxtSibling = field.nextElementSibling;
             nxtSibling.innerText = alerts.badName;
             nxtSibling.classList.add(NO_VALID_CLASS);
             field.classList.add(NO_VALID_CLASS);
@@ -41,7 +41,7 @@ const validatorsMap = {
     validate_second_name: function (elm) {
         const field = elm;
         if (field.value.length < MIN_STRING_LENGTH) {
-            let nxtSibling = field.nextElementSibling;
+            const nxtSibling = field.nextElementSibling;
             nxtSibling.innerText = alerts.badName;
             nxtSibling.classList.add(NO_VALID_CLASS);
             field.classList.add(NO_VALID_CLASS);
@@ -52,7 +52,7 @@ const validatorsMap = {
     validate_login: function (elm) {
         const field = elm;
         if (field.value.length < MIN_STRING_LENGTH) {
-            let nxtSibling = field.nextElementSibling;
+            const nxtSibling = field.nextElementSibling;
             nxtSibling.innerText = alerts.badlogin;
             nxtSibling.classList.add(NO_VALID_CLASS);
             field.classList.add(NO_VALID_CLASS);
@@ -63,7 +63,7 @@ const validatorsMap = {
     validate_email: function (elm) {
         const field = elm;
         if (!EMAIL_CHECKER.test(field.value.toLowerCase())) {
-            let nxtSibling = field.nextElementSibling;
+            const nxtSibling = field.nextElementSibling;
             nxtSibling.innerText = alerts.badEmail;
             nxtSibling.classList.add(NO_VALID_CLASS);
             field.classList.add(NO_VALID_CLASS);
@@ -74,7 +74,7 @@ const validatorsMap = {
     validate_phone: function (elm) {
         const field = elm;
         if (PHONE_CHECKER.test(field.value.toLowerCase()) || field.value.length < 3) {
-            let nxtSibling = field.nextElementSibling;
+            const nxtSibling = field.nextElementSibling;
             nxtSibling.innerText = alerts.badPhone;
             nxtSibling.classList.add(NO_VALID_CLASS);
             field.classList.add(NO_VALID_CLASS);
@@ -85,7 +85,7 @@ const validatorsMap = {
     validate_password: function (elm) {
         const field = elm;
         if (field.value.length < MIN_PASSW_LENGTH) {
-            let nxtSibling = field.nextElementSibling;
+            const nxtSibling = field.nextElementSibling;
             nxtSibling.innerText = alerts.badPass;
             nxtSibling.classList.add(NO_VALID_CLASS);
             field.classList.add(NO_VALID_CLASS);
@@ -97,7 +97,7 @@ const validatorsMap = {
         const field = elm;
         const password = document.querySelector('input[name="password"]');
         if (field.value !== password.value) {
-            let nxtSibling = field.nextElementSibling;
+            const nxtSibling = field.nextElementSibling;
             nxtSibling.innerText = alerts.NoMatchPass;
             nxtSibling.classList.add(NO_VALID_CLASS);
             field.classList.add(NO_VALID_CLASS);
@@ -117,14 +117,14 @@ const validatorsMap = {
         const field = elm;
         const passwordOld = document.querySelector('input[name="oldPassword"]');
         if (field.value.length > 0 && passwordOld.value.length < 1) {
-            let nxtSibling = passwordOld.nextElementSibling;
+            const nxtSibling = passwordOld.nextElementSibling;
             nxtSibling.innerText = alerts.OldPassEmpty;
             nxtSibling.classList.add(NO_VALID_CLASS);
             passwordOld.classList.add(NO_VALID_CLASS);
             return false;
         }
         else if (field.value.length < 1 && passwordOld.value.length > 0) {
-            let nxtSibling = field.nextElementSibling;
+            const nxtSibling = field.nextElementSibling;
             nxtSibling.innerText = alerts.OldPassEmpty;
             nxtSibling.classList.add(NO_VALID_CLASS);
             field.classList.add(NO_VALID_CLASS);

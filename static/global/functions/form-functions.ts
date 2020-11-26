@@ -1,14 +1,12 @@
 import ChatApi from "../api/class-ChatApi.js";
 
-
 const MIN_STRING_LENGTH      = 1;
 const MIN_PASSW_LENGTH       = 1;
 const EMAIL_CHECKER          = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
 const PHONE_CHECKER          = /[a-z]/;
 const NO_VALID_CLASS         = 'no-valid';
 
-
-const alerts              = {
+const alerts                 = {
     badName        : 'Без Имени сюда не пустят',
     badSurname     : 'Без Фамилии сюда не пустят',
     badlogin       : 'Без Логина сюда не пустят',
@@ -29,10 +27,10 @@ type SubmitersMap = Record<string, Submiter>;
 
 const validatorsMap :ValidatorsMap = {
 
-    validate_first_name :   <Validator> function ( elm:HTMLInputElement  )            :boolean {
+    validate_first_name :          <Validator> function ( elm:HTMLInputElement )      :boolean {
         const field = elm;
         if( field.value.length < MIN_STRING_LENGTH ){
-            let nxtSibling = <HTMLElement> field.nextElementSibling;
+            const nxtSibling = <HTMLElement> field.nextElementSibling;
             nxtSibling.innerText = alerts.badName;
             nxtSibling.classList.add(NO_VALID_CLASS)
             field.classList.add(NO_VALID_CLASS)
@@ -40,11 +38,10 @@ const validatorsMap :ValidatorsMap = {
         }
         return true
     },
-
-    validate_display_name:    <Validator> function( elm:HTMLInputElement )            :boolean {
+    validate_display_name:         <Validator> function( elm:HTMLInputElement )       :boolean {
         const field = elm;
         if( field.value.length < MIN_STRING_LENGTH ){
-            let nxtSibling = <HTMLElement> field.nextElementSibling;
+            const nxtSibling = <HTMLElement> field.nextElementSibling;
             nxtSibling.innerText = alerts.badName;
             nxtSibling.classList.add(NO_VALID_CLASS)
             field.classList.add(NO_VALID_CLASS)
@@ -52,11 +49,10 @@ const validatorsMap :ValidatorsMap = {
         }
         return true
     },
-
     validate_second_name :         <Validator> function ( elm:HTMLInputElement )      :boolean {
         const field = elm;
         if( field.value.length < MIN_STRING_LENGTH ){
-            let nxtSibling = <HTMLElement> field.nextElementSibling;
+            const nxtSibling = <HTMLElement> field.nextElementSibling;
             nxtSibling.innerText = alerts.badName;
             nxtSibling.classList.add(NO_VALID_CLASS)
             field.classList.add(NO_VALID_CLASS)
@@ -64,11 +60,10 @@ const validatorsMap :ValidatorsMap = {
         }
         return true
     },
-
     validate_login :               <Validator>  function( elm:HTMLInputElement )      :boolean {
         const field = elm;
         if( field.value.length < MIN_STRING_LENGTH ){
-            let nxtSibling = <HTMLElement> field.nextElementSibling;
+            const nxtSibling = <HTMLElement> field.nextElementSibling;
             nxtSibling .innerText = alerts.badlogin;
             nxtSibling .classList.add(NO_VALID_CLASS)
             field.classList.add(NO_VALID_CLASS)
@@ -77,11 +72,10 @@ const validatorsMap :ValidatorsMap = {
 
         return true
     },
-
     validate_email :               <Validator> function( elm:HTMLInputElement )       :boolean {
         const field = elm;
         if( !EMAIL_CHECKER.test(field.value.toLowerCase()) ){
-            let nxtSibling = <HTMLElement> field.nextElementSibling;
+            const nxtSibling = <HTMLElement> field.nextElementSibling;
             nxtSibling.innerText = alerts.badEmail;
             nxtSibling.classList.add(NO_VALID_CLASS)
             field.classList.add(NO_VALID_CLASS)
@@ -90,11 +84,10 @@ const validatorsMap :ValidatorsMap = {
 
         return true
     },
-
     validate_phone :               <Validator> function( elm:HTMLInputElement )       :boolean {
         const field = elm;
         if( PHONE_CHECKER.test(field.value.toLowerCase()) || field.value.length < 3 ){
-            let nxtSibling = <HTMLElement> field.nextElementSibling;
+            const nxtSibling = <HTMLElement> field.nextElementSibling;
             nxtSibling .innerText = alerts.badPhone;
             nxtSibling .classList.add(NO_VALID_CLASS);
             field.classList.add(NO_VALID_CLASS);
@@ -103,11 +96,10 @@ const validatorsMap :ValidatorsMap = {
 
         return true
     },
-
     validate_password :            <Validator> function( elm:HTMLInputElement )       :boolean {
         const field = elm;
         if( field.value.length < MIN_PASSW_LENGTH ){
-            let nxtSibling = <HTMLElement> field.nextElementSibling;
+            const nxtSibling = <HTMLElement> field.nextElementSibling;
             nxtSibling.innerText = alerts.badPass;
             nxtSibling.classList.add(NO_VALID_CLASS)
             field.classList.add(NO_VALID_CLASS)
@@ -116,13 +108,12 @@ const validatorsMap :ValidatorsMap = {
 
         return true
     },
-
     validate_password_repeat :     <Validator> function( elm:HTMLInputElement )       :boolean {
         const field     = elm;
         const password  = <HTMLInputElement> document.querySelector('input[name="password"]');
 
         if( field.value !== password.value ){
-            let nxtSibling = <HTMLElement> field.nextElementSibling;
+            const nxtSibling = <HTMLElement> field.nextElementSibling;
             nxtSibling.innerText = alerts.NoMatchPass;
             nxtSibling.classList.add(NO_VALID_CLASS)
             field.classList.add(NO_VALID_CLASS)
@@ -131,7 +122,6 @@ const validatorsMap :ValidatorsMap = {
 
         return true
     },
-
     validate_avatar :              <Validator> function( elm:HTMLInputElement )        {
         if( elm ) return true
     },
@@ -145,13 +135,13 @@ const validatorsMap :ValidatorsMap = {
         const passwordOld  = <HTMLInputElement> document.querySelector('input[name="oldPassword"]');
 
         if( field.value.length > 0 && passwordOld.value.length < 1 ) {
-            let nxtSibling = <HTMLElement> passwordOld.nextElementSibling;
+            const nxtSibling = <HTMLElement> passwordOld.nextElementSibling;
             nxtSibling.innerText = alerts.OldPassEmpty;
             nxtSibling.classList.add(NO_VALID_CLASS)
             passwordOld.classList.add(NO_VALID_CLASS)
             return false;
         } else if ( field.value.length < 1 && passwordOld.value.length > 0 ) {
-            let nxtSibling = <HTMLElement> field.nextElementSibling;
+            const nxtSibling = <HTMLElement> field.nextElementSibling;
             nxtSibling.innerText = alerts.OldPassEmpty;
             nxtSibling.classList.add(NO_VALID_CLASS)
             field.classList.add(NO_VALID_CLASS)
@@ -267,7 +257,6 @@ const submitersMap  :SubmitersMap  = {
 
     },
 }
-
 
 function setFieldsValue() {
     const currentUser = new ChatApi();
