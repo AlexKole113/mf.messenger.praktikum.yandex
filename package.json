@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node ./server.js",
     "test": "mocha --require @babel/register  --recursive ./static/tests/test.js",
-    "build": "webpack",
+    "wp": "webpack",
     "lint": "lint",
     "tsc": "tsc"
   },
