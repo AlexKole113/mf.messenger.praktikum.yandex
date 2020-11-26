@@ -1,4 +1,4 @@
-# docker build -t app/messenger113:1 .    
+# docker build -t app/messenger113:3 .
 
 FROM node:12
 
@@ -17,5 +17,5 @@ RUN npm install
 # копируем исходный код
 COPY . .
 
-EXPOSE 80
 CMD [ "node", "server.js" ]
+EXPOSE 80/tcp
