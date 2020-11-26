@@ -21,7 +21,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "npm run tsc"
+      "pre-commit": "npm run test"
     }
   },
   "homepage": "https://github.com/AlexKole113/mf.messenger.praktikum.yandex#readme",
