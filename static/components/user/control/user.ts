@@ -1,12 +1,10 @@
-import Templator from "../../../global/classes/class-Templator.js";
-import Block from "../../../global/classes/class-Block.js";
-import {componentTemplate} from "../view/user.tmp.js";
+import Templator from "../../../global/classes/class-Templator";
+import Block from "../../../global/classes/class-Block";
+import {componentTemplate} from "../view/user.tmp";
 import EventBus from "../../../global/classes/class-EventBus";
 
 
-
 export default class UserList extends Block <UserListProps> {
-
 
     protected _element     :any        = null;
     protected _meta        !:{tagName:string,props:any};
@@ -16,7 +14,6 @@ export default class UserList extends Block <UserListProps> {
     public    handlers     ?:object;
     public    eventBus     !:EventBus;
     public    activeClass  :string
-
 
 
     constructor( tag:string, props:UserListProps, activeClass:string, template:template = componentTemplate ) {

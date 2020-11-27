@@ -1,4 +1,4 @@
-import ChatApi from "../api/class-ChatApi.js";
+import ChatApi from "../api/class-ChatApi";
 
 const MIN_STRING_LENGTH      = 1;
 const MIN_PASSW_LENGTH       = 1;

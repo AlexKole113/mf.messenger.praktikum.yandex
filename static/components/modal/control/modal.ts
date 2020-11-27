@@ -1,5 +1,5 @@
-import Block from "../../../global/classes/class-Block.js";
-import {componentTemplate} from "../view/modal.tmp.js";
+import Block from "../../../global/classes/class-Block";
+import {componentTemplate} from "../view/modal.tmp";
 
 type DeliveredProps = {
     [key:string]:any

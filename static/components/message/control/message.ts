@@ -1,7 +1,7 @@
-import Templator from "../../../global/classes/class-Templator.js";
-import Block from "../../../global/classes/class-Block.js";
-import Delivered from "../../delivered/control/delivered.js";
-import {componentTemplate} from "../view/message.tmp.js";
+import Templator from "../../../global/classes/class-Templator";
+import Block from "../../../global/classes/class-Block";
+import Delivered from "../../delivered/control/delivered";
+import {componentTemplate} from "../view/message.tmp";
 import EventBus from "../../../global/classes/class-EventBus";
 
 

@@ -1,5 +1,5 @@
-import Block from "../../../global/classes/class-Block.js";
-import {componentTemplate} from "../view/form.tmp.js";
+import Block from "../../../global/classes/class-Block";
+import {componentTemplate} from "../view/form.tmp";
 
 
 type FormProps = {
