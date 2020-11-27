@@ -1,6 +1,6 @@
-import Page from "../../../global/classes/class-Page.js";
-import ErrorShow from "../../../components/error/control/error.js";
-import {errorPage} from "../view/error.tmp.js";
+import Page from "../../../global/classes/class-Page";
+import ErrorShow from "../../../components/error/control/error";
+import {errorPage} from "../view/error.tmp";
 
 
 //пока так

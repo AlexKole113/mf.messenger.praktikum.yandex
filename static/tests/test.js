@@ -21,12 +21,12 @@ const { window } = new JSDOM();
 const { document } = (new JSDOM('')).window;
 global.document = document;
 global.window = window;
-import Templator from "../global/classes/class-Templator.js";
-import Router from "../global/classes/class-Router.js";
-import HTTPTransport from "../global/classes/class-HTTPTransport.js";
-import Page from "../global/classes/class-Page.js";
-import Message from "../components/message/control/message.js";
-import Button from "../components/button/control/button.js";
+import Templator from "../global/classes/class-Templator";
+import Router from "../global/classes/class-Router";
+import HTTPTransport from "../global/classes/class-HTTPTransport";
+import Page from "../global/classes/class-Page";
+import Message from "../components/message/control/message";
+import Button from "../components/button/control/button";
 describe('Шаблоны и компоненты', () => {
     it('Создание HTML из шаблона c заменой символов', () => {
         const componentTemplate = `<button type="submit" class="form-registration__input-group-item-btn bg_dark-min text-light-max" >{{text}}</button>`;

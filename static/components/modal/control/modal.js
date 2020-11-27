@@ -1,5 +1,5 @@
-import Block from "../../../global/classes/class-Block.js";
-import { componentTemplate } from "../view/modal.tmp.js";
+import Block from "../../../global/classes/class-Block";
+import { componentTemplate } from "../view/modal.tmp";
 export default class Modal extends Block {
     constructor(tag, props, template = componentTemplate) {
         super(tag, props, template);

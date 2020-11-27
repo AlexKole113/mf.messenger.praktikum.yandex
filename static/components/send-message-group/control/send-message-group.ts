@@ -1,5 +1,5 @@
-import Block from "../../../global/classes/class-Block.js";
-import {componentTemplate} from "../view/send-message-group.tmp.js";
+import Block from "../../../global/classes/class-Block";
+import {componentTemplate} from "../view/send-message-group.tmp";
 
 type SendMessageGroupProps = {
     send_message: string,

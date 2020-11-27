@@ -1,5 +1,5 @@
-import Block from "../../../global/classes/class-Block.js";
-import { componentTemplate } from "../view/remove-from-chat.tmp.js";
+import Block from "../../../global/classes/class-Block";
+import { componentTemplate } from "../view/remove-from-chat.tmp";
 export default class RemoveFromChat extends Block {
     constructor(tag, props, template = componentTemplate) {
         super(tag, props, template);

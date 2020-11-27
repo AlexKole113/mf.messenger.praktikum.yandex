@@ -1,5 +1,5 @@
-import Block from "../../../global/classes/class-Block.js";
-import {componentTemplate} from "../view/search.tmp.js";
+import Block from "../../../global/classes/class-Block";
+import {componentTemplate} from "../view/search.tmp";
 
 type SeacrhProps = {
     [key:string]: string

@@ -1,7 +1,7 @@
-import ChatList from "../../../components/chat-list/control/chat-list.js";
-import Search from "../../../components/search/control/search.js";
-import ChatAlert from "../../../components/chat-alert/control/chat-alert.js";
-import Modal from "../../../components/modal/control/modal.js";
+import ChatList from "../../../components/chat-list/control/chat-list";
+import Search from "../../../components/search/control/search";
+import ChatAlert from "../../../components/chat-alert/control/chat-alert";
+import Modal from "../../../components/modal/control/modal";
 
 
 import Page from "../../../global/classes/class-Page.js";

@@ -4,10 +4,10 @@
   "description": "Даже законченный проект остаётся только заготовкой, пока им не начнут пользоваться. Но сначала пользователь должен понять, зачем ему пользоваться вашим кодом. В этом помогает файл README.",
   "main": "index.js",
   "scripts": {
-    "build": "node ./server.js",
+    "start": "node ./server.js",
     "test": "mocha --require @babel/register  --recursive ./static/tests/test.js",
-    "wp": "webpack",
-    "lint": "lint",
+    "build": "webpack",
+    "lint": "npx eslint '**/*.js'",
     "tsc": "tsc"
   },
   "repository": {

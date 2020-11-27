@@ -1,5 +1,5 @@
-import Block from "../../../global/classes/class-Block.js";
-import {componentTemplate} from "../view/delivered.tmp.js";
+import Block from "../../../global/classes/class-Block";
+import {componentTemplate} from "../view/delivered.tmp";
 
 type NewMessageTicketProps = {
     text: string,

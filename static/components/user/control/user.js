@@ -1,6 +1,6 @@
-import Templator from "../../../global/classes/class-Templator.js";
-import Block from "../../../global/classes/class-Block.js";
-import { componentTemplate } from "../view/user.tmp.js";
+import Templator from "../../../global/classes/class-Templator";
+import Block from "../../../global/classes/class-Block";
+import { componentTemplate } from "../view/user.tmp";
 export default class UserList extends Block {
     constructor(tag, props, activeClass, template = componentTemplate) {
         super(tag, props, template);
