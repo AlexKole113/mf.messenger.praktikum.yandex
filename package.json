@@ -7,7 +7,7 @@
     "start": "node ./server.js",
     "test": "mocha --require @babel/register  --recursive ./static/tests/test.js",
     "build": "webpack",
-    "lint": "npx eslint '**/*.js'",
+    "lint": "eslint '*/*.ts'",
     "tsc": "tsc"
   },
   "repository": {
