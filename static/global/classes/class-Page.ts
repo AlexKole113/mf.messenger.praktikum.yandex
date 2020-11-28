@@ -1,5 +1,5 @@
-import Templator from "./class-Templator.js";
-import Block from "./class-Block.js";
+import Templator from "./class-Templator";
+import Block from "./class-Block";
 
 
 export default class Page <T extends object> extends Block <T> {

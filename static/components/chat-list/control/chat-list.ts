@@ -1,6 +1,6 @@
-import Templator from "../../../global/classes/class-Templator.js";
-import Block from "../../../global/classes/class-Block.js";
-import {componentTemplate} from "../view/chat-list.tmp.js";
+import Templator from "../../../global/classes/class-Templator";
+import Block from "../../../global/classes/class-Block";
+import {componentTemplate} from "../view/chat-list.tmp";
 import EventBus from "../../../global/classes/class-EventBus";
 
 

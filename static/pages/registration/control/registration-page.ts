@@ -6,7 +6,7 @@ import LoginLink from "../../../components/login-link/control/login-link";
 
 import {registrationPage} from "../view/registration.tmp";
 
-import { registrationFormValidateAll, clearAllfields, submitValidate } from "../../../global/functions/form-functions.js";
+import { registrationFormValidateAll, clearAllfields, submitValidate } from "../../../global/functions/form-functions";
 
 
 let inputs = [

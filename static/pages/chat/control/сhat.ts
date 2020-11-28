@@ -1,17 +1,17 @@
-import UserList from "../../../components/user/control/user.js";
-import Search from "../../../components/search/control/search.js";
-import AttachMenu from "../../../components/attach-menu/control/attach-menu.js";
-import SendMessage from "../../../components/send-message/control/send-message.js";
-import SendMessageGroup from "../../../components/send-message-group/control/send-message-group.js";
-import ChatDetails from "../../../components/chat-details/control/chat-details.js";
-import MenuChat from "../../../components/menu-chat/control/menu-chat.js";
-import Message from "../../../components/message/control/message.js";
+import UserList from "../../../components/user/control/user";
+import Search from "../../../components/search/control/search";
+import AttachMenu from "../../../components/attach-menu/control/attach-menu";
+import SendMessage from "../../../components/send-message/control/send-message";
+import SendMessageGroup from "../../../components/send-message-group/control/send-message-group";
+import ChatDetails from "../../../components/chat-details/control/chat-details";
+import MenuChat from "../../../components/menu-chat/control/menu-chat";
+import Message from "../../../components/message/control/message";
 
 
-import Page from "../../../global/classes/class-Page.js";
+import Page from "../../../global/classes/class-Page";
 import {chatPage} from "../view/chat-page.tmp.js";
 
-import {attach_menu_starter, chat_menus_starter, chatMenuLogOut, usersSearch, addremoveToSingleChat, showUsers } from "../../../global/functions/functions.js";
+import {attach_menu_starter, chat_menus_starter, chatMenuLogOut, usersSearch, addremoveToSingleChat, showUsers } from "../../../global/functions/functions";
 
 const usersCollection = [{avatar:'', login:'', active:''}];
 const messageFeed     = [

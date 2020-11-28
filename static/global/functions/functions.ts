@@ -1,7 +1,8 @@
-import ChatApi from "../api/class-ChatApi.js";
-import ChatRooms from "../api/class-ChatRooms.js";
-import RemoveFromChat from "../../components/remove-from-chat/control/remove-from-chat.js";
-import AddToChat from "../../components/add-to-chat/control/add-to-chat.js";
+// @ts-nocheck
+import ChatApi from "../api/class-ChatApi";
+import ChatRooms from "../api/class-ChatRooms";
+import RemoveFromChat from "../../components/remove-from-chat/control/remove-from-chat";
+import AddToChat from "../../components/add-to-chat/control/add-to-chat";
 
 function urlQueryGetHelper() {
     let allGet =  window.location.href.split('?chatid=');
@@ -37,7 +38,7 @@ function chat_menus_starter() {
     document.querySelector('.mobile-wrapper').classList.toggle("active");
 }
 
-function attach_menu_starter(e) {
+function attach_menu_starter( e ) {
     if (e.target.classList.contains('attach-menu-starter')) {
         document.querySelector('.chat-bottom__items-add-attach').classList.toggle("z-25");
         document.querySelector('.chat-bottom__items-menu').classList.toggle("open");
@@ -46,7 +47,7 @@ function attach_menu_starter(e) {
 }
 
 function chatMenuLogOut() {
-    document.addEventListener('click', (e) => {
+    document.addEventListener('click', (e:Event) => {
         if( e.target.classList.contains('logout-link') ){
             const exit = new ChatApi();
             exit.logout()

@@ -6,7 +6,7 @@ import Button from "../../../components/button/control/button";
 
 import {registrationPage} from "../view/user-settings.tmp";
 
-import { registrationFormValidateAll, clearAllfields, submitValidate, setFieldsValue } from "../../../global/functions/form-functions.js";
+import { registrationFormValidateAll, clearAllfields, submitValidate, setFieldsValue } from "../../../global/functions/form-functions";
 
 
 let inputs = [

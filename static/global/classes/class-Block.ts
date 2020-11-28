@@ -1,5 +1,5 @@
-import EventBus from "./class-EventBus.js";
-import Templator from "./class-Templator.js";
+import EventBus from "./class-EventBus";
+import Templator from "./class-Templator";
 
 
 export default class Block <Block extends object> {
