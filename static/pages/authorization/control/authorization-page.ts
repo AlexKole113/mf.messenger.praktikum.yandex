@@ -1,12 +1,12 @@
 import Page from "../../../global/classes/class-Page";
-import Form from "../../../components/form/control/form.js";
+import Form from "../../../components/form/control/form";
 import InputGroup from "../../../components/input-group/control/input-group";
 import Button from "../../../components/button/control/button";
 import LoginLink from "../../../components/login-link/control/login-link";
 
 import {registrationPage} from "../view/authorization.tmp";
 
-import { registrationFormValidateAll, clearAllfields, submitValidate } from "../../../global/functions/form-functions.js";
+import { registrationFormValidateAll, clearAllfields, submitValidate } from "../../../global/functions/form-functions";
 
 
 let inputs = [

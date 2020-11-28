@@ -5,7 +5,6 @@ const assert = chai.assert;
 const should = chai.should();
 const expect = chai.expect;
 
-
 require("babel-core/register");
 require("babel-polyfill");
 const jsdom = require('jsdom');
@@ -15,13 +14,60 @@ const { document } = (new JSDOM('')).window;
 global.document = document;
 global.window   = window;
 
+import Templator from "../class-Templator";
+import Router from "../class-Router";
+import Page from "../class-Page";
+import Message from "../../../components/message/control/message";
+import Button from "../../../components/button/control/button";
+import HTTPTransport from "../class-HTTPTransport";
 
-import Templator from "../global/classes/class-Templator";
-import Router from "../global/classes/class-Router";
-import HTTPTransport from "../global/classes/class-HTTPTransport";
-import Page from "../global/classes/class-Page";
-import Message from "../components/message/control/message";
-import Button from "../components/button/control/button";
+describe('Отправка и получение данных с бэка', () => {
+    it('Создание get строки', () => {
+        const tst       = new HTTPTransport();
+        const getString =  tst.queryStringify({ 'key1' : 1, 'key2' : { d: '2', g: [3,4] }, 'key3': {'e': '5' } }  );
+        expect(getString).to.equal('?key1=1&key2[d]=2&key2[g][0]=3&key2[g][1]=4&key3[e]=5');
+    });
+    it('Отправка HTTPTransport GET', () => {
+        const tst       = new HTTPTransport();
+        tst.request     = (options, timeout:number ) => {
+            const {method, data } = options;
+
+            expect( tst.url ).to.equal( 'localhost' );
+            expect( method ).to.equal( 'GET' );
+            expect( data ).to.equal( '?somedata[0]=1&somedata[1]=2' );
+            return Promise.resolve({status:200} )
+        }
+
+        tst.get('localhost',{ data : {'somedata': [1,2]} } );
+
+    });
+    it('Отправка HTTPTransport POST', () => {
+        const tst       = new HTTPTransport();
+        tst.request     = ( options, timeout) => {
+            const {method, data } = options;
+
+            expect( tst.url ).to.equal( 'localhost' );
+            expect( method ).to.equal( 'POST' );
+            expect( data ).to.deep.equal( { 'somedata': [1,2] } );
+            return Promise.resolve({status:200} )
+        }
+
+        tst.post('localhost',{ data : {'somedata': [1,2]} } );
+    });
+    it('Получение HTTPTransport', async () => {
+        const tst       = new HTTPTransport();
+        tst.request     = ( options:{[key:string]:any} = {}, timeout:number ) => {
+            const { data } = options;
+            return Promise.resolve({status:200,response:data} )
+        }
+
+        const response = await tst.post('localhost',{ data : {'somedata': [1,2]} } );
+
+        expect( response.response ).to.deep.equal( { 'somedata': [1,2] } );
+
+    });
+});
+
 
 
 describe( 'Шаблоны и компоненты', () => {
@@ -53,7 +99,6 @@ describe( 'Шаблоны и компоненты', () => {
         expect( templator.compile.bind( templator ) ).to.throw('Не загружен шаблон')
     });
 });
-
 describe('Роутинг', () => {
     it('Роутер - пушим и получаем роуты', () => {
         const page1     = new Page('body',`<div class="error-msg"></div>`, {} );
@@ -107,52 +152,6 @@ describe('Роутинг', () => {
     });
 });
 
-describe('Отправка и получение данных с бэка', () => {
-    it('Создание get строки', () => {
-        const tst       = new HTTPTransport();
-        const getString =  tst.queryStringify({ 'key1' : 1, 'key2' : { d: '2', g: [3,4] }, 'key3': {'e': '5' } }  );
-        expect(getString).to.equal('?key1=1&key2[d]=2&key2[g][0]=3&key2[g][1]=4&key3[e]=5');
-    });
-    it('Отправка HTTPTransport GET', () => {
-        const tst       = new HTTPTransport();
-        tst.request     = (options, timeout:number ) => {
-            const {method, data } = options;
-
-            expect( tst.url ).to.equal( 'localhost' );
-            expect( method ).to.equal( 'GET' );
-            expect( data ).to.equal( '?somedata[0]=1&somedata[1]=2' );
-            return Promise.resolve({status:200} )
-        }
-
-        tst.get('localhost',{ data : {'somedata': [1,2]} } );
-
-    });
-    it('Отправка HTTPTransport POST', () => {
-        const tst       = new HTTPTransport();
-        tst.request     = ( options, timeout) => {
-            const {method, data } = options;
-
-            expect( tst.url ).to.equal( 'localhost' );
-            expect( method ).to.equal( 'POST' );
-            expect( data ).to.deep.equal( { 'somedata': [1,2] } );
-            return Promise.resolve({status:200} )
-        }
-
-        tst.post('localhost',{ data : {'somedata': [1,2]} } );
-    });
-    it('Получение HTTPTransport', async () => {
-        const tst       = new HTTPTransport();
-        tst.request     = ( options:{[key:string]:any} = {}, timeout:number ) => {
-            const { data } = options;
-            return Promise.resolve({status:200,response:data} )
-        }
-
-        const response = await tst.post('localhost',{ data : {'somedata': [1,2]} } );
-
-        expect( response.response ).to.deep.equal( { 'somedata': [1,2] } );
-
-    });
-});
 
 
 

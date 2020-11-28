@@ -1,5 +1,5 @@
-import EventBus from "../classes/class-EventBus.js";
-import HTTPTransport from "../classes/class-HTTPTransport.js";
+import EventBus from "../classes/class-EventBus";
+import HTTPTransport from "../classes/class-HTTPTransport";
 
 const GLOBAL_EVENTS = {
     HOOKS: {

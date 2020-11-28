@@ -1,5 +1,5 @@
-import Route from "./class-Route.js";
-import ChatApi from "../api/class-ChatApi.js";
+import Route from "./class-Route";
+import ChatApi from "../api/class-ChatApi";
 
 
 export default class Router {

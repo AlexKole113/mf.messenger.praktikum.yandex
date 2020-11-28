@@ -1,38 +1,37 @@
-
-// Я так понимаю для того чтобы артефакты сборки были отдельно от кода нужно сделать это через плагин?
-// Я погуглил, но что то не нашел подобное решение?
-// Если не сложно тебе можешь, пожалуйста, ссылку приложить. Ну или какую то доп инфу кинуть.
-
-//  Спасибо:)!
-
 //const path = require('path');
 const miniCss = require('mini-css-extract-plugin');
 module.exports = {
-    entry: './src-app.js',
-    output: {
-        filename: 'app.js'
+    entry: {
+        app: './src-app.ts',
     },
+    output: {
+        filename: '[name].js'
+    },
+    devtool: 'inline-source-map',
    // watch: true,
     module: {
-        rules: [{
+        rules: [
+            {
             test:/\.(s*)css$/,
             use: [
                 miniCss.loader,
                 'css-loader',
                 'sass-loader',
-            ]
-        },
-        {
-            test: /\.html$/,
-            use: 'html-loader'
-        },
-        {
-            test: /\.tsx?$/,
-            use: 'ts-loader',
-            exclude: /node_modules/,
-        }
-
+                ]
+            },
+            {
+                test: /\.html$/,
+                use: 'html-loader'
+            },
+            {
+                test: /\.tsx?$/,
+                use: 'ts-loader',
+                exclude: /node_modules/,
+            },
         ]
+    },
+    resolve: {
+        extensions: [ '.ts', '.js', '.json' ],
     },
     plugins: [
         new miniCss({

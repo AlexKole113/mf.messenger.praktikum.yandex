@@ -1,4 +1,4 @@
-import ChatApi from "./class-ChatApi.js";
+import ChatApi from "./class-ChatApi";
 
 declare global {
     interface Window {
