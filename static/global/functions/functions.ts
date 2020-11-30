@@ -89,8 +89,17 @@ function usersSearch() {
             } else {
                 const roomID = urlQueryGetHelper();
                 chatRoom.getUsersinChatRooms( roomID )
-                .then( ( response )=>{
-                    userList.setProps(response)
+                .then( ( response ) => {
+                    response = JSON.parse( response.response );
+
+                    for( let i = 0; i < response.length; i++ ){
+                        if( response[i].avatar ) {
+                            response[i].avatar =  ChatRooms._avatarImgPrefix + response[i]['avatar'];
+                        }
+                        response[i].add_remove_chat = new RemoveFromChat('span.remove-from-chat',{user_id:response[i].id, user_login: response[i].login }).getElement();
+                    }
+
+                    userList.setProps( response )
                 } )
             }
         }
@@ -99,11 +108,8 @@ function usersSearch() {
 
 function addremoveToSingleChat() {
     document.addEventListener('click', (e) => {
-        e.preventDefault();
-
-        if( e.target.hasAttribute('data-chat_include') ||
-            e.target.parentElement.hasAttribute('data-chat_include') ){
-
+        if( e.target.hasAttribute('data-chat_include') ||  e.target.parentElement.hasAttribute('data-chat_include') ){
+            e.preventDefault();
             const link   = ( e.target.hasAttribute('data-chat_include') ) ? e.target : e.target.parentElement;
             const action = link.dataset.chat_include;
             const userID = link.dataset.user_id;

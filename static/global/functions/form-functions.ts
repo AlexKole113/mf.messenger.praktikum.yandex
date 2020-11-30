@@ -1,4 +1,5 @@
 import ChatApi from "../api/class-ChatApi";
+import ChatRooms from "../api/class-ChatRooms";
 
 const MIN_STRING_LENGTH      = 1;
 const MIN_PASSW_LENGTH       = 1;
@@ -264,13 +265,11 @@ function setFieldsValue() {
     .then( ( userData:UserListProps ) => {
         for( let field in userData ){
             if(document.querySelector(`input[name=${field}]`)){
-
                 if( field === 'avatar' &&  userData[field] ){
                     const elm = <HTMLElement> document.querySelector(`input[name=${field}]`);
                     if( elm.parentElement ){
-                        elm.parentElement.style.backgroundImage = `url(https://ya-praktikum.tech/${userData[field]})`
+                        elm.parentElement.style.backgroundImage = `url(${ChatRooms._avatarImgPrefix + userData[field]})`
                     }
-
                 } else {
                     const elm = <HTMLInputElement> document.querySelector(`input[name=${field}]`);
                     if( elm && userData[field] ){
