@@ -13,6 +13,8 @@ export default class ChatRooms extends ChatApi {
     static _allChats        = 'https://ya-praktikum.tech/api/v2/chats';
     static _createChat      = 'https://ya-praktikum.tech/api/v2/chats';
     static _addUsertoChat   = 'https://ya-praktikum.tech/api/v2/chats/users'
+    static _avatarImgPrefix = 'https://ya-praktikum.tech/';
+
 
     _users       = [{}];
     _chatRooms   = [{}];
@@ -51,7 +53,7 @@ export default class ChatRooms extends ChatApi {
 
     getUsersinChatRooms( roomID:string ){
         if(!roomID) return Promise.reject(false);
-        return window.APPTransport.get(`https://ya-praktikum.tech/api/v2/chats/${roomID}/users`)
+       return window.APPTransport.get(`https://ya-praktikum.tech/api/v2/chats/${roomID}/users`);
     }
 
     createSingleChatRoom( chatName:string ){
@@ -69,6 +71,15 @@ export default class ChatRooms extends ChatApi {
     }
 
     addUserToChatRoom( userID:string|number, chatID:string|number ){
+
+        if( typeof userID === 'string' ){
+            userID = Number( userID );
+        }
+
+        if( typeof chatID === 'string' ){
+            chatID = Number( chatID );
+        }
+
         return window.APPTransport.put( ChatRooms._addUsertoChat, { data: JSON.stringify({ users: [userID], chatId: chatID  } ) })
         .then( ( response:ApiResponse ) => {
             if( response.status !== 200 ){
@@ -82,6 +93,15 @@ export default class ChatRooms extends ChatApi {
     }
 
     removeUserFromChatRoom( userID:string|number, chatID:string|number ){
+
+        if( typeof userID === 'string' ){
+            userID = Number( userID );
+        }
+
+        if( typeof chatID === 'string' ){
+            chatID = Number( chatID );
+        }
+
         return window.APPTransport.delete( ChatRooms._addUsertoChat, { data: JSON.stringify({ users: [userID], chatId: chatID  } ) })
         .then( ( response:ApiResponse ) => {
                 if( response.status !== 200 ){

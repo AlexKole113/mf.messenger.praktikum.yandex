@@ -17,7 +17,10 @@
             document.querySelector('.mobile-wrapper').classList.remove("active");
             document.querySelector('.user-list').classList.remove("open");
             document.querySelector('.chat-top__items-menu').classList.remove("open");
-            document.querySelector('.modal').classList.remove("open");
+            if( document.querySelector('.modal') ){
+                document.querySelector('.modal').classList.remove("open");
+            }
+
             if( document.querySelector('.chat-bottom__items-menu') ){
                 document.querySelector('.chat-bottom__items-menu').classList.remove("open");
             }
@@ -32,8 +35,6 @@
             document.querySelector( e.target.dataset.modal ).classList.add('z-25');
             document.querySelector('.mobile-wrapper').classList.toggle("active");
         }
-
-
     })
 
 })()
