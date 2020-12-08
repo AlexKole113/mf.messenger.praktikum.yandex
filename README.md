@@ -1,8 +1,8 @@
 ## Описание
-- Походу это будет мессенджер (но это не точно). Пока он не работает и я не уверен что будет. Ну а пока какое то время вы можете пользоваться вацапом или телегой. 
-- Домен Heroku https://powerful-earth-65324.herokuapp.com
+- Heroku (Главный) https://messengertest113.herokuapp.com
+- Heroku (Docker) https://powerful-earth-65324.herokuapp.com 
 
 ## Установка
-- Устанавливае модули `npm install` ;
+- Устанавливаем модули `npm install` ;
 - Запускаем вебпак `npm run build`;
 - Запускаем express `npm start` ;
