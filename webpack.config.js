@@ -8,7 +8,7 @@ module.exports = {
         filename: '[name].js'
     },
     devtool: 'inline-source-map',
-   // watch: true,
+    watch: true,
     module: {
         rules: [
             {
