@@ -4,6 +4,21 @@ import ChatRooms from "../api/class-ChatRooms";
 import RemoveFromChat from "../../components/remove-from-chat/control/remove-from-chat";
 import AddToChat from "../../components/add-to-chat/control/add-to-chat";
 
+
+function debounce(f, ms) {
+    let isCooldown = false;
+
+    return function() {
+        if (isCooldown) return;
+
+        f.apply(this, arguments);
+
+        isCooldown = true;
+
+        setTimeout(() => isCooldown = false, ms);
+    };
+}
+
 function urlQueryGetHelper() {
     let allGet =  window.location.href.split('?chatid=');
     allGet     = allGet[allGet.length-1];
@@ -66,44 +81,53 @@ function usersSearch() {
         if( e.target.name === 'search-users' ){
             const chatRoom = new ChatRooms();
             if( e.target.value.length > 0 ){
-                chatRoom.searchUsers( e.target.value , userList, urlQueryGetHelper() )
-                .then( ( allUsers ) => {
-                    return chatRoom.getUsersinChatRooms( urlQueryGetHelper() )
-                    .then( ( usersInRooms ) => {
-                        for( let i = 0; i < allUsers.length; i++ ){
-                            for( let j = 0; j < usersInRooms.length; j++ ){
-                                if( allUsers[i].id === usersInRooms[j].id ){
-                                    allUsers[i].add_remove_chat = new RemoveFromChat('span.remove-from-chat',{user_id:allUsers[i].id, user_login: allUsers[i].login }).getElement();
-                                }
-                            }
+                const queryDelimiter = debounce(( e )=>{
+                    chatRoom.searchUsers( e.target.value , userList, urlQueryGetHelper() )
+                        .then( ( allUsers ) => {
+                            return chatRoom.getUsersinChatRooms( urlQueryGetHelper() )
+                                .then( ( usersInRooms ) => {
+                                    for( let i = 0; i < allUsers.length; i++ ){
+                                        for( let j = 0; j < usersInRooms.length; j++ ){
+                                            if( allUsers[i].id === usersInRooms[j].id ){
+                                                allUsers[i].add_remove_chat = new RemoveFromChat('span.remove-from-chat',{user_id:allUsers[i].id, user_login: allUsers[i].login }).getElement();
+                                            }
+                                        }
 
-                            if(!allUsers[i].add_remove_chat){
-                                allUsers[i].add_remove_chat = new AddToChat('span.add-to-chat',{user_id:allUsers[i].id, user_login: allUsers[i].login}).getElement()
-                            }
-                        }
+                                        if(!allUsers[i].add_remove_chat){
+                                            allUsers[i].add_remove_chat = new AddToChat('span.add-to-chat',{user_id:allUsers[i].id, user_login: allUsers[i].login}).getElement()
+                                        }
+                                    }
 
-                        userList.setProps( allUsers );
-                    })
+                                    userList.setProps( allUsers );
+                                })
 
-                    })
+                        })
+                },500);
+                queryDelimiter(e);
             } else {
                 const roomID = urlQueryGetHelper();
-                chatRoom.getUsersinChatRooms( roomID )
-                .then( ( response ) => {
-                    response = JSON.parse( response.response );
+                const queryDelimiter = debounce(( e )=>{
+                    chatRoom.getUsersinChatRooms( roomID )
+                    .then( ( response ) => {
+                            response = JSON.parse( response.response );
 
-                    for( let i = 0; i < response.length; i++ ){
-                        if( response[i].avatar ) {
-                            response[i].avatar =  ChatRooms._avatarImgPrefix + response[i]['avatar'];
-                        }
-                        response[i].add_remove_chat = new RemoveFromChat('span.remove-from-chat',{user_id:response[i].id, user_login: response[i].login }).getElement();
-                    }
+                            for( let i = 0; i < response.length; i++ ){
+                                if( response[i].avatar ) {
+                                    response[i].avatar =  ChatRooms._avatarImgPrefix + response[i]['avatar'];
+                                }
+                                response[i].add_remove_chat = new RemoveFromChat('span.remove-from-chat',{user_id:response[i].id, user_login: response[i].login }).getElement();
+                            }
 
-                    userList.setProps( response )
-                } )
+                            userList.setProps( response )
+                        } )
+                },500 );
+                queryDelimiter(e);
             }
         }
     })
+
+
+
 }
 
 function addremoveToSingleChat() {
@@ -143,39 +167,47 @@ function showUsers() {
     const userList = this;
     const chatRoom = new ChatRooms();
     const roomID = urlQueryGetHelper();
-    chatRoom.getUsersinChatRooms( roomID )
-    .then( ( response ) => {
+    const queryDelimiter = debounce(()=>{
 
-            let allUsersResponse = JSON.parse( response.response );
-            allUsersResponse.forEach(( user )=>{
-                user.avatar = ChatApi._baseDomain + user.avatar;
-                user.add_remove_chat = new RemoveFromChat('span.remove-from-chat',{user_id:user.id, user_login: user.login }).getElement();
-            })
+        chatRoom.getUsersinChatRooms( roomID )
+            .then( ( response ) => {
 
-            const clearUsers = [allUsersResponse[0]]
-            for(let i = 0; i < allUsersResponse.length; i++){
-                let coincidence = false;
+                let allUsersResponse = JSON.parse( response.response );
+                allUsersResponse.forEach(( user )=>{
+                    user.avatar = ChatApi._baseDomain + user.avatar;
+                    user.add_remove_chat = new RemoveFromChat('span.remove-from-chat',{user_id:user.id, user_login: user.login }).getElement();
+                })
 
-                for(let j = 0; j < clearUsers.length; j++){
-                    if(allUsersResponse[i].id === clearUsers[j].id ) {
-                        coincidence = true;
-                        break;
+                const clearUsers = [allUsersResponse[0]]
+                for(let i = 0; i < allUsersResponse.length; i++){
+                    let coincidence = false;
+
+                    for(let j = 0; j < clearUsers.length; j++){
+                        if(allUsersResponse[i].id === clearUsers[j].id ) {
+                            coincidence = true;
+                            break;
+                        }
                     }
+
+                    if( coincidence === false ) clearUsers.push(allUsersResponse[i]);
+
                 }
 
-                if( coincidence === false ) clearUsers.push(allUsersResponse[i]);
+                return clearUsers;
+            } )
 
-            }
+            .then( ( response )=>{
+                userList.setProps(response)
+            } )
+            .catch(()=>{
+                console.log(e)
+            })
 
-            return clearUsers;
-        } )
 
-    .then( ( response )=>{
-        userList.setProps(response)
-    } )
-    .catch(()=>{
-       console.log(e)
-    })
+    }, 500);
+
+    queryDelimiter();
+
 }
 
 function getAllChats() {
@@ -211,8 +243,5 @@ function chatCreator () {
     })
 }
 
-
-
-
-export { attach_menu_starter, chat_menus_starter, chatMenuLogOut, usersSearch, addremoveToSingleChat, showUsers, getAllChats, chatCreator };
+export { attach_menu_starter, chat_menus_starter, chatMenuLogOut, usersSearch, addremoveToSingleChat, showUsers, getAllChats, chatCreator, debounce };
 //# sourceMappingURL=functions.js.map
